@@ -1,8 +1,7 @@
 package service;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+
 
 
 public class ConnectDB {
@@ -18,6 +17,7 @@ public class ConnectDB {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             this.connect = DriverManager.getConnection(url, username, password);
+            System.out.println("hhl");
            
         } catch (ClassNotFoundException ex) {
             System.out.println("Database Connection Creation Failed : " + ex.getMessage());
@@ -42,7 +42,18 @@ public class ConnectDB {
 	}
 
 	public static void main(String[] args) throws SQLException {
+		ResultSet resultats = null;
 		ConnectDB  con = new ConnectDB();
+		String sql = "select * from computer";
+		Statement stmt =  con.getConnection().createStatement();
+		resultats = stmt.executeQuery(sql);
+		while(resultats.next()){ 
+			int nom = resultats.getInt(1); 
+			int row = resultats.getRow();
+			System.out.println(nom);
+		}
+		
+		
 		
 	}
 }
