@@ -1,4 +1,4 @@
-package com.excilys.formation.service;
+package com.excilys.formation.connect;
 
 import java.sql.*;
 
@@ -27,7 +27,7 @@ public class ConnectDB {
 		}
 	}
 	
-	private Connection getConnection() {
+	public Connection getConnection() {
 		
 		return connect;
 	}
@@ -40,20 +40,7 @@ public class ConnectDB {
 		}
 		return instance;
 	}
-
-	public static void main(String[] args) throws SQLException {
-		ResultSet resultats = null;
-		ConnectDB  con = new ConnectDB();
-		String sql = "select * from computer";
-		Statement stmt =  con.getConnection().createStatement();
-		resultats = stmt.executeQuery(sql);
-		while(resultats.next()){ 
-			int nom = resultats.getInt(1); 
-			int row = resultats.getRow();
-			System.out.println(nom);
-		}
 		
 		
 		
 	}
-}

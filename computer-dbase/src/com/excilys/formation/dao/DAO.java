@@ -3,11 +3,13 @@ package com.excilys.formation.dao;
 import java.sql.Connection;
 import java.util.List;
 
+import com.excilys.formation.connect.ConnectDB;
+
 public  abstract class DAO<T> {
 	
-	protected Connection connect = null;
+	protected ConnectDB connect = null;
 	
-	public DAO(Connection conn) {
+	public DAO(ConnectDB conn) {
 		this.connect = conn;
 	}
 	
