@@ -1,4 +1,4 @@
-package service;
+package com.excilys.formation.service;
 
 import java.sql.*;
 

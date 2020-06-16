@@ -1,21 +1,36 @@
-package model;
+package com.excilys.formation.model;
 
 import java.time.LocalDate;
 
+
 public class Computer {
 	
+	 private int id;
 	 private String name;
 	 private LocalDate dateIn;
 	 private LocalDate dateOut;
-	 private Company manufacturer;
+	 private int manufacturer;
 	 
-	 public Computer(String name) {
+	 public Computer() {
+		 
+	 }
+	 
+	 public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Computer(String name) {
 		 this.name = name;
 	 }
 
-	public Computer(String name, LocalDate dateIn, LocalDate dateOut, Company manufacturer) {
+	public Computer(int id,String name, LocalDate dateIn, LocalDate dateOut, int manufacturer) {
 		this.name = name;
 		this.manufacturer = manufacturer;
+		this.id = id;
 		
 		if(dateIn.isBefore(dateOut)) {
 			this.dateIn = dateIn;
@@ -24,13 +39,17 @@ public class Computer {
 	}
 
 
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((dateIn == null) ? 0 : dateIn.hashCode());
 		result = prime * result + ((dateOut == null) ? 0 : dateOut.hashCode());
-		result = prime * result + ((manufacturer == null) ? 0 : manufacturer.hashCode());
+		result = prime * result + id;
+		result = prime * result + manufacturer;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -54,10 +73,9 @@ public class Computer {
 				return false;
 		} else if (!dateOut.equals(other.dateOut))
 			return false;
-		if (manufacturer == null) {
-			if (other.manufacturer != null)
-				return false;
-		} else if (!manufacturer.equals(other.manufacturer))
+		if (id != other.id)
+			return false;
+		if (manufacturer != other.manufacturer)
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -91,11 +109,11 @@ public class Computer {
 		this.dateOut = dateDisc;
 	}
 
-	public Company getManufacturer() {
+	public int getManufacturer() {
 		return manufacturer;
 	}
 
-	public void setManufacturer(Company manufacturer) {
+	public void setManufacturer(int manufacturer) {
 		this.manufacturer = manufacturer;
 	}
 	 

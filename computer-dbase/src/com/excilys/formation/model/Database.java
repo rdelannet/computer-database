@@ -1,11 +1,11 @@
-package model;
+package com.excilys.formation.model;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Database {
-	List<Company> companies = new LinkedList<Company>();
+	List<Company> companies = new ArrayList<Company>();
 	List<Computer> computers = new ArrayList<Computer>();
 	
 	public Database(List<Company> companies, List<Computer> computers) {
