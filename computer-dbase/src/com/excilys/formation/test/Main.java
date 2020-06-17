@@ -15,7 +15,6 @@ public class Main {
 
 	public static void main(String[] args) throws SQLException {
 		ConnectDB conn = new ConnectDB();
-	
 		CLI cli = new CLI(conn);
 		cli.menu();
 		cli.chooseNumber();

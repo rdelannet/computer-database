@@ -102,6 +102,19 @@ public class CompanyDAO extends DAO<Company>{
 		return companies;
 	}
 	
+	public List<Company> findAllPages(int i) {
+		List<Company> companies = new ArrayList<Company>();
+		try {
+			ResultSet result = this.connect.getConnection().createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT 10" +" OFFSET "+i);
+			companies = companyMapper.resultToList(result);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return companies;
+	}
+	
 	
 }
 

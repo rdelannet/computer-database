@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.ComputerMapper;
+import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 
 public class ComputerDAO extends DAO<Computer>{
@@ -108,6 +109,19 @@ public class ComputerDAO extends DAO<Computer>{
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer");
+			computers = computerMapper.resultToList(result);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return computers;
+	}
+	
+	public List<Computer> findAllPages(int i) {
+		List<Computer> computers = new ArrayList<Computer>();
+		try {
+			ResultSet result = this.connect.getConnection().createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT 10 OFFSET "+i);
 			computers = computerMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();

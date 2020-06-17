@@ -102,10 +102,25 @@ public class CLI {
 		ComputerDAO computers = new ComputerDAO(conn);
 		List<Computer> printComputer= new ArrayList<Computer>();
 		System.out.println("---------List of all computers-----------");
-		System.out.println(computers.findAll());
-		printComputer = computers.findAll();
-		for(int i = 0; i < printComputer.size();i++) {
-			System.out.println(printComputer.get(i));
+		System.out.println("Enter 1 to see an other pages, 0 to end");
+		int pages = scan.nextInt();
+		int i = 0;
+		while(pages != 0) {
+			
+			switch(pages) {
+				case 1:
+					i += 10;
+					for(int j = 0; j < computers.findAllPages(i).size();j++) {
+						
+						System.out.println(computers.findAllPages(i).get(j));
+					}
+					System.out.println("0 ou 1");
+					pages = scan.nextInt();
+					break;
+				case 0:
+					break;
+				
+			}
 		}
 		
 	}
@@ -113,11 +128,25 @@ public class CLI {
 		CompanyDAO companies = new CompanyDAO(conn);
 		List<Company> printCompanies = new ArrayList<Company>();
 		System.out.println("---------List of all companies-----------");
-		printCompanies = companies.findAll();
-		for(int i = 0; i < printCompanies.size();i++) {
-			System.out.println(printCompanies.get(i));
+		System.out.println("Enter 1 to see an other pages, 0 to end");
+		int pages = scan.nextInt();
+		int i = 0;
+		while(pages != 0) {
+			
+			switch(pages) {
+				case 1:
+					i += 10;
+					for(int j = 0; j < companies.findAllPages(i).size();j++) {
+						System.out.println(companies.findAllPages(i).get(j));
+					}
+					System.out.println("Enter 1 to see an other pages, 0 to end");
+					pages = scan.nextInt();
+					break;
+				case 0:
+					break;
+				
+			}
 		}
-		
 	
 		
 	}
@@ -132,8 +161,16 @@ public class CLI {
 		Computer computer = new Computer();
 		
 		System.out.println("Entrer the id of the computer :");
-		int id = Integer.parseInt(scan.next());
-		computer.setId(id);
+		try {
+			String id = scan.next();
+			
+			computer.setId(Integer.parseInt(id));
+			
+		} catch (Exception e) {
+			System.out.println("Error Entrer the id of the computer :");
+			String id = scan.next();
+			computer.setId(Integer.parseInt(id));
+		}
 		
 		System.out.println("Entrer the name of the computer :");
 		String name = scan.next();
@@ -143,11 +180,31 @@ public class CLI {
 		String start = scan.next();
 		if(start.equals("yes")) {
 			System.out.println("Enter the year of introduced date :");
-			int year = Integer.parseInt(scan.next());
+			int month;
+			int year;
+			int day;
+			try {
+				year = Integer.parseInt(scan.next());
+				
+			} catch (Exception e) {
+				System.out.println("Enter the year of introduced date :");
+				year = Integer.parseInt(scan.next());
+			}
 			System.out.println("Enter the month of introduced date : (ex : 06 for june)");
-			int month = Integer.parseInt(scan.next());
+			try {
+				 month = Integer.parseInt(scan.next());
+			} catch (Exception e) {
+				System.out.println(" Error Enter the month of introduced date : (ex : 06 for june)");
+				month = Integer.parseInt(scan.next());
+			}
 			System.out.println("Enter the day of introduced date :");
-			int day = Integer.parseInt(scan.next());
+			try {
+				day = Integer.parseInt(scan.next());
+			} catch (Exception e) {
+				System.out.println("Eroor Enter the day of introduced date :");
+				day = Integer.parseInt(scan.next());
+			}
+			
 			computer.setDateInt(LocalDate.of(year, month, day));
 			
 			
