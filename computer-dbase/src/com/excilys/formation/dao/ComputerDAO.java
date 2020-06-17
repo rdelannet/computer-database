@@ -9,12 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.formation.connect.ConnectDB;
+import com.excilys.formation.mappers.ComputerMapper;
 import com.excilys.formation.model.Computer;
 
 public class ComputerDAO extends DAO<Computer>{
+	
+	private ComputerMapper computerMapper;
 
 	public ComputerDAO(ConnectDB conn) {
 		super(conn);
+		this.computerMapper = new ComputerMapper();
 		
 	}
 
@@ -68,7 +72,7 @@ public class ComputerDAO extends DAO<Computer>{
 				sql += ", company_id = '" +computer.getCompanyId() + "'"; 
 			}		
 			sql += " WHERE id = "+ computer.getId();
-			System.out.println(sql);
+			
 			this.connect.getConnection().createStatement().
 				executeUpdate(sql);
 			computer = this.find(computer.getId());
@@ -81,25 +85,15 @@ public class ComputerDAO extends DAO<Computer>{
 	}
 
 	public Computer find(int id) {
-		Computer computer = new Computer();
+		Computer computer = null;
 		try {
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer WHERE id = " + id);
-			if(result.first()) {
-				computer = new Computer(id,result.getString("name"));
-				if(result.getDate("introduced") != null) {
-					computer.setDateInt(result.getDate("introduced").toLocalDate());
-				}
-				if(result.getDate("discontinued") != null) {
-					computer.setDateDisc(result.getDate("discontinued").toLocalDate());
-				}
-				if(result.getInt("company_id") != 0) {
-					computer.setCompanyId(result.getInt("company_id"));
-				}
+			
+			computer = computerMapper.resultToObject(result);			
 				
-				
-			}
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -108,27 +102,13 @@ public class ComputerDAO extends DAO<Computer>{
 
 	@Override
 	public List<Computer> findAll() {
-		List<Computer> computers = new ArrayList<Computer>();
+		List<Computer> computers = null;
 		
 		try {
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer");
-			while(result.next()) {
-				Computer computer = new Computer();
-				computer.setId(result.getInt("id"));
-				computer.setName(result.getString("name"));
-				if(result.getDate("introduced") != null) {
-					computer.setDateInt(result.getDate("introduced").toLocalDate());
-				}
-				if(result.getDate("discontinued") != null) {
-					computer.setDateDisc(result.getDate("discontinued").toLocalDate());
-				}
-				if(result.getInt("company_id") != 0) {
-					computer.setCompanyId(result.getInt("company_id"));
-				}
-				computers.add(computer);
-			}
+			computers = computerMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

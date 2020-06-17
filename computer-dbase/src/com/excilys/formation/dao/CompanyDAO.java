@@ -9,14 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.formation.connect.ConnectDB;
+import com.excilys.formation.mappers.CompanyMapper;
 import com.excilys.formation.model.Company;
 
 
 public class CompanyDAO extends DAO<Company>{
+	
+	private CompanyMapper companyMapper;
 
 	public CompanyDAO(ConnectDB conn) {
 		super(conn);
-		
+		this.companyMapper = new CompanyMapper();
 	}
 
 	
@@ -26,7 +29,7 @@ public class CompanyDAO extends DAO<Company>{
 			PreparedStatement statement = this.connect.getConnection().prepareStatement(sql);
 			statement.setInt(1,company.getId());
 			statement.setString(2,company.getName());
-			statement.executeUpdate();
+			//statement.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -36,12 +39,13 @@ public class CompanyDAO extends DAO<Company>{
 	}
 
 	
+
 	public boolean delete(Company company) {
 		String sql = "DELETE FROM company WHERE id = ?";
 		try {
 			PreparedStatement statement = this.connect.getConnection().prepareStatement(sql);
 			statement.setInt(1,company.getId());
-			statement.executeUpdate();
+			//statement.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -76,8 +80,7 @@ public class CompanyDAO extends DAO<Company>{
 	        ResultSet.TYPE_SCROLL_INSENSITIVE, 
 	        ResultSet.CONCUR_READ_ONLY
 	      ).executeQuery("SELECT * FROM company WHERE id = " + id);
-	        if(result.first())
-	          company = new Company(id, result.getString("name"));         
+	       company = companyMapper.resultToObject(result);     
 	    } catch (SQLException e) {
 	      e.printStackTrace();
 	    }
@@ -92,9 +95,7 @@ public class CompanyDAO extends DAO<Company>{
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer");
-			while(result.next()) {
-				companies.add(new Company(result.getInt("id"), result.getString("name")));
-			}
+			companies = companyMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

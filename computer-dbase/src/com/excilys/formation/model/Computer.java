@@ -37,6 +37,22 @@ public class Computer {
 			this.discontinued = dateOut;
 		}
 	}
+	
+	public Computer(int id,String name,LocalDate dateIn,LocalDate dateOut) {
+		this.id = id;
+		this.name = name;
+		if(dateIn.isBefore(dateOut)) {
+			this.introduced = dateIn;
+			this.discontinued = dateOut;
+		}
+	 }
+	
+	public Computer(int id,String name,int manufacturer) {
+		this.id = id;
+		this.name = name;
+		this.companyId = manufacturer;
+		
+	 }
 
 
 
@@ -122,8 +138,8 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", companyId=" + companyId + "]";
+		return "Computer [id=" + id + ", name= " + name + ", introduced= " + introduced + ", discontinued= " + discontinued
+				+ ", companyId= " + companyId + "]";
 	}
 	 
 	
