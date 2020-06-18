@@ -62,9 +62,15 @@ public class CLI {
 			case "3":
 				System.out.println("SHOW DETAILS");
 				System.out.println("Entrer the id of the computer :");
-				int show = scan.nextInt();
+				int show;
+				try {
+					show = scan.nextInt();
+				} catch (Exception e) {
+					show = scan.nextInt();
+				}
 				showDetails(show);
 				menu();
+				
 				choose = scan.next();
 				break;
 			case "4":
@@ -114,7 +120,7 @@ public class CLI {
 						
 						System.out.println(computers.findAllPages(i).get(j));
 					}
-					System.out.println("0 ou 1");
+					System.out.println("Enter 1 to see an other pages, 0 to end");
 					pages = scan.nextInt();
 					break;
 				case 0:
@@ -213,20 +219,45 @@ public class CLI {
 		String end = scan.next();
 		if(end.equals("yes")) {
 			System.out.println("Enter the year of discontinued date :");
-			int year = Integer.parseInt(scan.next());
+			int month;
+			int year;
+			int day;
+			try {
+				year = Integer.parseInt(scan.next());
+				
+			} catch (Exception e) {
+				System.out.println("Enter the year of discontuned date :");
+				year = Integer.parseInt(scan.next());
+			}
 			System.out.println("Enter the month of discontinued date : (ex : 06 for june)");
-			int month = Integer.parseInt(scan.next());
+			try {
+				 month = Integer.parseInt(scan.next());
+			} catch (Exception e) {
+				System.out.println(" Error Enter the month of discontinued date : (ex : 06 for june)");
+				month = Integer.parseInt(scan.next());
+			}
 			System.out.println("Enter the day of discontinued date :");
-			int day = Integer.parseInt(scan.next());
+			try {
+				day = Integer.parseInt(scan.next());
+			} catch (Exception e) {
+				System.out.println("Eroor Enter the day of discontinued date :");
+				day = Integer.parseInt(scan.next());
+			}
 			computer.setDateInt(LocalDate.of(year, month, day));
 			
 		}
 		System.out.println("Do you want to enter a company id ? ( yes or no )");
 		String company = scan.next();
 		if(company.equals("yes")) {
-			System.out.println("Enter the id of the company:");
-			int idCompany = Integer.parseInt(scan.next());
-			computer.setCompanyId(idCompany);
+			System.out.println("Enter the id of the company :");
+			int idCompany ;
+			try {
+				idCompany = Integer.parseInt(scan.next());
+				
+			} catch (Exception e) {
+				System.out.println(" Error Enter the id of the company :");
+				idCompany = Integer.parseInt(scan.next());
+			}
 			
 		}
 		computerD.create(computer);
@@ -236,7 +267,13 @@ public class CLI {
 	public void deleteComputer() {
 		ComputerDAO computer = new ComputerDAO(conn);
 		System.out.println("Enter the id of the computer you want to delete :");
-		int delete = Integer.parseInt(scan.next());
+		int delete;
+		try {
+			delete = Integer.parseInt(scan.next());
+		} catch (Exception e) {
+			System.out.println("Error Enter the id of the computer you want to delete :");
+			delete = Integer.parseInt(scan.next());
+		}
 		computer.delete(computer.find(delete));
 		
 		
@@ -246,46 +283,100 @@ public class CLI {
 		ComputerDAO computer = new ComputerDAO(conn);
 		
 		System.out.println("Enter the id of the computer that you want to update :");
-		int id = Integer.parseInt(scan.next());
+		int id;
+		try {
+			id = Integer.parseInt(scan.next());
+			
+		} catch (Exception e) {
+			System.out.println("Error Enter the id of the computer that you want to update :");
+			id = Integer.parseInt(scan.next());
+		}
 		Computer computerA = computer.find(id);
 		
-		System.out.println("Do you want to change the name ? ( yes or no )");
-		String bool = scan.next();
-		if(bool.equals("yes")) {
-			System.out.println("Enter the name : ");
-			String name = scan.next();
-			computerA.setName(name);
-		}
-		System.out.println("Do you want to change the company id ? ( yes or no )");
-		bool = scan.next();
-		if(bool.equals("yes")) {
-			System.out.println("Enter the company id: ");
-			int idCompany = Integer.parseInt(scan.next());
-			computerA.setCompanyId(idCompany);
-		}
-		System.out.println("Do you want to change the introduced date  ? ( yes or no )");
-		bool = scan.next();
-		if(bool.equals("yes")) {
-			System.out.println("Enter the year : ");
-			int year = Integer.parseInt(scan.next());
-			System.out.println("Enter the month  : (ex : 06 for june) ");
-			int month = Integer.parseInt(scan.next());
-			System.out.println("Enter the day : ");
-			int day = Integer.parseInt(scan.next());
-			computerA.setDateInt(LocalDate.of(year,month,day));
+		
+	
+		System.out.println("Entrer the name of the computer :");
+		String name = scan.next();
+		computerA.setName(name);
+		
+		System.out.println("Do you want to change the introduced date? ( yes or no )");
+		String start = scan.next();
+		if(start.equals("yes")) {
+			System.out.println("Enter the year of introduced date :");
+			int month;
+			int year;
+			int day;
+			try {
+				year = Integer.parseInt(scan.next());
+				
+			} catch (Exception e) {
+				System.out.println("Enter the year of introduced date :");
+				year = Integer.parseInt(scan.next());
+			}
+			System.out.println("Enter the month of introduced date : (ex : 06 for june)");
+			try {
+				 month = Integer.parseInt(scan.next());
+			} catch (Exception e) {
+				System.out.println(" Error Enter the month of introduced date : (ex : 06 for june)");
+				month = Integer.parseInt(scan.next());
+			}
+			System.out.println("Enter the day of introduced date :");
+			try {
+				day = Integer.parseInt(scan.next());
+			} catch (Exception e) {
+				System.out.println("Eroor Enter the day of introduced date :");
+				day = Integer.parseInt(scan.next());
+			}
+			
+			computerA.setDateInt(LocalDate.of(year, month, day));
+			
+			
 		}
 		System.out.println("Do you want to change the discontinued date? ( yes or no )");
-		bool = scan.next();
-		if(bool.equals("yes")) {
-			System.out.println("Enter the year : ");
-			int year = Integer.parseInt(scan.next());
-			System.out.println("Enter the month : ");
-			int month = Integer.parseInt(scan.next());
-			System.out.println("Enter the day  : ");
-			int day = Integer.parseInt(scan.next());
-			computerA.setDateDisc(LocalDate.of(year, month, day));
+		String end = scan.next();
+		if(end.equals("yes")) {
+			System.out.println("Enter the year of discontinued date :");
+			int month;
+			int year;
+			int day;
+			try {
+				year = Integer.parseInt(scan.next());
+				
+			} catch (Exception e) {
+				System.out.println("Enter the year of discontuned date :");
+				year = Integer.parseInt(scan.next());
+			}
+			System.out.println("Enter the month of discontinued date : (ex : 06 for june)");
+			try {
+				 month = Integer.parseInt(scan.next());
+			} catch (Exception e) {
+				System.out.println(" Error Enter the month of discontinued date : (ex : 06 for june)");
+				month = Integer.parseInt(scan.next());
+			}
+			System.out.println("Enter the day of discontinued date :");
+			try {
+				day = Integer.parseInt(scan.next());
+			} catch (Exception e) {
+				System.out.println("Eroor Enter the day of discontinued date :");
+				day = Integer.parseInt(scan.next());
+			}
+			computerA.setDateInt(LocalDate.of(year, month, day));
+			
 		}
-		
+		System.out.println("Do you want to change a company id ? ( yes or no )");
+		String company = scan.next();
+		if(company.equals("yes")) {
+			System.out.println("Enter the id of the company :");
+			int idCompany ;
+			try {
+				idCompany = Integer.parseInt(scan.next());
+				
+			} catch (Exception e) {
+				System.out.println("Error Enter the id of the company :");
+				idCompany = Integer.parseInt(scan.next());
+			}
+			
+		}
 		computer.update(computerA);
 		
 	}
