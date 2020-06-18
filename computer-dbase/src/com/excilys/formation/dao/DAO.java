@@ -1,6 +1,6 @@
 package com.excilys.formation.dao;
 
-import java.sql.Connection;
+
 import java.util.List;
 
 import com.excilys.formation.connect.ConnectDB;

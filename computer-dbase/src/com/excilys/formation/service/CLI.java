@@ -1,14 +1,14 @@
 package com.excilys.formation.service;
-import java.sql.SQLException;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
+
 import java.util.Scanner;
 
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.dao.CompanyDAO;
 import com.excilys.formation.dao.ComputerDAO;
-import com.excilys.formation.model.Company;
+
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
 
@@ -261,8 +261,42 @@ public class CLI {
 		
 	}
 	
-	public void addDate() {
+	public LocalDate addDate(Computer computer) {
 		
+		String start = scan.next();
+		if(start.equals("yes")) {
+			System.out.println("Enter the year of your date :");
+			int month;
+			int year;
+			int day;
+			try {
+				year = Integer.parseInt(scan.next());
+				
+			} catch (Exception e) {
+				System.out.println("Not the value we need");
+				year = Integer.parseInt(scan.next());
+				//e.printStackTrace();
+			}
+			System.out.println("Enter the month of your date : (ex : 06 for june)");
+			try {
+				 month = Integer.parseInt(scan.next());
+			} catch (Exception e) {
+				System.out.println("Not the value we need");
+				month = Integer.parseInt(scan.next());
+				//e.printStackTrace();
+			}
+			System.out.println("Enter the day of your date :");
+			try {
+				day = Integer.parseInt(scan.next());
+			} catch (Exception e) {
+				System.out.println("Not the value we need");
+				day = Integer.parseInt(scan.next());
+				//e.printStackTrace();
+			}
+			
+			return (LocalDate.of(year, month, day));
+		}
+		return null;
 	}
 	public void createComputer() {
 		ComputerDAO computerD = new ComputerDAO(conn);
@@ -282,77 +316,11 @@ public class CLI {
 		System.out.println("Entrer the name of the computer :");
 		String name = scan.next();
 		computer.setName(name);
+		System.out.println("Do you want to enter introduced date ? ( yes or no )");
+		computer.setDateInt(addDate(computer));
 		
-		System.out.println("Do you want to enter a production start date ? ( yes or no )");
-		String start = scan.next();
-		if(start.equals("yes")) {
-			System.out.println("Enter the year of introduced date :");
-			int month;
-			int year;
-			int day;
-			try {
-				year = Integer.parseInt(scan.next());
-				
-			} catch (Exception e) {
-				System.out.println("Not the value we need");
-				year = Integer.parseInt(scan.next());
-				//e.printStackTrace();
-			}
-			System.out.println("Enter the month of introduced date : (ex : 06 for june)");
-			try {
-				 month = Integer.parseInt(scan.next());
-			} catch (Exception e) {
-				System.out.println("Not the value we need");
-				month = Integer.parseInt(scan.next());
-				//e.printStackTrace();
-			}
-			System.out.println("Enter the day of introduced date :");
-			try {
-				day = Integer.parseInt(scan.next());
-			} catch (Exception e) {
-				System.out.println("Not the value we need");
-				day = Integer.parseInt(scan.next());
-				//e.printStackTrace();
-			}
-			
-			computer.setDateInt(LocalDate.of(year, month, day));
-			
-			
-		}
 		System.out.println("Do you want to enter a production end date ? ( yes or no )");
-		String end = scan.next();
-		if(end.equals("yes")) {
-			System.out.println("Enter the year of discontinued date :");
-			int month;
-			int year;
-			int day;
-			try {
-				year = Integer.parseInt(scan.next());
-				
-			} catch (Exception e) {
-				System.out.println("Not the value we need");
-				year = Integer.parseInt(scan.next());
-				//e.printStackTrace();
-			}
-			System.out.println("Enter the month of discontinued date : (ex : 06 for june)");
-			try {
-				 month = Integer.parseInt(scan.next());
-			} catch (Exception e) {
-				System.out.println("Not the value we need");
-				month = Integer.parseInt(scan.next());
-				//e.printStackTrace();
-			}
-			System.out.println("Enter the day of discontinued date :");
-			try {
-				day = Integer.parseInt(scan.next());
-			} catch (Exception e) {
-				System.out.println("Not the value we need");
-				day = Integer.parseInt(scan.next());
-				//e.printStackTrace();
-			}
-			computer.setDateInt(LocalDate.of(year, month, day));
-			
-		}
+		computer.setDateDisc(addDate(computer));
 		System.out.println("Do you want to enter a company id ? ( yes or no )");
 		String company = scan.next();
 		if(company.equals("yes")) {
@@ -360,6 +328,7 @@ public class CLI {
 			Integer idCompany ;
 			try {
 				idCompany = Integer.parseInt(scan.next());
+				computer.setCompanyId(idCompany);
 				
 			} catch (Exception e) {
 				System.out.println(" Error Enter the id of the company :");
@@ -486,6 +455,7 @@ public class CLI {
 			Integer idCompany ;
 			try {
 				idCompany = Integer.parseInt(scan.next());
+				computerA.setCompanyId(idCompany);
 				
 			} catch (Exception e) {
 				System.out.println("Error Enter the id of the company :");

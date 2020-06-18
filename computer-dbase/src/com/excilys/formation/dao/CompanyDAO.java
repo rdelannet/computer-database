@@ -1,7 +1,6 @@
 package com.excilys.formation.dao;
 
-import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,10 +76,8 @@ public class CompanyDAO extends DAO<Company>{
 		Company company = new Company();  
 
 	    try {
-	      ResultSet result = this.connect.getConnection().createStatement(
-	        ResultSet.TYPE_SCROLL_INSENSITIVE, 
-	        ResultSet.CONCUR_READ_ONLY
-	      ).executeQuery("SELECT * FROM company WHERE id = " + id);
+	      ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+	    		    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company WHERE id = " + id);
 	       company = CompanyMapper.resultToObject(result);     
 	    } catch (SQLException e) {
 	      e.printStackTrace();
@@ -93,9 +90,8 @@ public class CompanyDAO extends DAO<Company>{
 	public List<Company> findAll() {
 		List<Company> companies = new ArrayList<Company>();
 		try {
-			ResultSet result = this.connect.getConnection().createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company");
+			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company");
 			companies = CompanyMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -106,9 +102,8 @@ public class CompanyDAO extends DAO<Company>{
 		
 		Page page = new Page();
 		try {
-			ResultSet result = this.connect.getConnection().createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) as count FROM company");
+			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) as count FROM company");
 			if(result.first()) {
 				page.setMaxElem(result.getInt(1));
 			}
@@ -122,9 +117,8 @@ public class CompanyDAO extends DAO<Company>{
 	public List<Company> findAllPages(Page page) {
 		List<Company> companies = new ArrayList<Company>();
 		try {
-			ResultSet result = this.connect.getConnection().createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company LIMIT 10" +" OFFSET "+page.getNbPages());
+			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company LIMIT 10" +" OFFSET "+page.getNbPages());
 			companies = CompanyMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();

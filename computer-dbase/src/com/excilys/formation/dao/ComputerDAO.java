@@ -1,6 +1,6 @@
 package com.excilys.formation.dao;
 
-import java.sql.Connection;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,13 +10,13 @@ import java.util.List;
 
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.ComputerMapper;
-import com.excilys.formation.model.Company;
+
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
 
 public class ComputerDAO extends DAO<Computer>{
-	
-	
+	private String insert = "INSERT INTO computer(id,name) values (?,?)";
+	private String delete = "DELETE FROM computer WHERE id = ?";
 
 	public ComputerDAO(ConnectDB conn) {
 		super(conn);
@@ -24,8 +24,8 @@ public class ComputerDAO extends DAO<Computer>{
 	}
 
 	public boolean create(Computer computer)  {
-		String sql = "INSERT INTO computer(id,name) values (?,?)";
-		try(PreparedStatement statement = this.connect.getConnection().prepareStatement(sql)){
+		
+		try(PreparedStatement statement = this.connect.getConnection().prepareStatement(insert)){
 			statement.setInt(1, computer.getId());
 			statement.setString(2, computer.getName());
 			statement.executeUpdate();
@@ -45,8 +45,8 @@ public class ComputerDAO extends DAO<Computer>{
 	}
 
 	public boolean delete(Computer computer) {
-		String sql = "DELETE FROM computer WHERE id = ?";
-		try(PreparedStatement statement = this.connect.getConnection().prepareStatement(sql);) {
+		
+		try(PreparedStatement statement = this.connect.getConnection().prepareStatement(delete);) {
 			
 			
 			statement.setInt(1, computer.getId());
@@ -88,9 +88,8 @@ public class ComputerDAO extends DAO<Computer>{
 	public Computer find(int id) {
 		Computer computer = null;
 		try {
-			ResultSet result = this.connect.getConnection().createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer WHERE id = " + id);
+			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer WHERE id = " + id);
 			
 			computer = ComputerMapper.resultToObject(result);			
 				
@@ -106,9 +105,8 @@ public class ComputerDAO extends DAO<Computer>{
 		List<Computer> computers = null;
 		
 		try {
-			ResultSet result = this.connect.getConnection().createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer");
+			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer");
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -120,9 +118,8 @@ public class ComputerDAO extends DAO<Computer>{
 		
 		Page page = new Page();
 		try {
-			ResultSet result = this.connect.getConnection().createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) as count FROM computer");
+			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) as count FROM computer");
 			if(result.first()) {
 				page.setMaxElem(result.getInt(1));
 			}
@@ -137,9 +134,8 @@ public class ComputerDAO extends DAO<Computer>{
 		List<Computer> computers = new ArrayList<Computer>();
 		
 		try {
-			ResultSet result = this.connect.getConnection().createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT 10 OFFSET "+page.getNbPages());
+			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT 10 OFFSET "+page.getNbPages());
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
