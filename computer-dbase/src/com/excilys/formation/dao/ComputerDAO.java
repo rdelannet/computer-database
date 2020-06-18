@@ -16,18 +16,16 @@ import com.excilys.formation.pagination.Page;
 
 public class ComputerDAO extends DAO<Computer>{
 	
-	private ComputerMapper computerMapper;
+	
 
 	public ComputerDAO(ConnectDB conn) {
 		super(conn);
-		this.computerMapper = new ComputerMapper();
 		
 	}
 
 	public boolean create(Computer computer)  {
 		String sql = "INSERT INTO computer(id,name) values (?,?)";
-		try {
-			PreparedStatement statement = this.connect.getConnection().prepareStatement(sql);
+		try(PreparedStatement statement = this.connect.getConnection().prepareStatement(sql)){
 			statement.setInt(1, computer.getId());
 			statement.setString(2, computer.getName());
 			statement.executeUpdate();
@@ -47,9 +45,10 @@ public class ComputerDAO extends DAO<Computer>{
 	}
 
 	public boolean delete(Computer computer) {
-		try {
-			String sql = "DELETE FROM computer WHERE id = ?";
-			PreparedStatement statement = this.connect.getConnection().prepareStatement(sql);
+		String sql = "DELETE FROM computer WHERE id = ?";
+		try(PreparedStatement statement = this.connect.getConnection().prepareStatement(sql);) {
+			
+			
 			statement.setInt(1, computer.getId());
 			statement.executeUpdate();
 		}catch(SQLException eSQL) {
@@ -93,7 +92,7 @@ public class ComputerDAO extends DAO<Computer>{
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer WHERE id = " + id);
 			
-			computer = computerMapper.resultToObject(result);			
+			computer = ComputerMapper.resultToObject(result);			
 				
 			
 		}catch(SQLException e) {
@@ -110,7 +109,7 @@ public class ComputerDAO extends DAO<Computer>{
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer");
-			computers = computerMapper.resultToList(result);
+			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -123,7 +122,7 @@ public class ComputerDAO extends DAO<Computer>{
 		try {
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) FROM computer");
+					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) as count FROM computer");
 			if(result.first()) {
 				page.setMaxElem(result.getInt(1));
 			}
@@ -141,7 +140,7 @@ public class ComputerDAO extends DAO<Computer>{
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT 10 OFFSET "+page.getNbPages());
-			computers = computerMapper.resultToList(result);
+			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

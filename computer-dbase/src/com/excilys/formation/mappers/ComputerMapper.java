@@ -7,10 +7,10 @@ import java.util.List;
 
 import com.excilys.formation.model.Computer;
 
-public class ComputerMapper extends AbstractMapper<Computer>{
+public class ComputerMapper {
 
-	@Override
-	public Computer resultToObject(ResultSet result) throws SQLException {
+	
+	public static Computer resultToObject(ResultSet result) throws SQLException {
 		Computer computer = null;
 		
 		if(result.first()) {
@@ -29,8 +29,8 @@ public class ComputerMapper extends AbstractMapper<Computer>{
 		return computer;
 	}
 
-	@Override
-	public List<Computer> resultToList(ResultSet result) throws SQLException {
+	
+	public static List<Computer> resultToList(ResultSet result) throws SQLException {
 		List<Computer> computers = new ArrayList<Computer>();
 		while(result.next()) {
 			Computer computer = new Computer();

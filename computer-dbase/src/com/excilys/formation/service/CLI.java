@@ -107,21 +107,27 @@ public class CLI {
 	
 	public void showListComputers() {
 		ComputerDAO computers = new ComputerDAO(conn);
-		List<Computer> printComputer= new ArrayList<Computer>();
+		
 		System.out.println("---------List of all computers-----------");
 		System.out.println("Enter 1 to see an other pages, 0 to end");
 		int pages;
+		Page page = new Page();
+		page.setMaxElem(computers.findMaxElement());
+		
 		try {
 			pages = Integer.parseInt(scan.next());
 		} catch (Exception e) {
-			System.out.println("Error Enter 1 to see an other pages, 0 to end");
-			pages = Integer.parseInt(scan.next());
+			System.out.println("Not a number");
+			pages = 0;
+			//e.printStackTrace();
 		}
 		
-		int i = 0;
-		Page page = new Page();
-		while(pages != 0) {
-			
+		
+		
+		while(page.getNbPages() <= page.getMaxElem()) {
+			if(pages == 0){
+				return;
+			}
 			switch(pages) {
 				case 1:
 					
@@ -131,18 +137,49 @@ public class CLI {
 					}
 					
 					page.setNbPages(page.getNbPages()+10);
-					System.out.println("Enter 1 to see an other pages, 0 to end");
+					System.out.println("Enter 1 to see an other pages,2 to back and 0 to end");
 					try {
 						
 						pages = scan.nextInt();
 					} catch (Exception e) {
-						System.out.println("Error Enter 1 to see an other pages, 0 to end");
-						pages = scan.nextInt();
+						System.out.println("Not a number");
+						pages = 0;
+						//e.printStackTrace();
+						return;
 					}
 					
 					break;
 				case 0:
 					break;
+				case 2:
+					for(int j = 0; j < computers.findAllPages(page).size();j++) {
+						System.out.println(computers.findAllPages(page).get(j));
+					}
+					if(page.getNbPages()>= 10) {
+						page.setNbPages(page.getNbPages()-10);
+					}
+					else {
+						System.out.println("End of the list");
+						pages = 1;
+						break;
+					}
+					
+					try {
+						System.out.println("Enter 1 to see an other pages,2 to back and  0 to end");
+						pages = scan.nextInt();
+					} catch (Exception e) {
+						
+						System.out.println("Not a number");
+						pages = 0;
+						//e.printStackTrace();
+						return;
+					}
+					break;
+				default :
+					System.out.println("Wrong input. Enter a good one");
+					pages = scan.nextInt();
+					break;
+					
 				
 			}
 		}
@@ -150,19 +187,24 @@ public class CLI {
 	}
 	public void showListCompanies() {
 		CompanyDAO companies = new CompanyDAO(conn);
-		List<Company> printCompanies = new ArrayList<Company>();
+		
 		System.out.println("---------List of all companies-----------");
 		System.out.println("Enter 1 to see an other pages, 0 to end");
 		int pages;
 		try {
 			pages = Integer.parseInt(scan.next());
 		} catch (Exception e) {
-			System.out.println("Error Enter 1 to see an other pages, 0 to end");
-			pages = Integer.parseInt(scan.next());
+			System.out.println("Not a number");
+			pages = 0;
+			
 		}
 		Page page = new Page();
-		while(pages != 0) {
+		page.setMaxElem(companies.findMaxElement());
+		while(page.getNbPages() <= page.getMaxElem()) {
 			
+			if(pages == 0){
+				return;
+			}
 			switch(pages) {
 				case 1:
 					
@@ -171,16 +213,41 @@ public class CLI {
 					}
 					page.setNbPages(page.getNbPages()+10);
 					try {
-						System.out.println("Enter 1 to see an other pages, 0 to end");
+						System.out.println("Enter 1 to see an other pages,2 to back and 0 to end");
 						pages = scan.nextInt();
 					} catch (Exception e) {
 						
-						System.out.println(" Error Enter 1 to see an other pages, 0 to end");
-						pages = scan.nextInt();
+						System.out.println("Not a number");
+						pages = 0;
+						//e.printStackTrace();
+						return;
 					}
 					break;
 				case 0:
 					break;
+				case 2:
+					for(int j = 0; j < companies.findAllPages(page).size();j++) {
+						System.out.println(companies.findAllPages(page).get(j));
+					}
+					if(page.getNbPages()>= 10) {
+						page.setNbPages(page.getNbPages()-10);
+					}
+					try {
+						System.out.println("Enter 1 to see an other pages,2 to back and  0 to end");
+						pages = scan.nextInt();
+					} catch (Exception e) {
+						
+						System.out.println("Not a number");
+						pages = 0;
+						//e.printStackTrace();
+						return;
+					}
+					break;
+				default :
+					System.out.println("Wrong input. Enter a good one");
+					pages = scan.nextInt();
+					return;
+					
 				
 			}
 		}
@@ -191,6 +258,10 @@ public class CLI {
 	public void showDetails(int i) {
 		ComputerDAO computer = new ComputerDAO(conn);
 		System.out.println(computer.find(i));
+		
+	}
+	
+	public void addDate() {
 		
 	}
 	public void createComputer() {
@@ -204,9 +275,8 @@ public class CLI {
 			computer.setId(Integer.parseInt(id));
 			
 		} catch (Exception e) {
-			System.out.println("Error Entrer the id of the computer :");
-			String id = scan.next();
-			computer.setId(Integer.parseInt(id));
+			System.out.println("Not a number");
+			//e.printStackTrace();
 		}
 		
 		System.out.println("Entrer the name of the computer :");
@@ -224,22 +294,25 @@ public class CLI {
 				year = Integer.parseInt(scan.next());
 				
 			} catch (Exception e) {
-				System.out.println("Enter the year of introduced date :");
+				System.out.println("Not the value we need");
 				year = Integer.parseInt(scan.next());
+				//e.printStackTrace();
 			}
 			System.out.println("Enter the month of introduced date : (ex : 06 for june)");
 			try {
 				 month = Integer.parseInt(scan.next());
 			} catch (Exception e) {
-				System.out.println(" Error Enter the month of introduced date : (ex : 06 for june)");
+				System.out.println("Not the value we need");
 				month = Integer.parseInt(scan.next());
+				//e.printStackTrace();
 			}
 			System.out.println("Enter the day of introduced date :");
 			try {
 				day = Integer.parseInt(scan.next());
 			} catch (Exception e) {
-				System.out.println("Eroor Enter the day of introduced date :");
+				System.out.println("Not the value we need");
 				day = Integer.parseInt(scan.next());
+				//e.printStackTrace();
 			}
 			
 			computer.setDateInt(LocalDate.of(year, month, day));
@@ -257,22 +330,25 @@ public class CLI {
 				year = Integer.parseInt(scan.next());
 				
 			} catch (Exception e) {
-				System.out.println("Enter the year of discontuned date :");
+				System.out.println("Not the value we need");
 				year = Integer.parseInt(scan.next());
+				//e.printStackTrace();
 			}
 			System.out.println("Enter the month of discontinued date : (ex : 06 for june)");
 			try {
 				 month = Integer.parseInt(scan.next());
 			} catch (Exception e) {
-				System.out.println(" Error Enter the month of discontinued date : (ex : 06 for june)");
+				System.out.println("Not the value we need");
 				month = Integer.parseInt(scan.next());
+				//e.printStackTrace();
 			}
 			System.out.println("Enter the day of discontinued date :");
 			try {
 				day = Integer.parseInt(scan.next());
 			} catch (Exception e) {
-				System.out.println("Eroor Enter the day of discontinued date :");
+				System.out.println("Not the value we need");
 				day = Integer.parseInt(scan.next());
+				//e.printStackTrace();
 			}
 			computer.setDateInt(LocalDate.of(year, month, day));
 			
@@ -281,13 +357,14 @@ public class CLI {
 		String company = scan.next();
 		if(company.equals("yes")) {
 			System.out.println("Enter the id of the company :");
-			int idCompany ;
+			Integer idCompany ;
 			try {
 				idCompany = Integer.parseInt(scan.next());
 				
 			} catch (Exception e) {
 				System.out.println(" Error Enter the id of the company :");
-				idCompany = Integer.parseInt(scan.next());
+				idCompany = null;
+				//e.printStackTrace();
 			}
 			
 		}
@@ -298,12 +375,13 @@ public class CLI {
 	public void deleteComputer() {
 		ComputerDAO computer = new ComputerDAO(conn);
 		System.out.println("Enter the id of the computer you want to delete :");
-		int delete;
+		Integer delete;
 		try {
 			delete = Integer.parseInt(scan.next());
 		} catch (Exception e) {
 			System.out.println("Error Enter the id of the computer you want to delete :");
-			delete = Integer.parseInt(scan.next());
+			delete = null;
+			//e.printStackTrace();
 		}
 		computer.delete(computer.find(delete));
 		
@@ -314,13 +392,14 @@ public class CLI {
 		ComputerDAO computer = new ComputerDAO(conn);
 		
 		System.out.println("Enter the id of the computer that you want to update :");
-		int id;
+		Integer id;
 		try {
 			id = Integer.parseInt(scan.next());
 			
 		} catch (Exception e) {
 			System.out.println("Error Enter the id of the computer that you want to update :");
-			id = Integer.parseInt(scan.next());
+			id = null;
+			//e.printStackTrace();
 		}
 		Computer computerA = computer.find(id);
 		
@@ -334,29 +413,32 @@ public class CLI {
 		String start = scan.next();
 		if(start.equals("yes")) {
 			System.out.println("Enter the year of introduced date :");
-			int month;
-			int year;
-			int day;
+			Integer month;
+			Integer year;
+			Integer day;
 			try {
 				year = Integer.parseInt(scan.next());
 				
 			} catch (Exception e) {
 				System.out.println("Enter the year of introduced date :");
 				year = Integer.parseInt(scan.next());
+				//e.printStackTrace();
 			}
 			System.out.println("Enter the month of introduced date : (ex : 06 for june)");
 			try {
 				 month = Integer.parseInt(scan.next());
 			} catch (Exception e) {
 				System.out.println(" Error Enter the month of introduced date : (ex : 06 for june)");
-				month = Integer.parseInt(scan.next());
+				month = null;
+				//e.printStackTrace();
 			}
 			System.out.println("Enter the day of introduced date :");
 			try {
 				day = Integer.parseInt(scan.next());
 			} catch (Exception e) {
 				System.out.println("Eroor Enter the day of introduced date :");
-				day = Integer.parseInt(scan.next());
+				day = null;
+				//e.printStackTrace();
 			}
 			
 			computerA.setDateInt(LocalDate.of(year, month, day));
@@ -367,29 +449,32 @@ public class CLI {
 		String end = scan.next();
 		if(end.equals("yes")) {
 			System.out.println("Enter the year of discontinued date :");
-			int month;
-			int year;
-			int day;
+			Integer month;
+			Integer year;
+			Integer day;
 			try {
 				year = Integer.parseInt(scan.next());
 				
 			} catch (Exception e) {
 				System.out.println("Enter the year of discontuned date :");
-				year = Integer.parseInt(scan.next());
+				year = null;
+				//e.printStackTrace();
 			}
 			System.out.println("Enter the month of discontinued date : (ex : 06 for june)");
 			try {
 				 month = Integer.parseInt(scan.next());
 			} catch (Exception e) {
 				System.out.println(" Error Enter the month of discontinued date : (ex : 06 for june)");
-				month = Integer.parseInt(scan.next());
+				month = null;
+				//e.printStackTrace();
 			}
 			System.out.println("Enter the day of discontinued date :");
 			try {
 				day = Integer.parseInt(scan.next());
 			} catch (Exception e) {
 				System.out.println("Eroor Enter the day of discontinued date :");
-				day = Integer.parseInt(scan.next());
+				day = null;
+				//e.printStackTrace();
 			}
 			computerA.setDateInt(LocalDate.of(year, month, day));
 			
@@ -398,13 +483,14 @@ public class CLI {
 		String company = scan.next();
 		if(company.equals("yes")) {
 			System.out.println("Enter the id of the company :");
-			int idCompany ;
+			Integer idCompany ;
 			try {
 				idCompany = Integer.parseInt(scan.next());
 				
 			} catch (Exception e) {
 				System.out.println("Error Enter the id of the company :");
-				idCompany = Integer.parseInt(scan.next());
+				idCompany = null;
+				//e.printStackTrace();
 			}
 			
 		}

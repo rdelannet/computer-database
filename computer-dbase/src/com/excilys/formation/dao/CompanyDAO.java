@@ -16,11 +16,11 @@ import com.excilys.formation.pagination.Page;
 
 public class CompanyDAO extends DAO<Company>{
 	
-	private CompanyMapper companyMapper;
+	
 
 	public CompanyDAO(ConnectDB conn) {
 		super(conn);
-		this.companyMapper = new CompanyMapper();
+		
 	}
 
 	
@@ -62,7 +62,7 @@ public class CompanyDAO extends DAO<Company>{
 			statement.setInt(1,company.getId());
 			statement.setString(2,company.getName());
 			statement.setInt(3,company.getId());
-			statement.executeUpdate();
+			//statement.executeUpdate();
 			
 			
 		} catch (Exception e) {
@@ -81,7 +81,7 @@ public class CompanyDAO extends DAO<Company>{
 	        ResultSet.TYPE_SCROLL_INSENSITIVE, 
 	        ResultSet.CONCUR_READ_ONLY
 	      ).executeQuery("SELECT * FROM company WHERE id = " + id);
-	       company = companyMapper.resultToObject(result);     
+	       company = CompanyMapper.resultToObject(result);     
 	    } catch (SQLException e) {
 	      e.printStackTrace();
 	    }
@@ -95,12 +95,28 @@ public class CompanyDAO extends DAO<Company>{
 		try {
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer");
-			companies = companyMapper.resultToList(result);
+					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company");
+			companies = CompanyMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return companies;
+	}
+	public int findMaxElement() {
+		
+		Page page = new Page();
+		try {
+			ResultSet result = this.connect.getConnection().createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) as count FROM company");
+			if(result.first()) {
+				page.setMaxElem(result.getInt(1));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return page.getMaxElem();
 	}
 	
 	public List<Company> findAllPages(Page page) {
@@ -109,7 +125,7 @@ public class CompanyDAO extends DAO<Company>{
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company LIMIT 10" +" OFFSET "+page.getNbPages());
-			companies = companyMapper.resultToList(result);
+			companies = CompanyMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
