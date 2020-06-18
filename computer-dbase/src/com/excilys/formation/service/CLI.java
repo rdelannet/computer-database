@@ -10,6 +10,7 @@ import com.excilys.formation.dao.CompanyDAO;
 import com.excilys.formation.dao.ComputerDAO;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
+import com.excilys.formation.pagination.Page;
 
 public class CLI {
 	
@@ -109,19 +110,36 @@ public class CLI {
 		List<Computer> printComputer= new ArrayList<Computer>();
 		System.out.println("---------List of all computers-----------");
 		System.out.println("Enter 1 to see an other pages, 0 to end");
-		int pages = scan.nextInt();
+		int pages;
+		try {
+			pages = Integer.parseInt(scan.next());
+		} catch (Exception e) {
+			System.out.println("Error Enter 1 to see an other pages, 0 to end");
+			pages = Integer.parseInt(scan.next());
+		}
+		
 		int i = 0;
+		Page page = new Page();
 		while(pages != 0) {
 			
 			switch(pages) {
 				case 1:
-					i += 10;
-					for(int j = 0; j < computers.findAllPages(i).size();j++) {
+					
+					for(int j = 0; j < computers.findAllPages(page).size();j++) {
 						
-						System.out.println(computers.findAllPages(i).get(j));
+						System.out.println(computers.findAllPages(page).get(j));
 					}
+					
+					page.setNbPages(page.getNbPages()+10);
 					System.out.println("Enter 1 to see an other pages, 0 to end");
-					pages = scan.nextInt();
+					try {
+						
+						pages = scan.nextInt();
+					} catch (Exception e) {
+						System.out.println("Error Enter 1 to see an other pages, 0 to end");
+						pages = scan.nextInt();
+					}
+					
 					break;
 				case 0:
 					break;
@@ -135,18 +153,31 @@ public class CLI {
 		List<Company> printCompanies = new ArrayList<Company>();
 		System.out.println("---------List of all companies-----------");
 		System.out.println("Enter 1 to see an other pages, 0 to end");
-		int pages = scan.nextInt();
-		int i = 0;
+		int pages;
+		try {
+			pages = Integer.parseInt(scan.next());
+		} catch (Exception e) {
+			System.out.println("Error Enter 1 to see an other pages, 0 to end");
+			pages = Integer.parseInt(scan.next());
+		}
+		Page page = new Page();
 		while(pages != 0) {
 			
 			switch(pages) {
 				case 1:
-					i += 10;
-					for(int j = 0; j < companies.findAllPages(i).size();j++) {
-						System.out.println(companies.findAllPages(i).get(j));
+					
+					for(int j = 0; j < companies.findAllPages(page).size();j++) {
+						System.out.println(companies.findAllPages(page).get(j));
 					}
-					System.out.println("Enter 1 to see an other pages, 0 to end");
-					pages = scan.nextInt();
+					page.setNbPages(page.getNbPages()+10);
+					try {
+						System.out.println("Enter 1 to see an other pages, 0 to end");
+						pages = scan.nextInt();
+					} catch (Exception e) {
+						
+						System.out.println(" Error Enter 1 to see an other pages, 0 to end");
+						pages = scan.nextInt();
+					}
 					break;
 				case 0:
 					break;

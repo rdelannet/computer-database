@@ -12,6 +12,7 @@ import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.ComputerMapper;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
+import com.excilys.formation.pagination.Page;
 
 public class ComputerDAO extends DAO<Computer>{
 	
@@ -116,12 +117,30 @@ public class ComputerDAO extends DAO<Computer>{
 		return computers;
 	}
 	
-	public List<Computer> findAllPages(int i) {
-		List<Computer> computers = new ArrayList<Computer>();
+	public int findMaxElement() {
+		
+		Page page = new Page();
 		try {
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT 10 OFFSET "+i);
+					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) FROM computer");
+			if(result.first()) {
+				page.setMaxElem(result.getInt(1));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return page.getMaxElem();
+	}
+	
+	public List<Computer> findAllPages(Page page) {
+		List<Computer> computers = new ArrayList<Computer>();
+		
+		try {
+			ResultSet result = this.connect.getConnection().createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT 10 OFFSET "+page.getNbPages());
 			computers = computerMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();

@@ -11,6 +11,7 @@ import java.util.List;
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.CompanyMapper;
 import com.excilys.formation.model.Company;
+import com.excilys.formation.pagination.Page;
 
 
 public class CompanyDAO extends DAO<Company>{
@@ -102,12 +103,12 @@ public class CompanyDAO extends DAO<Company>{
 		return companies;
 	}
 	
-	public List<Company> findAllPages(int i) {
+	public List<Company> findAllPages(Page page) {
 		List<Company> companies = new ArrayList<Company>();
 		try {
 			ResultSet result = this.connect.getConnection().createStatement(
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT 10" +" OFFSET "+i);
+					ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company LIMIT 10" +" OFFSET "+page.getNbPages());
 			companies = companyMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
