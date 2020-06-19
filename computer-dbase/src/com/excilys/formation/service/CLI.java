@@ -378,76 +378,12 @@ public class CLI {
 		String name = scan.next();
 		computerA.setName(name);
 		
-		System.out.println("Do you want to change the introduced date? ( yes or no )");
-		String start = scan.next();
-		if(start.equals("yes")) {
-			System.out.println("Enter the year of introduced date :");
-			Integer month;
-			Integer year;
-			Integer day;
-			try {
-				year = Integer.parseInt(scan.next());
-				
-			} catch (Exception e) {
-				System.out.println("Enter the year of introduced date :");
-				year = Integer.parseInt(scan.next());
-				//e.printStackTrace();
-			}
-			System.out.println("Enter the month of introduced date : (ex : 06 for june)");
-			try {
-				 month = Integer.parseInt(scan.next());
-			} catch (Exception e) {
-				System.out.println(" Error Enter the month of introduced date : (ex : 06 for june)");
-				month = null;
-				//e.printStackTrace();
-			}
-			System.out.println("Enter the day of introduced date :");
-			try {
-				day = Integer.parseInt(scan.next());
-			} catch (Exception e) {
-				System.out.println("Eroor Enter the day of introduced date :");
-				day = null;
-				//e.printStackTrace();
-			}
+		System.out.println("Do you want to enter introduced date ? ( yes or no )");
+		computerA.setDateInt(addDate(computerA));
+		
+		System.out.println("Do you want to enter a production end date ? ( yes or no )");
+		computerA.setDateDisc(addDate(computerA));
 			
-			computerA.setDateInt(LocalDate.of(year, month, day));
-			
-			
-		}
-		System.out.println("Do you want to change the discontinued date? ( yes or no )");
-		String end = scan.next();
-		if(end.equals("yes")) {
-			System.out.println("Enter the year of discontinued date :");
-			Integer month;
-			Integer year;
-			Integer day;
-			try {
-				year = Integer.parseInt(scan.next());
-				
-			} catch (Exception e) {
-				System.out.println("Enter the year of discontuned date :");
-				year = null;
-				//e.printStackTrace();
-			}
-			System.out.println("Enter the month of discontinued date : (ex : 06 for june)");
-			try {
-				 month = Integer.parseInt(scan.next());
-			} catch (Exception e) {
-				System.out.println(" Error Enter the month of discontinued date : (ex : 06 for june)");
-				month = null;
-				//e.printStackTrace();
-			}
-			System.out.println("Enter the day of discontinued date :");
-			try {
-				day = Integer.parseInt(scan.next());
-			} catch (Exception e) {
-				System.out.println("Eroor Enter the day of discontinued date :");
-				day = null;
-				//e.printStackTrace();
-			}
-			computerA.setDateInt(LocalDate.of(year, month, day));
-			
-		}
 		System.out.println("Do you want to change a company id ? ( yes or no )");
 		String company = scan.next();
 		if(company.equals("yes")) {
