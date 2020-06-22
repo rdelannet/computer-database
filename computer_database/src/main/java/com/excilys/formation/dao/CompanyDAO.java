@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.CompanyMapper;
 import com.excilys.formation.model.Company;
@@ -15,7 +18,7 @@ import com.excilys.formation.pagination.Page;
 
 public class CompanyDAO extends DAO<Company>{
 	
-	
+	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	public CompanyDAO(ConnectDB conn) {
 		super(conn);
@@ -32,6 +35,7 @@ public class CompanyDAO extends DAO<Company>{
 			//statement.executeUpdate();
 
 		} catch (SQLException e) {
+			logger.error("Error create Company");
 			e.printStackTrace();
 			return false;
 		}
@@ -47,6 +51,7 @@ public class CompanyDAO extends DAO<Company>{
 			statement.setInt(1,company.getId());
 			//statement.executeUpdate();
 		} catch (Exception e) {
+			logger.error("Error delete Company");
 			e.printStackTrace();
 			return false;
 		}
@@ -65,6 +70,7 @@ public class CompanyDAO extends DAO<Company>{
 			
 			
 		} catch (Exception e) {
+			logger.error("Error update Company");
 			e.printStackTrace();
 			return false;
 		}
@@ -80,6 +86,7 @@ public class CompanyDAO extends DAO<Company>{
 	    		    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company WHERE id = " + id);
 	       company = CompanyMapper.resultToObject(result);     
 	    } catch (SQLException e) {
+	    	logger.error("Error find Company");
 	      e.printStackTrace();
 	    }
 	    return company;
@@ -94,6 +101,7 @@ public class CompanyDAO extends DAO<Company>{
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company");
 			companies = CompanyMapper.resultToList(result);
 		}catch(SQLException e) {
+			logger.error("Error find all Company");
 			e.printStackTrace();
 		}
 		return companies;
@@ -109,6 +117,7 @@ public class CompanyDAO extends DAO<Company>{
 			}
 			
 		}catch(SQLException e) {
+			logger.error("Error find max Company");
 			e.printStackTrace();
 		}
 		return page.getMaxElem();
@@ -121,6 +130,7 @@ public class CompanyDAO extends DAO<Company>{
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company LIMIT 10" +" OFFSET "+page.getNbPages());
 			companies = CompanyMapper.resultToList(result);
 		}catch(SQLException e) {
+			logger.error("Error find all pages Company");
 			e.printStackTrace();
 		}
 		return companies;

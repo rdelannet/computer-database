@@ -8,16 +8,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.ComputerMapper;
 
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
 
+
+
 public class ComputerDAO extends DAO<Computer>{
 	private String insert = "INSERT INTO computer(id,name) values (?,?)";
 	private String delete = "DELETE FROM computer WHERE id = ?";
-
+	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	public ComputerDAO(ConnectDB conn) {
 		super(conn);
 		
@@ -36,8 +41,8 @@ public class ComputerDAO extends DAO<Computer>{
 			computer = this.find(computerId);
 					
 		}catch(SQLException eSQL) {
-			System.out.println("Error Created Computer");
-			System.out.println(eSQL.getMessage());
+			logger.error("Error Created Computer");
+			eSQL.getMessage();
 			eSQL.printStackTrace();
 			return false;
 		}
@@ -52,7 +57,7 @@ public class ComputerDAO extends DAO<Computer>{
 			statement.setInt(1, computer.getId());
 			statement.executeUpdate();
 		}catch(SQLException eSQL) {
-			System.out.println("Error Delete Computer");
+			logger.error("Error Delete Computer");
 			eSQL.printStackTrace();
 			return false;
 		}
@@ -79,6 +84,7 @@ public class ComputerDAO extends DAO<Computer>{
 			computer = this.find(computer.getId());
 			
 		} catch (Exception e) {
+			logger.error("Error update Computer");
 			e.printStackTrace();
 			return false;
 		}
@@ -88,6 +94,7 @@ public class ComputerDAO extends DAO<Computer>{
 	public Computer find(int id) {
 		Computer computer = null;
 		try {
+			
 			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer WHERE id = " + id);
 			
@@ -95,6 +102,7 @@ public class ComputerDAO extends DAO<Computer>{
 				
 			
 		}catch(SQLException e) {
+			logger.error("Error find Computer");
 			e.printStackTrace();
 		}
 		return computer;
@@ -125,6 +133,7 @@ public class ComputerDAO extends DAO<Computer>{
 			}
 			
 		}catch(SQLException e) {
+			logger.error("Error find max Computer");
 			e.printStackTrace();
 		}
 		return page.getMaxElem();
@@ -138,6 +147,7 @@ public class ComputerDAO extends DAO<Computer>{
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT 10 OFFSET "+page.getNbPages());
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
+			logger.error("Error fidnd all pages Computer");
 			e.printStackTrace();
 		}
 		return computers;

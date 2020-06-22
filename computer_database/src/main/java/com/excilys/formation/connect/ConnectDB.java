@@ -2,6 +2,11 @@ package com.excilys.formation.connect;
 
 import java.sql.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.formation.dao.ComputerDAO;
+
 
 
 public class ConnectDB {
@@ -11,6 +16,7 @@ public class ConnectDB {
 	private String url = "jdbc:mysql://localhost/computer-database-db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private String username = "admincdb";
     private String password = "qwerty1234";
+    private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	public ConnectDB() throws SQLException {
 		try {
@@ -22,6 +28,7 @@ public class ConnectDB {
             System.out.println("Database Connection Creation Failed : " + ex.getMessage());
         }
 		catch(SQLException s) {
+			logger.error("Error connect");
 			s.printStackTrace();
 		}
 	}
@@ -39,6 +46,7 @@ public class ConnectDB {
 		}
 		return instance;
 	}
+	 
 		
 		
 		
