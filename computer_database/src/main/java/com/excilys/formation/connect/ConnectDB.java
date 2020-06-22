@@ -17,8 +17,7 @@ public class ConnectDB {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             this.connect = DriverManager.getConnection(url, username, password);
-            System.out.println("hhl");
-           
+
         } catch (ClassNotFoundException ex) {
             System.out.println("Database Connection Creation Failed : " + ex.getMessage());
         }
