@@ -1,15 +1,16 @@
 package com.excilys.formation.dao;
 
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.excilys.formation.connect.ConnectDB;
 
 public  abstract class DAO<T> {
 	
-	protected ConnectDB connect = null;
+	protected Connection connect = null;
 	
-	public DAO(ConnectDB conn) {
+	public DAO(Connection conn) {
 		this.connect = conn;
 	}
 	

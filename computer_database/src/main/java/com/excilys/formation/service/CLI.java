@@ -106,7 +106,7 @@ public class CLI {
 	}
 	
 	public void showListComputers() {
-		ComputerDAO computers = new ComputerDAO(conn);
+		ComputerDAO computers = new ComputerDAO(conn.getConnection());
 		
 		System.out.println("---------List of all computers-----------");
 		System.out.println("Enter 1 to see an other pages, 0 to end");
@@ -186,7 +186,7 @@ public class CLI {
 		
 	}
 	public void showListCompanies() {
-		CompanyDAO companies = new CompanyDAO(conn);
+		CompanyDAO companies = new CompanyDAO(conn.getConnection());
 		
 		System.out.println("---------List of all companies-----------");
 		System.out.println("Enter 1 to see an other pages, 0 to end");
@@ -256,7 +256,7 @@ public class CLI {
 	}
 	
 	public void showDetails(int i) {
-		ComputerDAO computer = new ComputerDAO(conn);
+		ComputerDAO computer = new ComputerDAO(conn.getConnection());
 		System.out.println(computer.find(i));
 		
 	}
@@ -299,7 +299,7 @@ public class CLI {
 		return null;
 	}
 	public void createComputer() {
-		ComputerDAO computerD = new ComputerDAO(conn);
+		ComputerDAO computerD = new ComputerDAO(conn.getConnection());
 		Computer computer = new Computer();
 		
 		System.out.println("Entrer the id of the computer :");
@@ -342,7 +342,7 @@ public class CLI {
 	}
 	
 	public void deleteComputer() {
-		ComputerDAO computer = new ComputerDAO(conn);
+		ComputerDAO computer = new ComputerDAO(conn.getConnection());
 		System.out.println("Enter the id of the computer you want to delete :");
 		Integer delete;
 		try {
@@ -358,7 +358,7 @@ public class CLI {
 	}
 	
 	public void updateComputer() {
-		ComputerDAO computer = new ComputerDAO(conn);
+		ComputerDAO computer = new ComputerDAO(conn.getConnection());
 		
 		System.out.println("Enter the id of the computer that you want to update :");
 		Integer id;

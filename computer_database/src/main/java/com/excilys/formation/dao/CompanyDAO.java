@@ -1,6 +1,7 @@
 package com.excilys.formation.dao;
 
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +21,7 @@ public class CompanyDAO extends DAO<Company>{
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
-	public CompanyDAO(ConnectDB conn) {
+	public CompanyDAO(Connection conn) {
 		super(conn);
 		
 	}
@@ -29,7 +30,7 @@ public class CompanyDAO extends DAO<Company>{
 	public boolean create(Company company) {
 		String sql = "INSERT INTO company(id,name) values (?,?)";
 		try {
-			PreparedStatement statement = this.connect.getConnection().prepareStatement(sql);
+			PreparedStatement statement = this.connect.prepareStatement(sql);
 			statement.setInt(1,company.getId());
 			statement.setString(2,company.getName());
 			//statement.executeUpdate();
@@ -47,7 +48,7 @@ public class CompanyDAO extends DAO<Company>{
 	public boolean delete(Company company) {
 		String sql = "DELETE FROM company WHERE id = ?";
 		try {
-			PreparedStatement statement = this.connect.getConnection().prepareStatement(sql);
+			PreparedStatement statement = this.connect.prepareStatement(sql);
 			statement.setInt(1,company.getId());
 			//statement.executeUpdate();
 		} catch (Exception e) {
@@ -62,7 +63,7 @@ public class CompanyDAO extends DAO<Company>{
 	public boolean update(Company company) {
 		String sql = "UPDATE company SET id = ?, name = ? WHERE id = ?";
 		try {
-			PreparedStatement statement = this.connect.getConnection().prepareStatement(sql);
+			PreparedStatement statement = this.connect.prepareStatement(sql);
 			statement.setInt(1,company.getId());
 			statement.setString(2,company.getName());
 			statement.setInt(3,company.getId());
@@ -82,7 +83,7 @@ public class CompanyDAO extends DAO<Company>{
 		Company company = new Company();  
 
 	    try {
-	      ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+	      ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 	    		    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company WHERE id = " + id);
 	       company = CompanyMapper.resultToObject(result);     
 	    } catch (SQLException e) {
@@ -97,7 +98,7 @@ public class CompanyDAO extends DAO<Company>{
 	public List<Company> findAll() {
 		List<Company> companies = new ArrayList<Company>();
 		try {
-			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company");
 			companies = CompanyMapper.resultToList(result);
 		}catch(SQLException e) {
@@ -110,7 +111,7 @@ public class CompanyDAO extends DAO<Company>{
 		
 		Page page = new Page();
 		try {
-			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) as count FROM company");
 			if(result.first()) {
 				page.setMaxElem(result.getInt(1));
@@ -126,7 +127,7 @@ public class CompanyDAO extends DAO<Company>{
 	public List<Company> findAllPages(Page page) {
 		List<Company> companies = new ArrayList<Company>();
 		try {
-			ResultSet result = this.connect.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company LIMIT 10" +" OFFSET "+page.getNbPages());
 			companies = CompanyMapper.resultToList(result);
 		}catch(SQLException e) {

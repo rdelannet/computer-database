@@ -25,7 +25,21 @@ public class ConnectDB {
             this.connect = DriverManager.getConnection(url, username, password);
 
         } catch (ClassNotFoundException ex) {
-            System.out.println("Database Connection Creation Failed : " + ex.getMessage());
+            logger.error("Database Connection Creation Failed : " + ex.getMessage());
+        }
+		catch(SQLException s) {
+			logger.error("Error connect");
+			s.printStackTrace();
+		}
+	}
+	public ConnectDB(String urlt,String usernamet,String passwordt)throws SQLException{
+		try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            this.connect = DriverManager.getConnection(urlt, usernamet, passwordt);
+
+        } catch (ClassNotFoundException ex) {
+            logger.error("Database Connection Creation Failed : " + ex.getMessage());
         }
 		catch(SQLException s) {
 			logger.error("Error connect");
@@ -37,11 +51,10 @@ public class ConnectDB {
 		
 		return connect;
 	}
+
 	
 	public final static ConnectDB getInstance() throws SQLException {
-		if(instance == null) {
-			instance = new ConnectDB();
-		}else if( instance.getConnection().isClosed()) {
+		if(instance == null && instance.getConnection().isClosed()) {
 			instance = new ConnectDB();
 		}
 		return instance;

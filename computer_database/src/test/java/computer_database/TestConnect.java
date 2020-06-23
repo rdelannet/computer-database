@@ -18,7 +18,7 @@ import com.excilys.formation.connect.ConnectDB;
 
 public class TestConnect {
 
-	@InjectMocks private ConnectDB dbConnection;
+	  @InjectMocks private ConnectDB dbConnection;
 	  @Mock private Connection mockConnection;
 	  @Mock private Statement mockStatement;
 	 
@@ -31,7 +31,6 @@ public class TestConnect {
 	  public void testMockDBConnection() throws Exception {
 	    Mockito.when(mockConnection.createStatement()).thenReturn(mockStatement);
 	    Mockito.when(mockConnection.createStatement().executeUpdate(Mockito.any())).thenReturn(1);
-	    
 	    Mockito.verify(mockConnection.createStatement(), Mockito.times(1));
 	  }
 
