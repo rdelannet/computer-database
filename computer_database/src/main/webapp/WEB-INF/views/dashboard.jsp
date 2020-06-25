@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                121 Computers found
+                computer : ${computers}
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -36,7 +37,6 @@
                 </div>
             </div>
         </div>
-
         <form id="deleteForm" action="#" method="POST">
             <input type="hidden" name="selection" value="">
         </form>
