@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class HomeServlet extends HttpServlet{
+public class EditServlet extends HttpServlet{
 	
 	private static final long serialVersion = 1L;
 	/**
@@ -16,7 +16,7 @@ public class HomeServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		request.getRequestDispatcher("views/500.html").forward(request,response);
+		request.getRequestDispatcher("WEB-INF/views/editComputer.jsps").forward(request,response);
 	}
 	
 	/**
