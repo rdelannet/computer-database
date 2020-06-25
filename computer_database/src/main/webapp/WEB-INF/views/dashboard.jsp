@@ -12,7 +12,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.html"> Application - Computer Database </a>
+            <a class="navbar-brand" href="AddServlet"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -31,7 +31,7 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer.html">Add Computer</a> 
+                    <a class="btn btn-success" id="addComputer" href="AddServlet">Add Computer</a> 
                     <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
@@ -80,7 +80,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.html" onclick="">MacBook Pro</a>
+                            <a href="EditServlet" onclick="">MacBook Pro</a>
                         </td>
                         <td>2006-01-10</td>
                         <td></td>
@@ -92,7 +92,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.html" onclick="">Connection Machine</a>
+                            <a href="EditServlet" onclick="">Connection Machine</a>
                         </td>
                         <td>1987-01-01</td>
                         <td></td>
@@ -104,7 +104,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.html" onclick="">PowerBook</a>
+                            <a href="EditServlet" onclick="">PowerBook</a>
                         </td>
                         <td>1991-01-01</td>
                         <td>2006-01-01</td>
@@ -116,7 +116,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.html" onclick="">Commodore 64</a>
+                            <a href="EditServlet" onclick="">Commodore 64</a>
                         </td>
                         <td>1982-08-01</td>
                         <td>1994-01-01</td>
@@ -140,7 +140,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.html" onclick="">Canon Cat</a>
+                            <a href="EditServlet" onclick="">Canon Cat</a>
                         </td>
                         <td>1987-01-01</td>
                         <td></td>
@@ -152,7 +152,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.html" onclick="">Nokia 770</a>
+                            <a href="EditServlet" onclick="">Nokia 770</a>
                         </td>
                         <td></td>
                         <td></td>
@@ -176,7 +176,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.html" onclick="">IBM 650</a>
+                            <a href="EditServlet" onclick="">IBM 650</a>
                         </td>
                         <td>1953-01-01</td>
                         <td>1962-01-01</td>
@@ -188,7 +188,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.html" onclick="">PlayStation 2</a>
+                            <a href="EditServlet" onclick="">PlayStation 2</a>
                         </td>
                         <td>2000-03-24</td>
                         <td></td>
@@ -200,7 +200,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.html" onclick="">Archos 101</a>
+                            <a href="EditServlet" onclick="">Archos 101</a>
                         </td>
                         <td></td>
                         <td></td>
@@ -212,7 +212,7 @@
                             <input type="checkbox" name="cb" class="cb" value="0">
                         </td>
                         <td>
-                            <a href="editComputer.html" onclick="">Nintendo 3DS</a>
+                            <a href="EditServlet" onclick="">Nintendo 3DS</a>
                         </td>
                         <td>2010-03-23</td>
                         <td></td>

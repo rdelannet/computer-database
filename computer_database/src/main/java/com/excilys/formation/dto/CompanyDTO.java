@@ -12,7 +12,7 @@ public class CompanyDTO implements CompanyDTOIn{
 	private  CompanyDAO companies ;
 	private ConnectDB connect;
 	
-	private static final int NB_PAGE = 10;
+	//private static final int NB_PAGE = 10;
 	
 	public CompanyDTO() {
 		this.companies = new CompanyDAO(connect.getConnection());
