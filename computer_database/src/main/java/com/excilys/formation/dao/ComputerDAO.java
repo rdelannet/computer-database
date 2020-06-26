@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.ComputerMapper;
-
+import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
 
@@ -25,8 +25,10 @@ public class ComputerDAO extends DAO<Computer>{
 	private String delete = "DELETE FROM computer WHERE id = ?";
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	
+	
 	public ComputerDAO(Connection conn) {
 		super(conn);
+
 		
 	}
 
@@ -154,6 +156,8 @@ public class ComputerDAO extends DAO<Computer>{
 		}
 		return computers;
 	}
+	
+	
 	
 
 }

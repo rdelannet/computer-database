@@ -14,15 +14,18 @@ import org.slf4j.LoggerFactory;
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.CompanyMapper;
 import com.excilys.formation.model.Company;
+import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
 
 
 public class CompanyDAO extends DAO<Company>{
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	
 
 	public CompanyDAO(Connection conn) {
 		super(conn);
+		
 		
 	}
 
@@ -137,6 +140,12 @@ public class CompanyDAO extends DAO<Company>{
 		return companies;
 	}
 	
+	public Company getCompanyFromComputer(Computer computer) {
+		if(computer.getCompanyId() != null) {
+			return find(computer.getCompanyId());
+		}
+		return null;
+	}
 	
 }
 

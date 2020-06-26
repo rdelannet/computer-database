@@ -23,6 +23,6 @@ public class ComputerDTOMapper {
 			computer.getName(),
 			computer.getDateInt().toString(),
 			computer.getDateDisc().toString(),
-			//new CompanyDTO(Integer.valueOf(computer.getId()).toString(), computer.getComanyName()));
+			new CompanyDTO(Integer.valueOf(computer.getId()).toString(), computer.getName()));
 	}			
 }
