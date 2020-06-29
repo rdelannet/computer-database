@@ -6,8 +6,15 @@ import com.excilys.formation.model.Company;
 public class CompanyDTOMapper {
 	
 	public static Company CompanyDtoToCompany(CompanyDTO companyDto) {
-		Company company = new Company(Integer.parseInt(companyDto.getId()),companyDto.getName());
+		Company company = new Company(companyDto.getId(),companyDto.getName());
 		return company;
+	}
+	
+	public static CompanyDTO companytoCompanyDto(Company company) {
+		CompanyDTO companyDto = new CompanyDTO();
+		companyDto.setId(company.getId());
+		companyDto.setName(company.getName());
+		return companyDto;
 	}
 
 }

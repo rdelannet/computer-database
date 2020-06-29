@@ -6,6 +6,7 @@ public class Company {
 
 	public Company(int id,String name) {
 		super();
+		this.id = id;
 		this.name = name;
 	}
 	
@@ -57,7 +58,7 @@ public class Company {
 
 	@Override
 	public String toString() {
-		return "Company [name=" + name + "]";
+		return "Company [name=" + name + "id ="+ id+"]";
 	}
 
 	

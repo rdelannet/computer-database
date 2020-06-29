@@ -1,13 +1,5 @@
 package com.excilys.formation.dto;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import com.excilys.formation.connect.ConnectDB;
-import com.excilys.formation.dao.ComputerDAO;
-import com.excilys.formation.model.Computer;
-import com.excilys.formation.pagination.Page;
-
 public class ComputerDTO {
 	
 	private String id;
@@ -16,12 +8,9 @@ public class ComputerDTO {
 	private String discontinued;
 	private CompanyDTO companyDTO;
 	
-	public ComputerDTO (String id, String name, String introduced, String discontinued, CompanyDTO companyDTO) {
-		this.id = id;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.companyDTO = companyDTO;
+	public ComputerDTO () {
+		
+		
 	}
 
 	public String getId() {
@@ -63,5 +52,12 @@ public class ComputerDTO {
 	public void setCompanyDTO(CompanyDTO companyDTO) {
 		this.companyDTO = companyDTO;
 	}
+
+	@Override
+	public String toString() {
+		return "ComputerDTO [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued="
+				+ discontinued + ", companyDTO=" + companyDTO + "]";
+	}
+
 
 }

@@ -1,5 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page isELIgnored="false"%>
+
 <html>
 <head>
 <title>Computer Database</title>
@@ -75,7 +78,7 @@
                 </thead>
                 <!-- Browse attribute computers -->
                 <tbody id="results">
-                    <c:forEach items="${computers}" var="computer">
+                    <c:forEach var="computer" items="${computers}" >
                 		<tr>
                 			<td class="editMode">
                             	<input type="checkbox" name="cb" class="cb" value="0">
@@ -85,7 +88,7 @@
                         	</td>
                         	<td><c:if test="${not empty computer.introduced}">${computer.introduced} </c:if></td>
                         	<td><c:if test="${not empty computer.discontinued}">${computer.discontinued} </c:if></td>
-                        	<td><c:if test="${not empty computer.company}">${computer.company.name} </c:if></td>
+                        	<td><c:if test="${not empty computer.companyDTO}">${computer.companyDTO} </c:if></td>
                 		</tr>
                 	</c:forEach>
                     

@@ -28,7 +28,7 @@ public class ListServlet extends HttpServlet {
 	public int page;
 	public int taillePage;
 	public int maxPage;
-	private ComputerDTOMapper computer ;
+	//private ComputerDTOMapper computerM ;
 	private ComputerDTO computerD ;
 	private ComputerDAO computerDao;
 	private CompanyDAO companyDao;
@@ -42,8 +42,8 @@ public class ListServlet extends HttpServlet {
     public ListServlet() throws SQLException {
         super();
         this.conn = new ConnectDB();
-        computerDao = new ComputerDAO(conn.getConnection());
-        companyDao= new CompanyDAO(conn.getConnection());
+        this.computerDao = new ComputerDAO(conn.getConnection());
+        this.companyDao= new CompanyDAO(conn.getConnection());
     }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -51,15 +51,16 @@ public class ListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<ComputerDTO> computersDto = new ArrayList<ComputerDTO>();
 		List<Computer> computers = new ArrayList<Computer>();
-		/*if(request.getParameter("page") != null) {
+		if(request.getParameter("page") != null) {
 			String page = request.getParameter("page");
 			pages.setNbPages(Integer.parseInt(page));
-		}*/
-		computers = computerDao.findAll();
-		for(Computer computer: computers) {
-			ComputerDTO computerDto = ComputerDTOMapper.computerToDTO(computer);
-			computersDto.add(computerDto);
 		}
+		
+		computers = computerDao.findAll();
+		for (Computer computer : computers) {
+			computersDto.add(ComputerDTOMapper.computerToDTO(computer));
+		}
+		
 		request.setAttribute("nbComputers", computerDao.findMaxElement());
 		request.setAttribute("computers", computersDto);
 		request.getRequestDispatcher("WEB-INF/views/dashboard.jsp").forward(request,response);
