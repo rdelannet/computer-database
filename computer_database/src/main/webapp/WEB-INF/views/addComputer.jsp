@@ -24,23 +24,23 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
-                    <form action="AddServlet" method="POST">
+                    <form action="AddServlet" method="POST" onsubmit="return verifForm(this)">
                         <fieldset>
                          <div class="form-group">
                                 <label for="computerName">Computer id</label>
-                                <input type="text" class="form-control" id="computerId" name="computerId" placeholder="Computer id">
+                                <input type="text" class="form-control" id="computerId" name="computerId" placeholder="Computer id" onblur="verifId(this)">
                             </div>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name">
+                                <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name"  onblur="verifName(this)">
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date">
+                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date" onblur="verifDates(this.introduced, this.discontinued)">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date">
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date" onblur="verifDates(this.introduced, this.discontinued)">
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
@@ -62,5 +62,6 @@
             </div>
         </div>
     </section>
+     <script src="js/validator.js"></script>
 </body>
 </html>
