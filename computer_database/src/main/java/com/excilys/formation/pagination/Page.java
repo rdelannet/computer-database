@@ -2,8 +2,10 @@ package com.excilys.formation.pagination;
 
 public class Page {
 	
-	private  int nbPages = 0;
+	private  int nbPages = 10;
 	private int maxElem;
+	private Integer itemsBypage;
+	private Integer currentPage;
 	
 	public Page() {
 		
@@ -21,6 +23,19 @@ public class Page {
 	}
 	public void setMaxElem(int result) {
 		this.maxElem = result;
+	}
+	
+	public int getItemsByPage() {
+		return this.itemsBypage;
+	}
+	public void setItemsByPage(int nb) {
+		this.itemsBypage = nb;
+	}
+	public int getCurrentPage() {
+		return this.currentPage; 
+	}
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
 	}
 	
 }

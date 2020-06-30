@@ -44,6 +44,7 @@ public class ListServlet extends HttpServlet {
         this.conn = new ConnectDB();
         this.computerDao = new ComputerDAO(conn.getConnection());
         this.companyDao= new CompanyDAO(conn.getConnection());
+        this.pages = new Page();
     }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -51,16 +52,29 @@ public class ListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<ComputerDTO> computersDto = new ArrayList<ComputerDTO>();
 		List<Computer> computers = new ArrayList<Computer>();
+		if(request.getParameter("nbByPage") != null) {
+			String nbByPage = request.getParameter("nbByPage");
+			pages.setItemsByPage(Integer.parseInt(nbByPage));
+			
+		}
+		else {
+			pages.setItemsByPage(10);
+		}
 		if(request.getParameter("page") != null) {
-			String page = request.getParameter("page");
-			pages.setNbPages(Integer.parseInt(page));
+			String pageWish = request.getParameter("page");
+			pages.setCurrentPage(Integer.parseInt(pageWish));
+		}
+		else {
+			pages.setCurrentPage(1);
 		}
 		
-		computers = computerDao.findAll();
+		computers = computerDao.getComputersByPage(pages);
 		for (Computer computer : computers) {
 			computersDto.add(ComputerDTOMapper.computerToDTO(computer));
 		}
-		
+		//System.out.println(pages.getItemsByPage());
+		request.setAttribute("page", pages);
+		request.setAttribute("nbPagesMax", computerDao.getComputersNbPages(pages));
 		request.setAttribute("nbComputers", computerDao.findMaxElement());
 		request.setAttribute("computers", computersDto);
 		request.getRequestDispatcher("WEB-INF/views/dashboard.jsp").forward(request,response);

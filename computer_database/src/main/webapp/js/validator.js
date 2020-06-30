@@ -27,7 +27,7 @@ function verifDates() {
 	if(discontinued != ""){
 		if(introduced != ""){
 			if(discontinued < introduced){
-				//this.discontinued.value = null;
+				
 				valid = false;
 				surligne(this.discontinued, true);
 			}
@@ -73,11 +73,11 @@ function verifForm(f){
 	var IdOk = verifId(f.computerId);
    
 	if(nameOk && dateOk && IdOk){
-		alert("Ordinateur ajouter a la base");
+		alert("Ajout de l'ordinateur dans la base");
 		return true;
 	}
 	else{
-		alert("Veuillez remplir correctement tous les champs");
+		alert("Veuillez remplir les champs correctement");
 		return false;
 	}
 }

@@ -131,9 +131,9 @@ public class CLI {
 			switch(pages) {
 				case 1:
 					
-					for(int j = 0; j < computers.findAllPages(page).size();j++) {
+					for(int j = 0; j < computers.findAllPages(10,page.getNbPages()).size();j++) {
 						
-						System.out.println(computers.findAllPages(page).get(j));
+						System.out.println(computers.findAllPages(10,page.getNbPages()).get(j));
 					}
 					
 					page.setNbPages(page.getNbPages()+10);
@@ -152,8 +152,8 @@ public class CLI {
 				case 0:
 					break;
 				case 2:
-					for(int j = 0; j < computers.findAllPages(page).size();j++) {
-						System.out.println(computers.findAllPages(page).get(j));
+					for(int j = 0; j < computers.findAllPages(10,page.getNbPages()).size();j++) {
+						System.out.println(computers.findAllPages(10,page.getNbPages()).get(j));
 					}
 					if(page.getNbPages()>= 10) {
 						page.setNbPages(page.getNbPages()-10);

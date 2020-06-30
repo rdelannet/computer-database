@@ -143,12 +143,12 @@ public class ComputerDAO extends DAO<Computer>{
 		return page.getMaxElem();
 	}
 	
-	public List<Computer> findAllPages(Page page) {
+	public List<Computer> findAllPages(int offset,int nbPage) {
 		List<Computer> computers = new ArrayList<Computer>();
 		
 		try {
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT 10 OFFSET "+page.getNbPages());
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT "+ offset+", "+nbPage);
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
 			logger.error("Error fidnd all pages Computer");
@@ -157,6 +157,15 @@ public class ComputerDAO extends DAO<Computer>{
 		return computers;
 	}
 	
+	public Integer getComputersNbPages(Page page) {
+		Integer nbEntries = findMaxElement();
+		Integer nbPages = nbEntries/page.getItemsByPage();
+		return nbEntries%page.getItemsByPage() == 0?nbPages:nbPages+1;
+	}
+	public List<Computer> getComputersByPage(Page page) {
+		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
+		return findAllPages(offset, page.getItemsByPage());
+	}
 	
 	
 
