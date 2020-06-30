@@ -71,9 +71,16 @@ public class AddServlet extends HttpServlet {
 		ComputerDAO c = computerDao;
 		computer.setId(request.getParameter("computerId"));
 		computer.setName(request.getParameter("computerName"));
-		computer.setIntroduced(request.getParameter("introduced"));
-		computer.setDiscontinued(request.getParameter("discontinued"));
 		computer.setCompanyDTO(new CompanyDTO(Integer.parseInt(request.getParameter("companyId"))));
+		if(request.getParameter("introduced") != "") {
+			computer.setIntroduced(request.getParameter("introduced"));
+		}
+		if(request.getParameter("discontinued") != "") {
+			computer.setDiscontinued(request.getParameter("discontinued"));
+		}
+		
+		
+		
 		
 		comp = ComputerDTOMapper.dtoToComputer(computer);
 		

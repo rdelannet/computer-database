@@ -9,13 +9,28 @@ import com.excilys.formation.model.Computer;
 public class ComputerDTOMapper {
 	
 	public static Computer dtoToComputer (ComputerDTO computerDTO) {
-		
+		if(computerDTO.getIntroduced() == null ) {
+			return new Computer(
+					Integer.valueOf(computerDTO.getId()),
+					computerDTO.getName(),
+					computerDTO.getCompanyDTO().getId());
+		}
+		else if(computerDTO.getDiscontinued() == null) {
+			return new Computer(
+					Integer.valueOf(computerDTO.getId()),
+					computerDTO.getName(),
+					LocalDate.parse(computerDTO.getIntroduced()),
+					computerDTO.getCompanyDTO().getId());
+		}
+		else {
 			return new Computer(
 					Integer.valueOf(computerDTO.getId()),
 					computerDTO.getName(),
 					LocalDate.parse(computerDTO.getIntroduced()),
 					LocalDate.parse(computerDTO.getDiscontinued()),
 					computerDTO.getCompanyDTO().getId());
+		}
+			
 	
 		
 	}

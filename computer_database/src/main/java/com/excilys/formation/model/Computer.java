@@ -53,6 +53,13 @@ public class Computer {
 		this.companyId = manufacturer;
 		
 	 }
+	public Computer(int id,String name,LocalDate dateIn,int manufacturer) {
+		this.id = id;
+		this.name = name;
+		this.introduced = dateIn;
+		this.companyId = manufacturer;
+		
+	 }
 
 
 
