@@ -53,6 +53,7 @@ public class EditServlet extends HttpServlet{
 		System.out.println(request.getParameter("id"));
 		Computer computer = computerDao.find(id);
 		ComputerDTO computerDto = ComputerDTOMapper.computerToDTO(computer);
+
 		request.setAttribute("computer", computerDto);
 		request.getRequestDispatcher("WEB-INF/views/editComputer.jsp").forward(request,response);
 	}

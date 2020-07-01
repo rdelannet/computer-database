@@ -31,21 +31,29 @@
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name" onblur="verifName(this)">
+                                <input type="text" class="form-control" id="computerName" name="computerName" value="${computer.name}" placeholder="Computer name" onblur="verifName(this)">
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date" onblur="verifDates(this.introduced, this.discontinued)">
+                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.introduced}" placeholder="Introduced date" onblur="verifDates(this.introduced, this.discontinued)">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date" onblur="verifDates(this.introduced, this.discontinued)">
+                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.discontinued}" placeholder="Discontinued date" onblur="verifDates(this.introduced, this.discontinued)">
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
                                 <select class="form-control" id="companyId" name="companyId" >
+                                	
+                                	
                                 	<c:forEach items="${company}" var="companies">
-                                    	<option value="${companies.id}">${companies.name}</option>
+                                	<c:if test="${companies.id == computer.companyDTO.id}">
+                                	<option value="${companies.id}" selected>${companies.name}</option>
+                                	</c:if>
+                                	<c:if test="${companies.id != computer.companyDTO.id}">
+                                	<option value="${companies.id}" >${companies.name}</option>
+                                	</c:if>
+                            
                                     </c:forEach>
                                 </select>
                             </div>            

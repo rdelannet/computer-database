@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -83,7 +85,16 @@ public class ListServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		if(request.getParameter("selection") != null && !request.getParameter("selection").equals("")) {
+			String listIds = request.getParameter("selection");
+			System.out.println(listIds);
+			List<Integer> ids = Stream.of(listIds.split(","))
+					.map(Integer::parseInt)
+					.collect(Collectors.toList());
+			for(Integer id: ids) {
+				computerDao.delete(computerDao.find(id));
+			}
+		}
 		doGet(request, response);
 	}
 }

@@ -87,7 +87,7 @@ public class AddServlet extends HttpServlet {
 		
 		
 		System.out.println(request.getParameter("name"));
-		comp = ComputerDTOMapper.dtoToComputer(computer);
+		comp = ComputerDTOMapper.dtoToComputerC(computer);
 		System.out.println(comp);
 		c.create(comp);
 		doGet(request, response);
