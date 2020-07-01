@@ -15,7 +15,8 @@ public class ComputerMapper {
 		
 		if(result.first()) {
 			
-			computer = new Computer(result.getInt("id"),result.getString("name"));
+			computer = new Computer(result.getString("name"));
+			computer.setId(result.getInt("id"));
 			if(result.getDate("introduced") != null) {
 				computer.setDateInt(result.getDate("introduced").toLocalDate());
 			}
@@ -34,8 +35,9 @@ public class ComputerMapper {
 		List<Computer> computers = new ArrayList<Computer>();
 		while(result.next()) {
 			Computer computer = new Computer();
-			computer.setId(result.getInt("id"));
+			
 			computer.setName(result.getString("name"));
+			computer.setId(result.getInt("id"));
 			if(result.getDate("introduced") != null) {
 				computer.setDateInt(result.getDate("introduced").toLocalDate());
 			}

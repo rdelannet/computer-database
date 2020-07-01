@@ -23,23 +23,23 @@ public class Computer {
 		this.id = id;
 	}
 
-	public Computer(int id,String name) {
-		this.id = id;
+	public Computer(String name) {
+		
 		this.name = name;
 	 }
 
-	public Computer(int id,String name, LocalDate dateIn, LocalDate dateOut, int manufacturer) {
+	public Computer(String name, LocalDate dateIn, LocalDate dateOut, int manufacturer) {
 		this.name = name;
 		this.companyId = manufacturer;
-		this.id = id;
+		
 		if(dateIn.isBefore(dateOut)) {
 			this.introduced = dateIn;
 			this.discontinued = dateOut;
 		}
 	}
 	
-	public Computer(int id,String name,LocalDate dateIn,LocalDate dateOut) {
-		this.id = id;
+	public Computer(String name,LocalDate dateIn,LocalDate dateOut) {
+		
 		this.name = name;
 		if(dateIn.isBefore(dateOut)) {
 			this.introduced = dateIn;
@@ -47,14 +47,14 @@ public class Computer {
 		}
 	 }
 	
-	public Computer(int id,String name,int manufacturer) {
-		this.id = id;
+	public Computer(String name,int manufacturer) {
+		
 		this.name = name;
 		this.companyId = manufacturer;
 		
 	 }
-	public Computer(int id,String name,LocalDate dateIn,int manufacturer) {
-		this.id = id;
+	public Computer(String name,LocalDate dateIn,int manufacturer) {
+		
 		this.name = name;
 		this.introduced = dateIn;
 		this.companyId = manufacturer;

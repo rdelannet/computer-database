@@ -16,7 +16,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="AddServlet"> Application - Computer Database </a>
+            <a class="navbar-brand" href="ListServlet"> Application - Computer Database </a>
         </div>
     </header>
 
@@ -84,7 +84,7 @@
                             	<input type="checkbox" name="cb" class="cb" value="0">
                         	</td>
                         	<td>
-                            	<a href="editComputer" onclick="">${computer.name}</a>
+                            	<a href="EditServlet?id=${computer.id}" onclick="">${computer.name}</a>
                         	</td>
                         	<td><c:if test="${not empty computer.introduced}">${computer.introduced} </c:if></td>
                         	<td><c:if test="${not empty computer.discontinued}">${computer.discontinued} </c:if></td>

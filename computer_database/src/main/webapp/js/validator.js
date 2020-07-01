@@ -39,26 +39,12 @@ function verifDates() {
 	return valid;
 }
 
-function verifId(champ){
-	 if(champ.value == ""){
-		 surligne(champ, true);
-	      computerId
-	      return false;
-	   }
-	   else if(Number.isInteger((champ.value)/1)){
-	      surligne(champ, false);	
-	      return true;
-	   }
-	   else{
-		   surligne(champ, true);
-		      computerId
-		      return false;
-	   }
-}
+
 function verifName(champ){
+	console.log(champ.value);
 	   if(champ.value == ""){
+		  valid = false;
 	      surligne(champ, true);
-	      computerName
 	      return false;
 	   }
 	   else{
@@ -70,9 +56,8 @@ function verifName(champ){
 function verifForm(f){
 	var nameOk = verifName(f.computerName);
 	var dateOk = verifDates();
-	var IdOk = verifId(f.computerId);
    
-	if(nameOk && dateOk && IdOk){
+	if(nameOk && dateOk){
 		alert("Ajout de l'ordinateur dans la base");
 		return true;
 	}

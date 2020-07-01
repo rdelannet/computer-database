@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page isELIgnored="false"%>
@@ -26,10 +25,7 @@
                     <h1>Add Computer</h1>
                     <form action="AddServlet" method="POST" onsubmit="return verifForm(this)">
                         <fieldset>
-                         <div class="form-group">
-                                <label for="computerName">Computer id</label>
-                                <input type="text" class="form-control" id="computerId" name="computerId" placeholder="Computer id" onblur="verifId(this)">
-                            </div>
+                         
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
                                 <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name"  onblur="verifName(this)">

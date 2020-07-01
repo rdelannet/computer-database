@@ -39,7 +39,7 @@ public class ComputerDAOTest {
 		LocalDate dateI = LocalDate.of(1998, 06, 15);
 		LocalDate dateD = LocalDate.of(1999, 06, 15);
 		
-		Computer computer = new Computer(1,"Apple",dateI,dateD,6);
+		Computer computer = new Computer("Apple",dateI,dateD,6);
 		ConnectDB connect = new ConnectDB(url,username,password);
 		ComputerDAO computers = new ComputerDAO(connect.getConnection());
 		assertNotNull("Test",computers.create(computer));

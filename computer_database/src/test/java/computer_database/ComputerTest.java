@@ -12,7 +12,7 @@ public class ComputerTest {
 
 	@Test
 	public void TestgetId() {
-		Computer computer = new Computer(1,"Apple");
+		Computer computer = new Computer("Apple");
 		assertTrue("GetId fonctionne pas",computer.getId()==1);
 	}
 	@Test
@@ -24,7 +24,7 @@ public class ComputerTest {
 	@Test
 	public void TestSGetName() {
 		String name = "Apple";
-		Computer computer = new Computer(1,name);
+		Computer computer = new Computer(name);
 		
 		assertTrue("GetName fonctionne pas",name.equals(computer.getName()));
 	}
@@ -33,7 +33,7 @@ public class ComputerTest {
 		LocalDate dateI = LocalDate.of(1998, 06, 15);
 		LocalDate dateD = LocalDate.of(1999, 06, 15);
 		
-		Computer computer = new Computer(1,"Apple",dateI,dateD,5);
+		Computer computer = new Computer("Apple",dateI,dateD,5);
 		assertNotNull(computer.getDateInt());
 		
 	}

@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import com.excilys.formation.pagination.Page;
 
 
 public class ComputerDAO extends DAO<Computer>{
-	String insert = "INSERT INTO computer(id,name) values (?,?)";
+	String insert = "INSERT INTO computer(name) values (?)";
 	private String delete = "DELETE FROM computer WHERE id = ?";
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	
@@ -33,16 +34,21 @@ public class ComputerDAO extends DAO<Computer>{
 	}
 
 	public boolean create(Computer computer)  {
-		 
-		try(PreparedStatement statement = this.connect.prepareStatement(insert)){
-			statement.setInt(1, computer.getId());
-			statement.setString(2, computer.getName());
-			statement.executeUpdate();
+		Computer comp = new Computer();
+		try(PreparedStatement statement = this.connect.prepareStatement(insert,Statement.RETURN_GENERATED_KEYS)){
 			
-			Integer computerId = computer.getId();
-			computer.setId(computerId);
-			this.update(computer);
-			computer = this.find(computerId);
+			statement.setString(1, computer.getName());
+			System.out.println(computer.getName());
+			statement.executeUpdate();
+			ResultSet resultKeys = statement.getGeneratedKeys();
+			if(resultKeys.first()) {
+				Integer computerId = resultKeys.getInt(1);
+				computer.setId(computerId);
+				this.update(computer);
+				comp = this.find(computerId);
+			}
+			
+			
 					
 		}catch(SQLException eSQL) {
 			logger.error("Error Created Computer");
@@ -71,7 +77,8 @@ public class ComputerDAO extends DAO<Computer>{
 	public boolean update(Computer computer) {
 		
 		try {
-			String sql = "UPDATE computer SET id = '" + computer.getId() + "'" + " , name = '" + computer.getName() + "'";
+			System.out.println("coucou");
+			String sql = "UPDATE computer SET name = '" + computer.getName() + "'";
 			if(computer.getDateInt() != null) {
 				sql += ", introduced = '" + Date.valueOf(computer.getDateInt()) + "'";
 			}			

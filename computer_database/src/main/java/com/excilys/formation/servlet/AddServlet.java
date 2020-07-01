@@ -69,11 +69,15 @@ public class AddServlet extends HttpServlet {
 		ComputerDTO computer = new ComputerDTO();
 		Computer comp = new Computer();
 		ComputerDAO c = computerDao;
-		computer.setId(request.getParameter("computerId"));
-		computer.setName(request.getParameter("computerName"));
+		
+		
 		computer.setCompanyDTO(new CompanyDTO(Integer.parseInt(request.getParameter("companyId"))));
+		
+		computer.setName(request.getParameter("computerName"));
+		
 		if(request.getParameter("introduced") != "") {
 			computer.setIntroduced(request.getParameter("introduced"));
+			
 		}
 		if(request.getParameter("discontinued") != "") {
 			computer.setDiscontinued(request.getParameter("discontinued"));
@@ -82,9 +86,10 @@ public class AddServlet extends HttpServlet {
 		
 		
 		
+		System.out.println(request.getParameter("name"));
 		comp = ComputerDTOMapper.dtoToComputer(computer);
-		
-		System.out.println(c.create(comp));
+		System.out.println(comp);
+		c.create(comp);
 		doGet(request, response);
 		
 		
