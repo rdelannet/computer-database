@@ -56,7 +56,8 @@ public class ListServlet extends HttpServlet {
 		List<Computer> computers = new ArrayList<Computer>();
 		String search = "";
 		Integer nb = 10;
-		String order = "";
+		String order = "computer.name";
+		String ascending = "ASC";
 		if(request.getParameter("nbByPage") != null) {
 			String nbByPage = request.getParameter("nbByPage");
 			pages.setItemsByPage(Integer.parseInt(nbByPage));
@@ -85,8 +86,13 @@ public class ListServlet extends HttpServlet {
 				}
 			}
 		}
-		if(request.getParameter("order") != null && !request.getParameter("order").equals("")) {
-			computers = computerDao.getComputersOrderByPage(pages);
+		if(request.getParameter("order") != null && !request.getParameter("order").equals("") && request.getParameter("ascending") != null && !request.getParameter("ascending").equals("") ){
+			order =request.getParameter("order");
+			ascending = request.getParameter("ascending");
+			request.setAttribute("ascending",ascending);
+			request.setAttribute("order",order);
+			computers = computerDao.getComputersOrderByPage(pages,order,ascending);
+			
 			for (Computer computer : computers) {
 				try {
 					computersDto.add(ComputerDTOMapper.computerToDTO(computer));
@@ -112,7 +118,7 @@ public class ListServlet extends HttpServlet {
 		System.out.println(pages.getItemsByPage());
 		request.setAttribute("page", pages);
 		
-		System.out.println(request.getAttribute("order"));
+		
 		request.setAttribute("search", search);
 		request.setAttribute("nbByPage", nb);
 		request.setAttribute("nbPagesMax", computerDao.getComputersNbPages(pages));

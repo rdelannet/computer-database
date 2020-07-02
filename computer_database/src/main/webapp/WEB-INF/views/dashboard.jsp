@@ -70,40 +70,33 @@
                             </span>
                         </th>
                         <th>
-                            <a href="ListServlet?order=computer.name${nbByPageValue}${valueSearch}"   >Computer name</a>
+                            <c:if test="${order == 'computer.name' && ascending == 'DESC'}"><a href="ListServlet?order=computer.name&ascending=ASC${nbByPageValue}${searchValue}" >Computer name</a></c:if>
+                            <c:if test="${order == 'computer.name' && ascending == 'ASC'}"><a href="ListServlet?order=computer.name&ascending=DESC${nbByPageValue}${searchValue}" >Computer name</a></c:if>
+                        	<c:if test="${order != 'computer.name'}"><a href="ListServlet?order=computer.name&ascending=ASC${nbByPageValue}${searchValue}" >Computer name</a></c:if>
                         </th>
                         <th>
-                            Introduced date
+                            <c:if test="${order == 'computer.introduced' && ascending == 'DESC'}"><a href="ListServlet?order=computer.introduced&ascending=ASC${nbByPageValue}${searchValue}" >Introduced date</a></c:if>
+                            <c:if test="${order == 'computer.introduced' && ascending == 'ASC'}"><a href="ListServlet?order=computer.introduced&ascending=DESC${nbByPageValue}${searchValue}" >Introduced date</a></c:if>
+                        	<c:if test="${order != 'computer.introduced'}"><a href="ListServlet?order=computer.introduced&ascending=ASC${nbByPageValue}${searchValue}" >Introduced date</a></c:if>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            Discontinued date
+                            <c:if test="${order == 'computer.discontinued' && ascending == 'DESC'}"><a href="ListServlet?order=computer.discontinued&ascending=ASC${nbByPageValue}${searchValue}" >Discontinued date</a></c:if>
+                            <c:if test="${order == 'computer.discontinued' && ascending == 'ASC'}"><a href="ListServlet?order=computer.discontinued&ascending=DESC${nbByPageValue}${searchValue}" >Discontinued date</a></c:if>
+                        	<c:if test="${order != 'computer.discontinued'}"><a href="ListServlet?order=computer.discontinued&ascending=ASC${nbByPageValue}${searchValue}" >Discontinued date</a></c:if>
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            Company
+                            <c:if test="${order == 'computer.company_id' && ascending == 'DESC'}"><a href="ListServlet?order=computer.company_id&ascending=ASC${nbByPageValue}${searchValue}" >Company </a></c:if>
+                            <c:if test="${order == 'computer.company_id' && ascending == 'ASC'}"><a href="ListServlet?order=computer.company_id&ascending=DESC${nbByPageValue}${searchValue}" >Company </a></c:if>
+                        	<c:if test="${order != 'computer.company_id'}"><a href="ListServlet?order=computer.company_id&ascending=ASC${nbByPageValue}${searchValue}" >Company </a></c:if>
                         </th>
 
                     </tr>
                 </thead>
                 <!-- Browse attribute computers -->
                 <tbody id="results">
-                <c:if test="${order != null}">
-                <c:forEach var="computer" items="${order}" >
-                		<tr>
-                			<td class="editMode">
-                            	<input type="checkbox" name="cb" class="cb" value="${computer.id}">
-                        	</td>
-                        	<td>
-                            	<a href="EditServlet?id=${computer.id}" onclick="">${computer.name}</a>
-                        	</td>
-                        	<td><c:if test="${not empty computer.introduced}">${computer.introduced} </c:if></td>
-                        	<td><c:if test="${not empty computer.discontinued}">${computer.discontinued} </c:if></td>
-                        	<td><c:if test="${not empty computer.companyDTO}">${computer.companyDTO} </c:if></td>
-                		</tr>
-                	</c:forEach>
-                </c:if>
-                    <c:if test="${order == null}">
+               
                 <c:forEach var="computer" items="${computers}" >
                 		<tr>
                 			<td class="editMode">
@@ -117,7 +110,7 @@
                         	<td><c:if test="${not empty computer.companyDTO}">${computer.companyDTO} </c:if></td>
                 		</tr>
                 	</c:forEach>
-                </c:if>
+               
                     
                 </tbody>
             </table>
@@ -129,14 +122,14 @@
             <ul class="pagination">
                 <li>
                 	<c:if test="${page.currentPage > 1}">
-                    	<a href="/computer_database/ListServlet?page=${page.currentPage-1}${nbByPageValue}${valueSearch}" aria-label="Previous">
+                    	<a href="/computer_database/ListServlet?page=${page.currentPage-1}${nbByPageValue}${valueSearch}&order=computer.name" aria-label="Previous">
                       		<span aria-hidden="true">&laquo;</span>
                   		</a>
                 	</c:if>
               	</li>
               	<c:forEach var="i" begin="1" end="2">
               		<c:if test="${page.currentPage-(3-i) >= 1}">
-              			<li><a href="/computer_database/ListServlet?page=${page.currentPage-(3-i)}${nbByPageValue}${valueSearch}"><c:out value="${page.currentPage-(3-i)}"/></a></li>
+              			<li><a href="/computer_database/ListServlet?page=${page.currentPage-(3-i)}${nbByPageValue}${valueSearch}&order=computer.name"><c:out value="${page.currentPage-(3-i)}"/></a></li>
               		</c:if>
               	</c:forEach>
               	<c:forEach var="i" begin="0" end="2">
@@ -145,12 +138,12 @@
                         <c:if test = "${page.currentPage+i ==  page.currentPage}">
                           <c:set var="active" value="active"/>
                          </c:if>
-              			<li class="${active}"><a href="/computer_database/ListServlet?page=${page.currentPage+i}${nbByPageValue}${valueSearch}"><c:out value="${page.currentPage+i}"/></a></li>
+              			<li class="${active}"><a href="/computer_database/ListServlet?page=${page.currentPage+i}${nbByPageValue}${valueSearch}&order=computer.name"><c:out value="${page.currentPage+i}"/></a></li>
               		</c:if>
               	</c:forEach>
               	<li>
               		<c:if test="${page.currentPage < nbComputers}">
-                		<a href="/computer_database/ListServlet?page=${page.currentPage+1}${nbByPageValue}${valueSearch}" aria-label="Next">
+                		<a href="/computer_database/ListServlet?page=${page.currentPage+1}${nbByPageValue}${valueSearch}&order=computer.name" aria-label="Next">
                     		<span aria-hidden="true">&raquo;</span>
                 		</a>
                 	</c:if>
