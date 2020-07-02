@@ -176,6 +176,19 @@ public class ComputerDAO extends DAO<Computer>{
 		}
 		return computers;
 	}
+	public List<Computer> findOrder(int offset,int nbPage){
+		List<Computer> computers = new ArrayList<Computer>();
+		try {
+			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+				    ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM computer ORDER BY computer.name ASC LIMIT "+ offset + ", "+ nbPage+" ");
+			computers = ComputerMapper.resultToList(result);
+		}catch(SQLException e) {
+			logger.error("Error find by order");
+			e.printStackTrace();
+		}
+		return computers;
+	}
 	
 	public Integer getComputersNbPages(Page page) {
 		Integer nbEntries = findMaxElement();
@@ -190,6 +203,11 @@ public class ComputerDAO extends DAO<Computer>{
 		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
 		return findBySearch(offset, page.getItemsByPage(), search);
 	}
+	public List<Computer> getComputersOrderByPage(Page page) {
+		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
+		return findOrder(offset, page.getItemsByPage());
+	}
+	
 	
 	
 

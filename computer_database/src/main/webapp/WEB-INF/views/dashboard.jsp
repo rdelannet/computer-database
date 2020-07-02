@@ -70,7 +70,7 @@
                             </span>
                         </th>
                         <th>
-                            Computer name
+                            <a href="ListServlet?order=computer.name${nbByPageValue}${valueSearch}"   >Computer name</a>
                         </th>
                         <th>
                             Introduced date
@@ -88,7 +88,8 @@
                 </thead>
                 <!-- Browse attribute computers -->
                 <tbody id="results">
-                    <c:forEach var="computer" items="${computers}" >
+                <c:if test="${order != null}">
+                <c:forEach var="computer" items="${order}" >
                 		<tr>
                 			<td class="editMode">
                             	<input type="checkbox" name="cb" class="cb" value="${computer.id}">
@@ -101,6 +102,22 @@
                         	<td><c:if test="${not empty computer.companyDTO}">${computer.companyDTO} </c:if></td>
                 		</tr>
                 	</c:forEach>
+                </c:if>
+                    <c:if test="${order == null}">
+                <c:forEach var="computer" items="${computers}" >
+                		<tr>
+                			<td class="editMode">
+                            	<input type="checkbox" name="cb" class="cb" value="${computer.id}">
+                        	</td>
+                        	<td>
+                            	<a href="EditServlet?id=${computer.id}" onclick="">${computer.name}</a>
+                        	</td>
+                        	<td><c:if test="${not empty computer.introduced}">${computer.introduced} </c:if></td>
+                        	<td><c:if test="${not empty computer.discontinued}">${computer.discontinued} </c:if></td>
+                        	<td><c:if test="${not empty computer.companyDTO}">${computer.companyDTO} </c:if></td>
+                		</tr>
+                	</c:forEach>
+                </c:if>
                     
                 </tbody>
             </table>
