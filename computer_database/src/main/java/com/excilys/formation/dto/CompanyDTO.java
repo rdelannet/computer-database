@@ -1,5 +1,6 @@
 package com.excilys.formation.dto;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.formation.connect.ConnectDB;
@@ -11,9 +12,15 @@ public class CompanyDTO {
 	
 	private Integer id;
 	private String name;
+	ConnectDB conn ;
+	CompanyDAO company;
 	
-	public CompanyDTO(Integer id) {
+	public CompanyDTO(Integer id) throws SQLException {
+		conn = new ConnectDB();
+		company = new CompanyDAO(conn.getConnection());
 		this.id = id;
+		Company com = company.find(id);
+		this.name = com.getName();
 		
 	}
 	public CompanyDTO() {

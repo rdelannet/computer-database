@@ -48,7 +48,6 @@ public class ComputerDAO extends DAO<Computer>{
 				comp = this.find(computerId);
 			}
 			
-			
 					
 		}catch(SQLException eSQL) {
 			logger.error("Error Created Computer");
@@ -164,6 +163,20 @@ public class ComputerDAO extends DAO<Computer>{
 		return computers;
 	}
 	
+	public List<Computer> findBySearch(int offset,int nbPage,String search){
+		List<Computer> computers = new ArrayList<Computer>();
+		try {
+			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+				    ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.name LIKE '%"+search+"%' OR c.name LIKE '%"+search+"%' LIMIT "+ offset + ", "+ nbPage);
+			computers = ComputerMapper.resultToList(result);
+		}catch(SQLException e) {
+			logger.error("Error find by search");
+			e.printStackTrace();
+		}
+		return computers;
+	}
+	
 	public Integer getComputersNbPages(Page page) {
 		Integer nbEntries = findMaxElement();
 		Integer nbPages = nbEntries/page.getItemsByPage();
@@ -172,6 +185,10 @@ public class ComputerDAO extends DAO<Computer>{
 	public List<Computer> getComputersByPage(Page page) {
 		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
 		return findAllPages(offset, page.getItemsByPage());
+	}
+	public List<Computer> getComputersSearchByPage(Page page,String search) {
+		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
+		return findBySearch(offset, page.getItemsByPage(), search);
 	}
 	
 	

@@ -1,5 +1,6 @@
 package com.excilys.formation.mappers;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import com.excilys.formation.dto.CompanyDTO;
@@ -81,7 +82,7 @@ public class ComputerDTOMapper {
 		
 	}
 	
-	public static ComputerDTO computerToDTO (Computer computer) {
+	public static ComputerDTO computerToDTO (Computer computer) throws SQLException {
 		ComputerDTO computerDto = new ComputerDTO();
 		
 		computerDto.setName(computer.getName());

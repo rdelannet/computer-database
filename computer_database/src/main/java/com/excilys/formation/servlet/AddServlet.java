@@ -71,7 +71,15 @@ public class AddServlet extends HttpServlet {
 		ComputerDAO c = computerDao;
 		
 		
-		computer.setCompanyDTO(new CompanyDTO(Integer.parseInt(request.getParameter("companyId"))));
+		try {
+			computer.setCompanyDTO(new CompanyDTO(Integer.parseInt(request.getParameter("companyId"))));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		computer.setName(request.getParameter("computerName"));
 		

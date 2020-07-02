@@ -52,10 +52,17 @@ public class EditServlet extends HttpServlet{
 		Integer id = Integer.parseInt(request.getParameter("id"));
 		System.out.println(request.getParameter("id"));
 		Computer computer = computerDao.find(id);
-		ComputerDTO computerDto = ComputerDTOMapper.computerToDTO(computer);
+		ComputerDTO computerDto;
+		try {
+			computerDto = ComputerDTOMapper.computerToDTO(computer);
+			request.setAttribute("computer", computerDto);
+			request.getRequestDispatcher("WEB-INF/views/editComputer.jsp").forward(request,response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		request.setAttribute("computer", computerDto);
-		request.getRequestDispatcher("WEB-INF/views/editComputer.jsp").forward(request,response);
+		
 	}
 	
 	/**
@@ -69,7 +76,15 @@ public class EditServlet extends HttpServlet{
 		ComputerDAO c = computerDao;
 		computer.setId(request.getParameter("id"));
 		computer.setName(request.getParameter("computerName"));
-		computer.setCompanyDTO(new CompanyDTO(Integer.parseInt(request.getParameter("companyId"))));
+		try {
+			computer.setCompanyDTO(new CompanyDTO(Integer.parseInt(request.getParameter("companyId"))));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(request.getParameter("introduced") != "") {
 			computer.setIntroduced(request.getParameter("introduced"));
 		}
