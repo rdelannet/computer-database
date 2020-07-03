@@ -49,13 +49,27 @@ public class CompanyDAO extends DAO<Company>{
 	
 
 	public boolean delete(Company company) {
-		String sql = "DELETE FROM company WHERE id = ?";
+		String sqlCompany = "DELETE FROM company WHERE id = ?";
+		String sqlComputer = "DELETE FROM computer WHERE company_id = ?";
 		try {
-			PreparedStatement statement = this.connect.prepareStatement(sql);
-			statement.setInt(1,company.getId());
-			//statement.executeUpdate();
-		} catch (Exception e) {
+			connect.setAutoCommit(false);
+			PreparedStatement statementComputer = this.connect.prepareStatement(sqlComputer);
+			statementComputer.setInt(1,company.getId());
+			statementComputer.executeUpdate();
+			
+			PreparedStatement statementCompany = this.connect.prepareStatement(sqlCompany);
+			statementCompany.setInt(1,company.getId());
+			statementCompany.executeUpdate();
+			connect.commit();
+			
+		} catch (SQLException e) {
 			logger.error("Error delete Company");
+			try {
+				connect.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 			return false;
 		}
@@ -65,6 +79,7 @@ public class CompanyDAO extends DAO<Company>{
 
 	public boolean update(Company company) {
 		String sql = "UPDATE company SET id = ?, name = ? WHERE id = ?";
+		
 		try {
 			PreparedStatement statement = this.connect.prepareStatement(sql);
 			statement.setInt(1,company.getId());

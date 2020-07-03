@@ -32,8 +32,8 @@ public class EditServlet extends HttpServlet{
 	public EditServlet() throws SQLException {
         super();
         this.conn = new ConnectDB();
-        this.companyDao= new CompanyDAO(conn.getConnection());
-        this.computerDao= new ComputerDAO(conn.getConnection());
+        this.companyDao= new CompanyDAO(conn.getInstance());
+        this.computerDao= new ComputerDAO(conn.getInstance());
     }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

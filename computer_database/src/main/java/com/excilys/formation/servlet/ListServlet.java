@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.dao.CompanyDAO;
 import com.excilys.formation.dao.ComputerDAO;
-import com.excilys.formation.dto.CompanyDTO;
+
 import com.excilys.formation.dto.ComputerDTO;
 import com.excilys.formation.mappers.ComputerDTOMapper;
 import com.excilys.formation.model.Computer;
@@ -35,7 +35,7 @@ public class ListServlet extends HttpServlet {
 	private ComputerDAO computerDao;
 	private CompanyDAO companyDao;
 	private Page pages;
-	private ConnectDB conn;
+	//private ConnectDB conn;
        
     /**
      * @throws SQLException 
@@ -43,9 +43,9 @@ public class ListServlet extends HttpServlet {
      */
     public ListServlet() throws SQLException {
         super();
-        this.conn = new ConnectDB();
-        this.computerDao = new ComputerDAO(conn.getConnection());
-        this.companyDao= new CompanyDAO(conn.getConnection());
+        //this.conn = new ConnectDB();
+        this.computerDao = new ComputerDAO(ConnectDB.getInstance());
+        this.companyDao= new CompanyDAO(ConnectDB.getInstance());
         this.pages = new Page();
     }
 	/**

@@ -17,7 +17,7 @@ public class CompanyDTO {
 	
 	public CompanyDTO(Integer id) throws SQLException {
 		conn = new ConnectDB();
-		company = new CompanyDAO(conn.getConnection());
+		company = new CompanyDAO(ConnectDB.getInstance());
 		this.id = id;
 		Company com = company.find(id);
 		this.name = com.getName();
@@ -26,7 +26,7 @@ public class CompanyDTO {
 	public CompanyDTO() {
 		
 	}
-	
+
 
 	public Integer getId() {
 		return id;

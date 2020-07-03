@@ -39,8 +39,8 @@ public class AddServlet extends HttpServlet {
     public AddServlet() throws SQLException {
         super();
         this.conn = new ConnectDB();
-        this.companyDao= new CompanyDAO(conn.getConnection());
-        this.computerDao= new ComputerDAO(conn.getConnection());
+        this.companyDao= new CompanyDAO(conn.getInstance());
+        this.computerDao= new ComputerDAO(conn.getInstance());
     }
     
     

@@ -1,6 +1,8 @@
 package com.excilys.formation.connect;
 
 import java.sql.*;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,16 +11,18 @@ import com.excilys.formation.dao.ComputerDAO;
 
 
 
-public class ConnectDB {
-	private static ConnectDB instance;
-	private Connection connect;
+public class ConnectDB  {
 	
-	private String url = "jdbc:mysql://localhost/computer-database-db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	private static Connection connect;
+	
+	/*private String url = "jdbc:mysql://localhost/computer-database-db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private String username = "admincdb";
-    private String password = "qwerty1234";
+    private String password = "qwerty1234";*/
     private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+    
+    private static HikariDataSource ds = new HikariDataSource(new HikariConfig("/datasource.properties"));
 
-	public ConnectDB() throws SQLException {
+	/*public ConnectDB() throws SQLException {
 		try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
@@ -45,19 +49,16 @@ public class ConnectDB {
 			logger.error("Error connect");
 			s.printStackTrace();
 		}
-	}
+	}*/
 	
-	public Connection getConnection() {
-		
-		return connect;
-	}
+	
 
 	
-	public final static ConnectDB getInstance() throws SQLException {
-		if(instance == null && instance.getConnection().isClosed()) {
-			instance = new ConnectDB();
+	public final static Connection getInstance() throws SQLException {
+		if(connect == null || connect.isClosed()) {
+			connect = ds.getConnection();
 		}
-		return instance;
+		return connect;
 	}
 	 
 		

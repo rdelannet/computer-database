@@ -1,5 +1,6 @@
 package com.excilys.formation.service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 
@@ -41,7 +42,7 @@ public class CLI {
 		
 	}
 	
-	public void chooseNumber() {
+	public void chooseNumber() throws SQLException {
 		System.out.println("Please press a number between 1 and 6");
 		String choose = scan.next();
 		System.out.println(choose);
@@ -105,8 +106,8 @@ public class CLI {
 		
 	}
 	
-	public void showListComputers() {
-		ComputerDAO computers = new ComputerDAO(conn.getConnection());
+	public void showListComputers() throws SQLException {
+		ComputerDAO computers = new ComputerDAO(conn.getInstance());
 		
 		System.out.println("---------List of all computers-----------");
 		System.out.println("Enter 1 to see an other pages, 0 to end");
@@ -185,8 +186,8 @@ public class CLI {
 		}
 		
 	}
-	public void showListCompanies() {
-		CompanyDAO companies = new CompanyDAO(conn.getConnection());
+	public void showListCompanies() throws SQLException {
+		CompanyDAO companies = new CompanyDAO(conn.getInstance());
 		
 		System.out.println("---------List of all companies-----------");
 		System.out.println("Enter 1 to see an other pages, 0 to end");
@@ -255,8 +256,8 @@ public class CLI {
 		
 	}
 	
-	public void showDetails(int i) {
-		ComputerDAO computer = new ComputerDAO(conn.getConnection());
+	public void showDetails(int i) throws SQLException {
+		ComputerDAO computer = new ComputerDAO(conn.getInstance());
 		System.out.println(computer.find(i));
 		
 	}
@@ -298,8 +299,8 @@ public class CLI {
 		}
 		return null;
 	}
-	public void createComputer() {
-		ComputerDAO computerD = new ComputerDAO(conn.getConnection());
+	public void createComputer() throws SQLException {
+		ComputerDAO computerD = new ComputerDAO(conn.getInstance());
 		Computer computer = new Computer();
 		
 		System.out.println("Entrer the id of the computer :");
@@ -341,8 +342,8 @@ public class CLI {
 		
 	}
 	
-	public void deleteComputer() {
-		ComputerDAO computer = new ComputerDAO(conn.getConnection());
+	public void deleteComputer() throws SQLException {
+		ComputerDAO computer = new ComputerDAO(conn.getInstance());
 		System.out.println("Enter the id of the computer you want to delete :");
 		Integer delete;
 		try {
@@ -357,8 +358,8 @@ public class CLI {
 		
 	}
 	
-	public void updateComputer() {
-		ComputerDAO computer = new ComputerDAO(conn.getConnection());
+	public void updateComputer() throws SQLException {
+		ComputerDAO computer = new ComputerDAO(conn.getInstance());
 		
 		System.out.println("Enter the id of the computer that you want to update :");
 		Integer id;
