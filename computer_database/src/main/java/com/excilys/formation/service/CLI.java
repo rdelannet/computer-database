@@ -9,7 +9,7 @@ import java.util.Scanner;
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.dao.CompanyDAO;
 import com.excilys.formation.dao.ComputerDAO;
-
+import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
 
@@ -209,8 +209,8 @@ public class CLI {
 			switch(pages) {
 				case 1:
 					
-					for(int j = 0; j < companies.findAllPages(page).size();j++) {
-						System.out.println(companies.findAllPages(page).get(j));
+					for(int j = 0; j < companies.findAllPages(10,page.getNbPages()).size();j++) {
+						System.out.println(companies.findAllPages(10,page.getNbPages()).get(j));
 					}
 					page.setNbPages(page.getNbPages()+10);
 					try {
@@ -227,8 +227,8 @@ public class CLI {
 				case 0:
 					break;
 				case 2:
-					for(int j = 0; j < companies.findAllPages(page).size();j++) {
-						System.out.println(companies.findAllPages(page).get(j));
+					for(int j = 0; j < companies.findAllPages(10,page.getNbPages()).size();j++) {
+						System.out.println(companies.findAllPages(10,page.getNbPages()).get(j));
 					}
 					if(page.getNbPages()>= 10) {
 						page.setNbPages(page.getNbPages()-10);
@@ -322,14 +322,17 @@ public class CLI {
 		
 		System.out.println("Do you want to enter a production end date ? ( yes or no )");
 		computer.setDateDisc(addDate(computer));
-		System.out.println("Do you want to enter a company id ? ( yes or no )");
+		System.out.println("Do you want to enter a company ? ( yes or no )");
 		String company = scan.next();
 		if(company.equals("yes")) {
-			System.out.println("Enter the id of the company :");
+			System.out.println("Enter a company id :");
 			Integer idCompany ;
+			String nameCompany;
 			try {
 				idCompany = Integer.parseInt(scan.next());
-				computer.setCompanyId(idCompany);
+				System.out.println("Enter a name of the company");
+				nameCompany = scan.next();
+				computer.setCompany(new Company(idCompany,nameCompany));
 				
 			} catch (Exception e) {
 				System.out.println(" Error Enter the id of the company :");
@@ -385,14 +388,17 @@ public class CLI {
 		System.out.println("Do you want to enter a production end date ? ( yes or no )");
 		computerA.setDateDisc(addDate(computerA));
 			
-		System.out.println("Do you want to change a company id ? ( yes or no )");
+		System.out.println("Do you want to change a company ? ( yes or no )");
 		String company = scan.next();
 		if(company.equals("yes")) {
 			System.out.println("Enter the id of the company :");
 			Integer idCompany ;
+			String nameCompany;
 			try {
 				idCompany = Integer.parseInt(scan.next());
-				computerA.setCompanyId(idCompany);
+				System.out.println("Enter the name of the company :");
+				nameCompany = scan.next();
+				computerA.setCompany(new Company(idCompany,nameCompany));
 				
 			} catch (Exception e) {
 				System.out.println("Error Enter the id of the company :");

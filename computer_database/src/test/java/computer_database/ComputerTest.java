@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
+import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 
 public class ComputerTest {
@@ -33,7 +34,7 @@ public class ComputerTest {
 		LocalDate dateI = LocalDate.of(1998, 06, 15);
 		LocalDate dateD = LocalDate.of(1999, 06, 15);
 		
-		Computer computer = new Computer("Apple",dateI,dateD,5);
+		Computer computer = new Computer("Apple",dateI,dateD,new Company(5,"Apple"));
 		assertNotNull(computer.getDateInt());
 		
 	}

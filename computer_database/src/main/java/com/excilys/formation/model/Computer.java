@@ -9,7 +9,7 @@ public class Computer {
 	 private String name;
 	 private LocalDate introduced;
 	 private LocalDate discontinued;
-	 private Integer companyId;
+	 private Company company;
 	 
 	 public Computer() {
 		 
@@ -28,9 +28,9 @@ public class Computer {
 		this.name = name;
 	 }
 
-	public Computer(String name, LocalDate dateIn, LocalDate dateOut, int manufacturer) {
+	public Computer(String name, LocalDate dateIn, LocalDate dateOut, Company company) {
 		this.name = name;
-		this.companyId = manufacturer;
+		this.company = company;
 		
 		if(dateIn.isBefore(dateOut)) {
 			this.introduced = dateIn;
@@ -47,21 +47,25 @@ public class Computer {
 		}
 	 }
 	
-	public Computer(String name,int manufacturer) {
+	public Computer(String name,Company company) {
 		
 		this.name = name;
-		this.companyId = manufacturer;
+		this.company = company;
 		
 	 }
-	public Computer(String name,LocalDate dateIn,int manufacturer) {
+	public Computer(String name,LocalDate dateIn,Company company) {
 		
 		this.name = name;
 		this.introduced = dateIn;
-		this.companyId = manufacturer;
+		this.company = company;
 		
 	 }
 
 
+
+
+
+	
 
 
 
@@ -69,10 +73,10 @@ public class Computer {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((introduced == null) ? 0 : introduced.hashCode());
+		result = prime * result + ((company == null) ? 0 : company.hashCode());
 		result = prime * result + ((discontinued == null) ? 0 : discontinued.hashCode());
 		result = prime * result + id;
-		result = prime * result + companyId;
+		result = prime * result + ((introduced == null) ? 0 : introduced.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
@@ -86,10 +90,10 @@ public class Computer {
 		if (getClass() != obj.getClass())
 			return false;
 		Computer other = (Computer) obj;
-		if (introduced == null) {
-			if (other.introduced != null)
+		if (company == null) {
+			if (other.company != null)
 				return false;
-		} else if (!introduced.equals(other.introduced))
+		} else if (!company.equals(other.company))
 			return false;
 		if (discontinued == null) {
 			if (other.discontinued != null)
@@ -98,7 +102,10 @@ public class Computer {
 			return false;
 		if (id != other.id)
 			return false;
-		if (companyId != other.companyId)
+		if (introduced == null) {
+			if (other.introduced != null)
+				return false;
+		} else if (!introduced.equals(other.introduced))
 			return false;
 		if (name == null) {
 			if (other.name != null)
@@ -132,21 +139,21 @@ public class Computer {
 		this.discontinued = dateDisc;
 	}
 
-	public Integer getCompanyId() {
-		if(companyId == null) {
-			return (Integer) null;
+	public Company getCompany() {
+		if(company == null) {
+			return  null;
 		}
-		return companyId;
+		return company;
 	}
 
-	public void setCompanyId(int manufacturer) {
-		this.companyId = manufacturer;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name= " + name + ", introduced= " + introduced + ", discontinued= " + discontinued
-				+ ", companyId= " + companyId + "]";
+				+ ", companyId= " + company + "]";
 	}
 	 
 	

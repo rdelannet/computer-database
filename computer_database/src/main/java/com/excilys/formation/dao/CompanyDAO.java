@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.CompanyMapper;
+import com.excilys.formation.mappers.ComputerMapper;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
@@ -21,6 +22,7 @@ import com.excilys.formation.pagination.Page;
 public class CompanyDAO extends DAO<Company>{
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	Connection conn = null;
 	
 
 	public CompanyDAO(Connection conn) {
@@ -28,6 +30,7 @@ public class CompanyDAO extends DAO<Company>{
 		
 		
 	}
+	
 
 	
 	public boolean create(Company company) {
@@ -142,22 +145,23 @@ public class CompanyDAO extends DAO<Company>{
 		return page.getMaxElem();
 	}
 	
-	public List<Company> findAllPages(Page page) {
-		List<Company> companies = new ArrayList<Company>();
+	public List<Company> findAllPages(int offset,int nbPage) {
+		List<Company> computers = new ArrayList<Company>();
+		
 		try {
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company LIMIT 10" +" OFFSET "+page.getNbPages());
-			companies = CompanyMapper.resultToList(result);
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT "+ offset+", "+nbPage);
+			computers = CompanyMapper.resultToList(result);
 		}catch(SQLException e) {
-			logger.error("Error find all pages Company");
+			logger.error("Error fidnd all pages Computer");
 			e.printStackTrace();
 		}
-		return companies;
+		return computers;
 	}
 	
 	public Company getCompanyFromComputer(Computer computer) {
-		if(computer.getCompanyId() != null) {
-			return find(computer.getCompanyId());
+		if(computer.getCompany() != null) {
+			return find(computer.getCompany().getId());
 		}
 		return null;
 	}

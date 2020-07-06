@@ -87,9 +87,9 @@
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            <c:if test="${order == 'computer.company_id' && ascending == 'DESC'}"><a href="ListServlet?order=computer.company_id&ascending=ASC${nbByPageValue}${searchValue}" >Company </a></c:if>
-                            <c:if test="${order == 'computer.company_id' && ascending == 'ASC'}"><a href="ListServlet?order=computer.company_id&ascending=DESC${nbByPageValue}${searchValue}" >Company </a></c:if>
-                        	<c:if test="${order != 'computer.company_id'}"><a href="ListServlet?order=computer.company_id&ascending=ASC${nbByPageValue}${searchValue}" >Company </a></c:if>
+                            <c:if test="${order == 'c.name' && ascending == 'DESC'}"><a href="ListServlet?order=c.name&ascending=ASC${nbByPageValue}${searchValue}" >Company </a></c:if>
+                            <c:if test="${order == 'c.name' && ascending == 'ASC'}"><a href="ListServlet?order=c.name&ascending=DESC${nbByPageValue}${searchValue}" >Company </a></c:if>
+                        	<c:if test="${order != 'c.name'}"><a href="ListServlet?order=c.name&ascending=ASC${nbByPageValue}${searchValue}" >Company </a></c:if>
                         </th>
 
                     </tr>

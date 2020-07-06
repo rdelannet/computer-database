@@ -37,7 +37,7 @@ public class ComputerDAOTest {
 	public void find() {
 		Computer computer = new Computer("MacBook Pro 15.4 inch");
 		computer.setId(1);
-		computer.setCompanyId(new Company(1,"Apple Inc.").getId());
+		computer.setCompany(new Company(1,"Apple Inc."));
 		assertEquals(computerDao.find(1), computer);
 	}
 	
@@ -66,9 +66,9 @@ public class ComputerDAOTest {
 	public void update() {
 		Computer computer = new Computer("MacBook Pro 15.4 inch");
 		computer.setId(1);
-		computer.setCompanyId(new Company(2,"Thinking Machines").getId());
+		computer.setCompany(new Company(2,"Thinking Machines"));
 		computerDao.update(computer);
-		assertTrue(computer.getCompanyId() == 2);
+		assertTrue(computer.getCompany().getId() == 2);
 	}
 	
 	@Test

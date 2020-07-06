@@ -105,6 +105,7 @@ public class ListServlet extends HttpServlet {
 		else {
 			computers = computerDao.getComputersByPage(pages);
 			for (Computer computer : computers) {
+				System.out.println(computer);
 				try {
 					computersDto.add(ComputerDTOMapper.computerToDTO(computer));
 				} catch (SQLException e) {

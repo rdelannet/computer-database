@@ -84,8 +84,8 @@ public class ComputerDAO extends DAO<Computer>{
 			if(computer.getDateDisc() != null) {
 				sql += ", discontinued = '" + Date.valueOf(computer.getDateDisc()) + "'";
 			}		
-			if(computer.getCompanyId() != null) {
-				sql += ", company_id = '" +computer.getCompanyId() + "'"; 
+			if(computer.getCompany() != null) {
+				sql += ", company_id = '" +computer.getCompany().getId() + "'"; 
 			}		
 			sql += " WHERE id = "+ computer.getId();
 			
@@ -106,7 +106,7 @@ public class ComputerDAO extends DAO<Computer>{
 		try {
 			
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer WHERE id = " + id);
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE id = " + id);
 			
 			computer = ComputerMapper.resultToObject(result);			
 				
@@ -124,7 +124,7 @@ public class ComputerDAO extends DAO<Computer>{
 		
 		try {
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer");
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id");
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -154,7 +154,7 @@ public class ComputerDAO extends DAO<Computer>{
 		
 		try {
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT "+ offset+", "+nbPage);
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id LIMIT "+ offset+", "+nbPage);
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
 			logger.error("Error fidnd all pages Computer");
@@ -168,7 +168,7 @@ public class ComputerDAO extends DAO<Computer>{
 		try {
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.name LIKE '%"+search+"%' OR c.name LIKE '%"+search+"%' LIMIT "+ offset + ", "+ nbPage);
+					.executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.name LIKE '%"+search+"%' OR c.name LIKE '%"+search+"%' LIMIT "+ offset + ", "+ nbPage);
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
 			logger.error("Error find by search");
@@ -181,7 +181,7 @@ public class ComputerDAO extends DAO<Computer>{
 		try {
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM computer ORDER BY "+ order+" "+ascending+" LIMIT "+ offset + ", "+ nbPage+" ");
+					.executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY "+ order+" "+ascending+" LIMIT "+ offset + ", "+ nbPage+" ");
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
 			logger.error("Error find by order");

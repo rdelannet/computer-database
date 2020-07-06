@@ -13,20 +13,24 @@ public class CompanyDTO {
 	private Integer id;
 	private String name;
 	ConnectDB conn ;
-	CompanyDAO company;
+	CompanyDAO companyD;
 	
-	public CompanyDTO(Integer id) throws SQLException {
+	public CompanyDTO(Company company) throws SQLException {
 		conn = new ConnectDB();
-		company = new CompanyDAO(ConnectDB.getInstance());
+		companyD = new CompanyDAO(ConnectDB.getInstance());
+		this.id = company.getId();
+		this.name = company.getName();
+		
+	}
+	public CompanyDTO(int id) throws SQLException {
+		conn = new ConnectDB();
 		this.id = id;
-		Company com = company.find(id);
-		this.name = com.getName();
+		companyD = new CompanyDAO(ConnectDB.getInstance());
+		this.name = companyD.find(id).getName();
+		}
+	public CompanyDTO()  {
 		
-	}
-	public CompanyDTO() {
-		
-	}
-
+		}
 
 	public Integer getId() {
 		return id;

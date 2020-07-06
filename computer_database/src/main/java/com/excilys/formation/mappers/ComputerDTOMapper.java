@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import com.excilys.formation.dto.CompanyDTO;
 import com.excilys.formation.dto.ComputerDTO;
+import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 
 public class ComputerDTOMapper {
@@ -15,7 +16,7 @@ public class ComputerDTOMapper {
 			
 			computer = new Computer(					
 					computerDTO.getName(),
-					computerDTO.getCompanyDTO().getId());
+					new Company(computerDTO.getCompanyDTO().getId(),computerDTO.getCompanyDTO().getName()));
 			computer.setId(Integer.parseInt(computerDTO.getId()));
 			return computer;
 		}
@@ -25,7 +26,8 @@ public class ComputerDTOMapper {
 					
 					computerDTO.getName(),
 					LocalDate.parse(computerDTO.getIntroduced()),
-					computerDTO.getCompanyDTO().getId());
+					new Company(computerDTO.getCompanyDTO().getId(),computerDTO.getCompanyDTO().getName()));
+			
 			computer.setId(Integer.parseInt(computerDTO.getId()));
 			return computer;
 		}
@@ -36,7 +38,7 @@ public class ComputerDTOMapper {
 					computerDTO.getName(),
 					LocalDate.parse(computerDTO.getIntroduced()),
 					LocalDate.parse(computerDTO.getDiscontinued()),
-					computerDTO.getCompanyDTO().getId());
+					new Company(computerDTO.getCompanyDTO().getId(),computerDTO.getCompanyDTO().getName()));
 			computer.setId(Integer.parseInt(computerDTO.getId()));
 			return computer;
 			
@@ -51,7 +53,7 @@ public class ComputerDTOMapper {
 			
 			computer = new Computer(					
 					computerDTO.getName(),
-					computerDTO.getCompanyDTO().getId());
+					new Company(computerDTO.getCompanyDTO().getId(),computerDTO.getCompanyDTO().getName()));
 			
 			return computer;
 		}
@@ -61,7 +63,7 @@ public class ComputerDTOMapper {
 					
 					computerDTO.getName(),
 					LocalDate.parse(computerDTO.getIntroduced()),
-					computerDTO.getCompanyDTO().getId());
+					new Company(computerDTO.getCompanyDTO().getId(),computerDTO.getCompanyDTO().getName()));
 			
 			return computer;
 		}
@@ -72,7 +74,7 @@ public class ComputerDTOMapper {
 					computerDTO.getName(),
 					LocalDate.parse(computerDTO.getIntroduced()),
 					LocalDate.parse(computerDTO.getDiscontinued()),
-					computerDTO.getCompanyDTO().getId());
+					new Company(computerDTO.getCompanyDTO().getId(),computerDTO.getCompanyDTO().getName()));
 			
 			return computer;
 			
@@ -91,10 +93,10 @@ public class ComputerDTOMapper {
 			computerDto.setIntroduced(computer.getDateInt().toString());
 		}
 		if(computer.getDateDisc() != null) {
-			computerDto.setIntroduced(computer.getDateDisc().toString());
+			computerDto.setDiscontinued(computer.getDateDisc().toString());
 		}
-		if(computer.getCompanyId() != null ) {
-			computerDto.setCompanyDTO(new CompanyDTO(computer.getCompanyId()));
+		if(computer.getCompany() != null ) {
+			computerDto.setCompanyDTO(new CompanyDTO(computer.getCompany()));
 		}
 		
 		return computerDto;

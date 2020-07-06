@@ -5,10 +5,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.excilys.formation.connect.ConnectDB;
+import com.excilys.formation.dao.CompanyDAO;
+import com.excilys.formation.dao.ComputerDAO;
+import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 
 public class ComputerMapper {
-
+	
 	
 	public static Computer resultToObject(ResultSet result) throws SQLException {
 		Computer computer = null;
@@ -24,7 +28,7 @@ public class ComputerMapper {
 				computer.setDateDisc(result.getDate("discontinued").toLocalDate());
 			}
 			if(result.getInt("company_id") != 0) {
-				computer.setCompanyId(result.getInt("company_id"));
+				computer.setCompany(new Company(result.getInt("company_id"),result.getString("c.name")));
 			}
 		}
 		return computer;
@@ -39,13 +43,15 @@ public class ComputerMapper {
 			computer.setName(result.getString("name"));
 			computer.setId(result.getInt("id"));
 			if(result.getDate("introduced") != null) {
+				System.out.println("int"+result.getDate("introduced").toLocalDate());
 				computer.setDateInt(result.getDate("introduced").toLocalDate());
 			}
 			if(result.getDate("discontinued") != null) {
+				System.out.println("disc"+result.getDate("discontinued").toLocalDate());
 				computer.setDateDisc(result.getDate("discontinued").toLocalDate());
 			}
 			if(result.getInt("company_id") != 0) {
-				computer.setCompanyId(result.getInt("company_id"));
+				computer.setCompany(new Company(result.getInt("company_id"),result.getString("c.name")));
 			}
 			computers.add(computer);
 		}
