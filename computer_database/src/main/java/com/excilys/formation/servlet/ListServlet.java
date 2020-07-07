@@ -21,6 +21,8 @@ import com.excilys.formation.dto.ComputerDTO;
 import com.excilys.formation.mappers.ComputerDTOMapper;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
+import com.excilys.formation.services.ComputerService;
+import com.excilys.formation.services.ComputerServiceImp;
 /**
  * Servlet implementation class ListServlet
  */
@@ -34,6 +36,7 @@ public class ListServlet extends HttpServlet {
 	private ComputerDTO computerD ;
 	private ComputerDAO computerDao;
 	private CompanyDAO companyDao;
+	private ComputerServiceImp computerService;
 	private Page pages;
 	//private ConnectDB conn;
        
@@ -44,7 +47,10 @@ public class ListServlet extends HttpServlet {
     public ListServlet() throws SQLException {
         super();
         //this.conn = new ConnectDB();
+        
         this.computerDao = new ComputerDAO(ConnectDB.getInstance());
+        this.computerService = new ComputerServiceImp(computerDao);
+        
         this.companyDao= new CompanyDAO(ConnectDB.getInstance());
         this.pages = new Page();
     }
@@ -76,7 +82,7 @@ public class ListServlet extends HttpServlet {
 		}
 		if(request.getParameter("search") != null && !request.getParameter("search").equals("") ) {
 			search = request.getParameter("search");
-			computers = computerDao.getComputersSearchByPage(pages,search);
+			computers = computerService.getComputersSearchByPage(pages,search);
 			for(Computer computer : computers) {
 				try {
 					computersDto.add(ComputerDTOMapper.computerToDTO(computer));
@@ -91,7 +97,7 @@ public class ListServlet extends HttpServlet {
 			ascending = request.getParameter("ascending");
 			request.setAttribute("ascending",ascending);
 			request.setAttribute("order",order);
-			computers = computerDao.getComputersOrderByPage(pages,order,ascending);
+			computers = computerService.getComputersOrderByPage(pages,order,ascending);
 			
 			for (Computer computer : computers) {
 				try {
@@ -103,7 +109,7 @@ public class ListServlet extends HttpServlet {
 			}
 		}
 		else {
-			computers = computerDao.getComputersByPage(pages);
+			computers = computerService.getComputersByPage(pages);
 			for (Computer computer : computers) {
 				System.out.println(computer);
 				try {
@@ -122,8 +128,8 @@ public class ListServlet extends HttpServlet {
 		
 		request.setAttribute("search", search);
 		request.setAttribute("nbByPage", nb);
-		request.setAttribute("nbPagesMax", computerDao.getComputersNbPages(pages));
-		request.setAttribute("nbComputers", computerDao.findMaxElement());
+		request.setAttribute("nbPagesMax", computerService.getComputersNbPages(pages));
+		request.setAttribute("nbComputers", computerService.getNbComputers());
 		request.setAttribute("computers", computersDto);
 		request.getRequestDispatcher("WEB-INF/views/dashboard.jsp").forward(request,response);
 	}

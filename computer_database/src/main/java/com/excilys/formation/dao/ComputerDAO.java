@@ -106,7 +106,7 @@ public class ComputerDAO extends DAO<Computer>{
 		try {
 			
 			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE id = " + id);
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.id = " + id);
 			
 			computer = ComputerMapper.resultToObject(result);			
 				
@@ -195,7 +195,7 @@ public class ComputerDAO extends DAO<Computer>{
 		Integer nbPages = nbEntries/page.getItemsByPage();
 		return nbEntries%page.getItemsByPage() == 0?nbPages:nbPages+1;
 	}
-	public List<Computer> getComputersByPage(Page page) {
+	/*public List<Computer> getComputersByPage(Page page) {
 		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
 		return findAllPages(offset, page.getItemsByPage());
 	}
@@ -206,7 +206,7 @@ public class ComputerDAO extends DAO<Computer>{
 	public List<Computer> getComputersOrderByPage(Page page,String order,String ascending) {
 		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
 		return findOrder(offset, page.getItemsByPage(),order,ascending);
-	}
+	}*/
 	
 	
 	

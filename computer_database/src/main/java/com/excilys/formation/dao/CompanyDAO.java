@@ -11,9 +11,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.formation.connect.ConnectDB;
+
+
+
 import com.excilys.formation.mappers.CompanyMapper;
-import com.excilys.formation.mappers.ComputerMapper;
+
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
@@ -22,7 +24,8 @@ import com.excilys.formation.pagination.Page;
 public class CompanyDAO extends DAO<Company>{
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
-	Connection conn = null;
+	
+	private Connection conn = null;
 	
 
 	public CompanyDAO(Connection conn) {
@@ -159,12 +162,12 @@ public class CompanyDAO extends DAO<Company>{
 		return computers;
 	}
 	
-	public Company getCompanyFromComputer(Computer computer) {
+	/*public Company getCompanyFromComputer(Computer computer) {
 		if(computer.getCompany() != null) {
 			return find(computer.getCompany().getId());
 		}
 		return null;
-	}
+	}*/
 	
 }
 

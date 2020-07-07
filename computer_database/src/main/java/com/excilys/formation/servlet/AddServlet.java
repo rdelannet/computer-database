@@ -21,6 +21,8 @@ import com.excilys.formation.mappers.CompanyDTOMapper;
 import com.excilys.formation.mappers.ComputerDTOMapper;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
+import com.excilys.formation.services.CompanyServiceImp;
+import com.excilys.formation.services.ComputerServiceImp;
 
 /**
  * Servlet implementation class AddServlet
@@ -31,6 +33,7 @@ public class AddServlet extends HttpServlet {
 	private CompanyDAO companyDao;
 	private ComputerDAO computerDao;
 	private ConnectDB conn;
+	private CompanyServiceImp companyService;
        
     /**
      * @throws SQLException 
@@ -41,6 +44,7 @@ public class AddServlet extends HttpServlet {
         this.conn = new ConnectDB();
         this.companyDao= new CompanyDAO(conn.getInstance());
         this.computerDao= new ComputerDAO(conn.getInstance());
+        this.companyService = new CompanyServiceImp(companyDao);
     }
     
     
@@ -51,7 +55,7 @@ public class AddServlet extends HttpServlet {
 		List<CompanyDTO> companiesDto = new ArrayList<CompanyDTO>();
 		List<Company> companies = new ArrayList<Company>();
 		
-		companies = companyDao.findAll();
+		companies = companyService.getAllCompany();
 		for(Company company : companies) {
 			companiesDto.add(CompanyDTOMapper.companytoCompanyDto(company));
 			
