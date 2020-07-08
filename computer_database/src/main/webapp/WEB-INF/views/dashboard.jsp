@@ -29,6 +29,15 @@
 	<c:if test="${nbByPage != null && nbByPage != ''}">
 		<c:set var="nbByPageValue" value="&nbByPage=${nbByPage}" />
 	</c:if>
+	<c:set var="orderValue" value="" />
+	<c:if test="${order != null && order != ''}">
+		<c:set var="orderValue" value="&order=${order}" />
+	</c:if>
+	
+	<c:set var="ascendingValue" value="" />
+	<c:if test="${ascending != null && ascending != ''}">
+		<c:set var="ascendingValue" value="&ascending=${ascending}" />
+	</c:if>
 
     <section id="main">
         <div class="container">
@@ -122,14 +131,14 @@
             <ul class="pagination">
                 <li>
                 	<c:if test="${page.currentPage > 1}">
-                    	<a href="/computer_database/ListServlet?page=${page.currentPage-1}${nbByPageValue}${valueSearch}&order=computer.name" aria-label="Previous">
+                    	<a href="/computer_database/ListServlet?page=${page.currentPage-1}${nbByPageValue}${valueSearch}${orderValue}${ascendingValue}" aria-label="Previous">
                       		<span aria-hidden="true">&laquo;</span>
                   		</a>
                 	</c:if>
               	</li>
               	<c:forEach var="i" begin="1" end="2">
               		<c:if test="${page.currentPage-(3-i) >= 1}">
-              			<li><a href="/computer_database/ListServlet?page=${page.currentPage-(3-i)}${nbByPageValue}${valueSearch}&order=computer.name"><c:out value="${page.currentPage-(3-i)}"/></a></li>
+              			<li><a href="/computer_database/ListServlet?page=${page.currentPage-(3-i)}${nbByPageValue}${valueSearch}${orderValue}${ascendingValue}"><c:out value="${page.currentPage-(3-i)}"/></a></li>
               		</c:if>
               	</c:forEach>
               	<c:forEach var="i" begin="0" end="2">
@@ -138,12 +147,12 @@
                         <c:if test = "${page.currentPage+i ==  page.currentPage}">
                           <c:set var="active" value="active"/>
                          </c:if>
-              			<li class="${active}"><a href="/computer_database/ListServlet?page=${page.currentPage+i}${nbByPageValue}${valueSearch}&order=computer.name"><c:out value="${page.currentPage+i}"/></a></li>
+              			<li class="${active}"><a href="/computer_database/ListServlet?page=${page.currentPage+i}${nbByPageValue}${valueSearch}${orderValue}${ascendingValue}"><c:out value="${page.currentPage+i}"/></a></li>
               		</c:if>
               	</c:forEach>
               	<li>
               		<c:if test="${page.currentPage < nbComputers}">
-                		<a href="/computer_database/ListServlet?page=${page.currentPage+1}${nbByPageValue}${valueSearch}&order=computer.name" aria-label="Next">
+                		<a href="/computer_database/ListServlet?page=${page.currentPage+1}${nbByPageValue}${valueSearch}${orderValue}${ascendingValue}" aria-label="Next">
                     		<span aria-hidden="true">&raquo;</span>
                 		</a>
                 	</c:if>
@@ -154,17 +163,17 @@
             <c:if test = "${page.itemsByPage == 10}">
                <c:set var="active" value="active"/>
             </c:if>
-            <a href="/computer_database/ListServlet?nbByPage=10${valueSearch}"><button type="button" class="btn btn-default ${active}">10</button></a>
+            <a href="/computer_database/ListServlet?nbByPage=10${valueSearch}${orderValue}${ascendingValue}"><button type="button" class="btn btn-default ${active}">10</button></a>
             <c:set var="active" value=""/>
             <c:if test = "${page.itemsByPage == 50}">
                <c:set var="active" value="active"/>
             </c:if>
-            <a href="/computer_database/ListServlet?nbByPage=50${valueSearch}"><button type="button" class="btn btn-default ${active}">50</button></a>
+            <a href="/computer_database/ListServlet?nbByPage=50${valueSearch}${orderValue}${ascendingValue}"><button type="button" class="btn btn-default ${active}">50</button></a>
             <c:set var="active" value=""/>
             <c:if test = "${page.itemsByPage == 100}">
                <c:set var="active" value="active"/>
             </c:if>
-            <a href="/computer_database/ListServlet?nbByPage=100${valueSearch}"><button type="button" class="btn btn-default ${active}">100</button></a>
+            <a href="/computer_database/ListServlet?nbByPage=100${valueSearch}${orderValue}${ascendingValue}"><button type="button" class="btn btn-default ${active}">100</button></a>
         	</div>
         </div>
 

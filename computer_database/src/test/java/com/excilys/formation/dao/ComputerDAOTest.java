@@ -20,7 +20,7 @@ public class ComputerDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
-		computerDao = new ComputerDAO(connect.getInstance());
+		computerDao = new ComputerDAO();
 	}
 
 	@Test

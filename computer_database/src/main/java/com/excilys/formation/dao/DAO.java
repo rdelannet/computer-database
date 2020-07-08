@@ -8,10 +8,10 @@ import com.excilys.formation.connect.ConnectDB;
 
 public  abstract class DAO<T> {
 	
-	protected Connection connect = null;
 	
-	public DAO(Connection conn) {
-		this.connect = conn;
+	
+	public DAO() {
+		
 	}
 	
 	public abstract boolean create(T obj);

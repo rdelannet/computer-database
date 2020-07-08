@@ -1,16 +1,21 @@
 package com.excilys.formation.connect;
 
 import java.sql.*;
+
+import javax.sql.DataSource;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.excilys.formation.dao.ComputerDAO;
 
 
-
+@Component
 public class ConnectDB  {
 	
 	private static Connection connect;
@@ -20,43 +25,18 @@ public class ConnectDB  {
     private String password = "qwerty1234";*/
     private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
     
-    private static HikariDataSource ds = new HikariDataSource(new HikariConfig("/datasource.properties"));
+    private  DataSource hikariDataSource;
 
-	/*public ConnectDB() throws SQLException {
-		try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
-            this.connect = DriverManager.getConnection(url, username, password);
-
-        } catch (ClassNotFoundException ex) {
-            logger.error("Database Connection Creation Failed : " + ex.getMessage());
-        }
-		catch(SQLException s) {
-			logger.error("Error connect");
-			s.printStackTrace();
-		}
+    @Autowired
+	public ConnectDB(DataSource hikariDataSource) {
+		this.hikariDataSource = hikariDataSource;
 	}
-	public ConnectDB(String urlt,String usernamet,String passwordt)throws SQLException{
-		try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
-            this.connect = DriverManager.getConnection(urlt, usernamet, passwordt);
-
-        } catch (ClassNotFoundException ex) {
-            logger.error("Database Connection Creation Failed : " + ex.getMessage());
-        }
-		catch(SQLException s) {
-			logger.error("Error connect");
-			s.printStackTrace();
-		}
-	}*/
-	
 	
 
 	
-	public final static Connection getInstance() throws SQLException {
+	public synchronized Connection getInstance() throws SQLException {
 		if(connect == null || connect.isClosed()) {
-			connect = ds.getConnection();
+			connect = hikariDataSource.getConnection();
 		}
 		return connect;
 	}

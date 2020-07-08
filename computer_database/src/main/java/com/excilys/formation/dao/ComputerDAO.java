@@ -12,6 +12,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.ComputerMapper;
@@ -20,22 +22,23 @@ import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
 
 
-
+@Repository
 public class ComputerDAO extends DAO<Computer>{
 	String insert = "INSERT INTO computer(name) values (?)";
 	private String delete = "DELETE FROM computer WHERE id = ?";
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	@Autowired
+	private ConnectDB connect;
 	
-	
-	public ComputerDAO(Connection conn) {
-		super(conn);
-
+	public ComputerDAO() throws SQLException {
 		
+		
+;		
 	}
 
 	public boolean create(Computer computer)  {
-		Computer comp = new Computer();
-		try(PreparedStatement statement = this.connect.prepareStatement(insert,Statement.RETURN_GENERATED_KEYS)){
+		
+		try(PreparedStatement statement = this.connect.getInstance().prepareStatement(insert,Statement.RETURN_GENERATED_KEYS)){
 			
 			statement.setString(1, computer.getName());
 			System.out.println(computer.getName());
@@ -45,7 +48,7 @@ public class ComputerDAO extends DAO<Computer>{
 				Integer computerId = resultKeys.getInt(1);
 				computer.setId(computerId);
 				this.update(computer);
-				comp = this.find(computerId);
+				
 			}
 			
 					
@@ -60,7 +63,7 @@ public class ComputerDAO extends DAO<Computer>{
 
 	public boolean delete(Computer computer) {
 		
-		try(PreparedStatement statement = this.connect.prepareStatement(delete);) {
+		try(PreparedStatement statement = this.connect.getInstance().prepareStatement(delete);) {
 			
 			
 			statement.setInt(1, computer.getId());
@@ -89,9 +92,9 @@ public class ComputerDAO extends DAO<Computer>{
 			}		
 			sql += " WHERE id = "+ computer.getId();
 			
-			this.connect.createStatement().
+			this.connect.getInstance().createStatement().
 				executeUpdate(sql);
-			computer = this.find(computer.getId());
+			
 			
 		} catch (Exception e) {
 			logger.error("Error update Computer");
@@ -105,7 +108,7 @@ public class ComputerDAO extends DAO<Computer>{
 		Computer computer = null;
 		try {
 			
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.id = " + id);
 			
 			computer = ComputerMapper.resultToObject(result);			
@@ -123,7 +126,7 @@ public class ComputerDAO extends DAO<Computer>{
 		List<Computer> computers = null;
 		
 		try {
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id");
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
@@ -136,7 +139,7 @@ public class ComputerDAO extends DAO<Computer>{
 		
 		Page page = new Page();
 		try {
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) as count FROM computer");
 			if(result.first()) {
 				page.setMaxElem(result.getInt(1));
@@ -153,7 +156,7 @@ public class ComputerDAO extends DAO<Computer>{
 		List<Computer> computers = new ArrayList<Computer>();
 		
 		try {
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id LIMIT "+ offset+", "+nbPage);
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
@@ -166,7 +169,7 @@ public class ComputerDAO extends DAO<Computer>{
 	public List<Computer> findBySearch(int offset,int nbPage,String search){
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.name LIKE '%"+search+"%' OR c.name LIKE '%"+search+"%' LIMIT "+ offset + ", "+ nbPage);
 			computers = ComputerMapper.resultToList(result);
@@ -179,7 +182,7 @@ public class ComputerDAO extends DAO<Computer>{
 	public List<Computer> findOrder(int offset,int nbPage,String order,String ascending){
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
-			ResultSet result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY "+ order+" "+ascending+" LIMIT "+ offset + ", "+ nbPage+" ");
 			computers = ComputerMapper.resultToList(result);

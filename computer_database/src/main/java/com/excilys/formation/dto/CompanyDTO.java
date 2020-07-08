@@ -3,6 +3,8 @@ package com.excilys.formation.dto;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.dao.CompanyDAO;
 import com.excilys.formation.model.Company;
@@ -12,21 +14,24 @@ public class CompanyDTO {
 	
 	private Integer id;
 	private String name;
+	@Autowired
 	ConnectDB conn ;
+	@Autowired
 	CompanyDAO companyD;
 	
 	public CompanyDTO(Company company) throws SQLException {
-		conn = new ConnectDB();
-		companyD = new CompanyDAO(ConnectDB.getInstance());
+		//conn = new ConnectDB();
+		
+
+		
 		this.id = company.getId();
 		this.name = company.getName();
 		
 	}
 	public CompanyDTO(int id) throws SQLException {
-		conn = new ConnectDB();
+		//conn = new ConnectDB();
 		this.id = id;
-		companyD = new CompanyDAO(ConnectDB.getInstance());
-		this.name = companyD.find(id).getName();
+		
 		}
 	public CompanyDTO()  {
 		

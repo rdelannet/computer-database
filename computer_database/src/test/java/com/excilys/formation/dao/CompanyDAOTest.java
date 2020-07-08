@@ -15,7 +15,7 @@ public class CompanyDAOTest {
 	private ConnectionH2 connect;
 	@Before
 	public void setUp() throws Exception {
-		companyDao = new CompanyDAO(connect.getInstance());
+		companyDao = new CompanyDAO();
 	}
 	
 	@Test

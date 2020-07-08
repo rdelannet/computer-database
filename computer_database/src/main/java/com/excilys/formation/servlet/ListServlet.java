@@ -7,11 +7,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.dao.CompanyDAO;
@@ -33,27 +37,31 @@ public class ListServlet extends HttpServlet {
 	public int taillePage;
 	public int maxPage;
 	//private ComputerDTOMapper computerM ;
-	private ComputerDTO computerD ;
+	@Autowired
 	private ComputerDAO computerDao;
-	private CompanyDAO companyDao;
+	@Autowired
 	private ComputerServiceImp computerService;
+	@Autowired
 	private Page pages;
+	private String order = "computer.name";
 	//private ConnectDB conn;
        
     /**
      * @throws SQLException 
      * @see HttpServlet#HttpServlet()
      */
-    public ListServlet() throws SQLException {
-        super();
+    public ListServlet()  {
         //this.conn = new ConnectDB();
-        
-        this.computerDao = new ComputerDAO(ConnectDB.getInstance());
-        this.computerService = new ComputerServiceImp(computerDao);
-        
-        this.companyDao= new CompanyDAO(ConnectDB.getInstance());
-        this.pages = new Page();
+       
+        //this.computerService = new ComputerServiceImp();
+        //this.pages = new Page();
     }
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,config.getServletContext());
+	}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -62,7 +70,7 @@ public class ListServlet extends HttpServlet {
 		List<Computer> computers = new ArrayList<Computer>();
 		String search = "";
 		Integer nb = 10;
-		String order = "computer.name";
+		
 		String ascending = "ASC";
 		if(request.getParameter("nbByPage") != null) {
 			String nbByPage = request.getParameter("nbByPage");
@@ -123,11 +131,13 @@ public class ListServlet extends HttpServlet {
 		
 		
 		System.out.println(pages.getItemsByPage());
+		System.out.println(order);
 		request.setAttribute("page", pages);
 		
 		
 		request.setAttribute("search", search);
 		request.setAttribute("nbByPage", nb);
+		
 		request.setAttribute("nbPagesMax", computerService.getComputersNbPages(pages));
 		request.setAttribute("nbComputers", computerService.getNbComputers());
 		request.setAttribute("computers", computersDto);
@@ -137,8 +147,7 @@ public class ListServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<ComputerDTO> computersDtoP = new ArrayList<ComputerDTO>();
-		List<Computer> computers = new ArrayList<Computer>();
+		
 		if(request.getParameter("selection") != null && !request.getParameter("selection").equals("")) {
 			String listIds = request.getParameter("selection");
 			System.out.println(listIds);

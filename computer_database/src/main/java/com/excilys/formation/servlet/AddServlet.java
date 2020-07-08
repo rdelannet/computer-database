@@ -6,11 +6,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.dao.CompanyDAO;
@@ -30,10 +34,11 @@ import com.excilys.formation.services.ComputerServiceImp;
 @WebServlet(urlPatterns = "/AddServlet")
 public class AddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private CompanyDAO companyDao;
-	private ComputerDAO computerDao;
-	private ConnectDB conn;
+	@Autowired
+	private ComputerServiceImp computerService;
+	@Autowired
 	private CompanyServiceImp companyService;
+	
        
     /**
      * @throws SQLException 
@@ -41,12 +46,14 @@ public class AddServlet extends HttpServlet {
      */
     public AddServlet() throws SQLException {
         super();
-        this.conn = new ConnectDB();
-        this.companyDao= new CompanyDAO(conn.getInstance());
-        this.computerDao= new ComputerDAO(conn.getInstance());
-        this.companyService = new CompanyServiceImp(companyDao);
+        //this.companyService = new CompanyServiceImp();
     }
-    
+    @Override
+	public void init(ServletConfig config) throws ServletException {
+		
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,config.getServletContext());
+	}
     
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,7 +79,7 @@ public class AddServlet extends HttpServlet {
 		System.out.println("je suis la");
 		ComputerDTO computer = new ComputerDTO();
 		Computer comp = new Computer();
-		ComputerDAO c = computerDao;
+		
 		
 		
 		try {
@@ -101,7 +108,7 @@ public class AddServlet extends HttpServlet {
 		System.out.println(request.getParameter("name"));
 		comp = ComputerDTOMapper.dtoToComputerC(computer);
 		System.out.println(comp);
-		c.create(comp);
+		computerService.createComputer(comp);
 		doGet(request, response);
 		
 		

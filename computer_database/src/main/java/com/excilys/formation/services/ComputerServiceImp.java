@@ -1,19 +1,24 @@
 package com.excilys.formation.services;
-import java.sql.Connection;
+
+import java.sql.SQLException;
 import java.util.List;
 
-import com.excilys.formation.dao.CompanyDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+
+
 import com.excilys.formation.dao.ComputerDAO;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
-
+@Service
 public class ComputerServiceImp implements ComputerService {
-	
+	@Autowired
 	private  ComputerDAO computerDao;
 	
 	
-	public ComputerServiceImp(ComputerDAO comp) {
-		this.computerDao = comp;
+	public ComputerServiceImp() throws SQLException {
+		
 	}
 
 	@Override

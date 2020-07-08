@@ -1,5 +1,8 @@
 package com.excilys.formation.pagination;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Page {
 	
 	private  int nbPages = 10;
