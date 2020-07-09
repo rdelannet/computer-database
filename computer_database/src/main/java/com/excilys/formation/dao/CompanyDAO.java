@@ -24,6 +24,8 @@ import com.excilys.formation.pagination.Page;
 public class CompanyDAO extends DAO<Company>{
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	private String sqlComp = "SELECT * FROM company";
+	private String count = "SELECT count(*) as count FROM company";
 	
 	
 	@Autowired
@@ -126,7 +128,7 @@ public class CompanyDAO extends DAO<Company>{
 		List<Company> companies = new ArrayList<Company>();
 		try {
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company");
+				    ResultSet.CONCUR_READ_ONLY).executeQuery(sqlComp);
 			System.out.println(result);
 			companies = CompanyMapper.resultToList(result);
 			
@@ -141,7 +143,7 @@ public class CompanyDAO extends DAO<Company>{
 		Page page = new Page();
 		try {
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) as count FROM company");
+				    ResultSet.CONCUR_READ_ONLY).executeQuery(count);
 			if(result.first()) {
 				page.setMaxElem(result.getInt(1));
 			}

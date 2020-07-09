@@ -26,6 +26,10 @@ import com.excilys.formation.pagination.Page;
 public class ComputerDAO extends DAO<Computer>{
 	String insert = "INSERT INTO computer(name) values (?)";
 	private String delete = "DELETE FROM computer WHERE id = ?";
+	private String findComputer = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.id = ";
+	private String findAllComputer = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id";
+	private String count = "SELECT count(*) as count FROM computer";
+	
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	@Autowired
 	private ConnectDB connect;
@@ -109,7 +113,7 @@ public class ComputerDAO extends DAO<Computer>{
 		try {
 			
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.id = " + id);
+				    ResultSet.CONCUR_READ_ONLY).executeQuery( findComputer+ id);
 			
 			computer = ComputerMapper.resultToObject(result);			
 				
@@ -127,7 +131,7 @@ public class ComputerDAO extends DAO<Computer>{
 		
 		try {
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id");
+				    ResultSet.CONCUR_READ_ONLY).executeQuery(findAllComputer);
 			computers = ComputerMapper.resultToList(result);
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -140,7 +144,7 @@ public class ComputerDAO extends DAO<Computer>{
 		Page page = new Page();
 		try {
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT count(*) as count FROM computer");
+				    ResultSet.CONCUR_READ_ONLY).executeQuery(count);
 			if(result.first()) {
 				page.setMaxElem(result.getInt(1));
 			}
