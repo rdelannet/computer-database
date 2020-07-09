@@ -5,8 +5,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class Page {
 	
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
 	private  int nbPages = 10;
 	private int maxElem;
+	private int offset;
 	private Integer itemsBypage;
 	private Integer currentPage;
 	

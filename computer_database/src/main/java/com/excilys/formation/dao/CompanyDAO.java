@@ -24,7 +24,7 @@ import com.excilys.formation.pagination.Page;
 public class CompanyDAO extends DAO<Company>{
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
-	private String sqlComp = "SELECT * FROM company";
+	private String sqlComp = "SELECT id,name FROM company";
 	private String count = "SELECT count(*) as count FROM company";
 	
 	
@@ -35,23 +35,6 @@ public class CompanyDAO extends DAO<Company>{
 		
 	}
 	
-
-	
-	public boolean create(Company company) {
-		String sql = "INSERT INTO company(id,name) values (?,?)";
-		try {
-			PreparedStatement statement = this.connect.getInstance().prepareStatement(sql);
-			statement.setInt(1,company.getId());
-			statement.setString(2,company.getName());
-			//statement.executeUpdate();
-
-		} catch (SQLException e) {
-			logger.error("Error create Company");
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
 
 	
 
@@ -74,7 +57,7 @@ public class CompanyDAO extends DAO<Company>{
 			try {
 				connect.getInstance().rollback();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
+				
 				e1.printStackTrace();
 			}
 			e.printStackTrace();
@@ -84,24 +67,7 @@ public class CompanyDAO extends DAO<Company>{
 	}
 
 
-	public boolean update(Company company) {
-		String sql = "UPDATE company SET id = ?, name = ? WHERE id = ?";
-		
-		try {
-			PreparedStatement statement = this.connect.getInstance().prepareStatement(sql);
-			statement.setInt(1,company.getId());
-			statement.setString(2,company.getName());
-			statement.setInt(3,company.getId());
-			//statement.executeUpdate();
-			
-			
-		} catch (Exception e) {
-			logger.error("Error update Company");
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+
 
 	
 	public Company find(int id) {
@@ -110,7 +76,7 @@ public class CompanyDAO extends DAO<Company>{
 	    try {
 	   
 	      ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-	    		    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM company WHERE id = " + id);
+	    		    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT id,name FROM company WHERE id = " + id);
 	      System.out.println(result);
 	      company = CompanyMapper.resultToObject(result);
 	       
@@ -130,7 +96,10 @@ public class CompanyDAO extends DAO<Company>{
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery(sqlComp);
 			System.out.println(result);
-			companies = CompanyMapper.resultToList(result);
+			while(result.next()) {
+				companies.add(CompanyMapper.resultToList(result));
+			}
+			
 			
 		}catch(SQLException e) {
 			logger.error("Error find all Company");
@@ -160,27 +129,39 @@ public class CompanyDAO extends DAO<Company>{
 		
 		try {
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM computer LIMIT "+ offset+", "+nbPage);
-			computers = CompanyMapper.resultToList(result);
+				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT id,name FROM company LIMIT "+ offset+", "+nbPage);
+			while(result.next()) {
+				computers.add(CompanyMapper.resultToList(result));
+			}
+				
+			
 		}catch(SQLException e) {
-			logger.error("Error fidnd all pages Computer");
+			logger.error("Error fidnd all pages Companies");
 			e.printStackTrace();
 		}
 		return computers;
 	}
-	
-	/*public Company getCompanyFromComputer(Computer computer) {
-		if(computer.getCompany() != null) {
-			return find(computer.getCompany().getId());
-		}
-		return null;
-	}*/
-	public static void main(String[] args) throws SQLException {
-		CompanyDAO companyDAO = new CompanyDAO();
-		Company company = new Company(378,"ChipTest");
-		System.out.println(companyDAO.findAll());
+
+
+
+
+	@Override
+	public boolean create(Company obj) {
 		
+		return false;
 	}
+
+
+
+
+	@Override
+	public boolean update(Company obj) {
+		
+		return false;
+	}
+	
+
+	
 	
 }
 

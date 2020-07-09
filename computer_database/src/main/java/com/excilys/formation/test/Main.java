@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.formation.connect.ConnectDB;
-import com.excilys.formation.service.CLI;
+import com.excilys.formation.ui.CLI;
 
 public class Main {
 	@Autowired

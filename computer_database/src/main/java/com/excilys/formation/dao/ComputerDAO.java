@@ -24,7 +24,7 @@ import com.excilys.formation.pagination.Page;
 
 @Repository
 public class ComputerDAO extends DAO<Computer>{
-	String insert = "INSERT INTO computer(name) values (?)";
+	private String insert = "INSERT INTO computer(name) values (?)";
 	private String delete = "DELETE FROM computer WHERE id = ?";
 	private String findComputer = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.id = ";
 	private String findAllComputer = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id";
@@ -83,7 +83,7 @@ public class ComputerDAO extends DAO<Computer>{
 	public boolean update(Computer computer) {
 		
 		try {
-			System.out.println("coucou");
+			
 			String sql = "UPDATE computer SET name = '" + computer.getName() + "'";
 			if(computer.getDateInt() != null) {
 				sql += ", introduced = '" + Date.valueOf(computer.getDateInt()) + "'";
@@ -127,12 +127,15 @@ public class ComputerDAO extends DAO<Computer>{
 
 	@Override
 	public List<Computer> findAll() {
-		List<Computer> computers = null;
+		List<Computer> computers = new ArrayList<Computer>();
 		
 		try {
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery(findAllComputer);
-			computers = ComputerMapper.resultToList(result);
+			while(result.next()) {
+				computers.add(ComputerMapper.resultToList(result));
+			}
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -162,7 +165,10 @@ public class ComputerDAO extends DAO<Computer>{
 		try {
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id LIMIT "+ offset+", "+nbPage);
-			computers = ComputerMapper.resultToList(result);
+			while(result.next()) {
+				computers.add(ComputerMapper.resultToList(result));
+			}
+			
 		}catch(SQLException e) {
 			logger.error("Error fidnd all pages Computer");
 			e.printStackTrace();
@@ -176,20 +182,25 @@ public class ComputerDAO extends DAO<Computer>{
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.name LIKE '%"+search+"%' OR c.name LIKE '%"+search+"%' LIMIT "+ offset + ", "+ nbPage);
-			computers = ComputerMapper.resultToList(result);
+			while(result.next()) {
+				computers.add(ComputerMapper.resultToList(result));
+			}
 		}catch(SQLException e) {
 			logger.error("Error find by search");
 			e.printStackTrace();
 		}
 		return computers;
 	}
-	public List<Computer> findOrder(int offset,int nbPage,String order,String ascending){
+	public List<Computer> findOrder(Page page,String order,String ascending){
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
 			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				    ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY "+ order+" "+ascending+" LIMIT "+ offset + ", "+ nbPage+" ");
-			computers = ComputerMapper.resultToList(result);
+					.executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY "+ order+" "+ascending+" LIMIT "+ page.getOffset() + ", "+ page.getNbPages()+" ");
+			while(result.next()) {
+				computers.add(ComputerMapper.resultToList(result));
+			}
+			
 		}catch(SQLException e) {
 			logger.error("Error find by order");
 			e.printStackTrace();
@@ -202,19 +213,6 @@ public class ComputerDAO extends DAO<Computer>{
 		Integer nbPages = nbEntries/page.getItemsByPage();
 		return nbEntries%page.getItemsByPage() == 0?nbPages:nbPages+1;
 	}
-	/*public List<Computer> getComputersByPage(Page page) {
-		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
-		return findAllPages(offset, page.getItemsByPage());
-	}
-	public List<Computer> getComputersSearchByPage(Page page,String search) {
-		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
-		return findBySearch(offset, page.getItemsByPage(), search);
-	}
-	public List<Computer> getComputersOrderByPage(Page page,String order,String ascending) {
-		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
-		return findOrder(offset, page.getItemsByPage(),order,ascending);
-	}*/
-	
 	
 	
 

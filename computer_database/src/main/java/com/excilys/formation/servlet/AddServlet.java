@@ -46,7 +46,7 @@ public class AddServlet extends HttpServlet {
      */
     public AddServlet() throws SQLException {
         super();
-        //this.companyService = new CompanyServiceImp();
+        
     }
     @Override
 	public void init(ServletConfig config) throws ServletException {
@@ -76,7 +76,7 @@ public class AddServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("je suis la");
+		
 		ComputerDTO computer = new ComputerDTO();
 		Computer comp = new Computer();
 		
@@ -85,20 +85,19 @@ public class AddServlet extends HttpServlet {
 		try {
 			computer.setCompanyDTO(new CompanyDTO(Integer.parseInt(request.getParameter("companyId"))));
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
 		computer.setName(request.getParameter("computerName"));
 		
-		if(request.getParameter("introduced") != "") {
+		if(!("".equals(request.getParameter("introduced")))) {
 			computer.setIntroduced(request.getParameter("introduced"));
 			
 		}
-		if(request.getParameter("discontinued") != "") {
+		if(!("".equals(request.getParameter("discontinued")))) {
 			computer.setDiscontinued(request.getParameter("discontinued"));
 		}
 		

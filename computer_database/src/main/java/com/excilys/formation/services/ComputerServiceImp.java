@@ -68,8 +68,8 @@ public class ComputerServiceImp implements ComputerService {
 	}
 
 	public List<Computer> getComputersOrderByPage(Page page,String order,String ascending) {
-		Integer offset = (page.getCurrentPage()-1)*page.getItemsByPage();
-		return computerDao.findOrder(offset, page.getItemsByPage(),order,ascending);
+		page.setOffset((page.getCurrentPage()-1)*page.getItemsByPage());
+		return computerDao.findOrder(page,order,ascending);
 	}
 	public Integer getComputersNbPages(Page page) {
 		Integer nbEntries = computerDao.findMaxElement();

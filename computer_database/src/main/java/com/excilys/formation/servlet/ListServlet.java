@@ -88,7 +88,7 @@ public class ListServlet extends HttpServlet {
 		else {
 			pages.setCurrentPage(1);
 		}
-		if(request.getParameter("search") != null && !request.getParameter("search").equals("") ) {
+		if(request.getParameter("search") != null && !("".equals(request.getParameter("search"))) ) {
 			search = request.getParameter("search");
 			computers = computerService.getComputersSearchByPage(pages,search);
 			for(Computer computer : computers) {
@@ -100,7 +100,7 @@ public class ListServlet extends HttpServlet {
 				}
 			}
 		}
-		if(request.getParameter("order") != null && !request.getParameter("order").equals("") && request.getParameter("ascending") != null && !request.getParameter("ascending").equals("") ){
+		if(request.getParameter("order") != null && !("".equals(request.getParameter("order"))) && request.getParameter("ascending") != null && !("".equals(request.getParameter("ascending"))) ){
 			order =request.getParameter("order");
 			ascending = request.getParameter("ascending");
 			request.setAttribute("ascending",ascending);
@@ -119,7 +119,7 @@ public class ListServlet extends HttpServlet {
 		else {
 			computers = computerService.getComputersByPage(pages);
 			for (Computer computer : computers) {
-				System.out.println(computer);
+				
 				try {
 					computersDto.add(ComputerDTOMapper.computerToDTO(computer));
 				} catch (SQLException e) {
@@ -130,8 +130,7 @@ public class ListServlet extends HttpServlet {
 		}
 		
 		
-		System.out.println(pages.getItemsByPage());
-		System.out.println(order);
+		
 		request.setAttribute("page", pages);
 		
 		

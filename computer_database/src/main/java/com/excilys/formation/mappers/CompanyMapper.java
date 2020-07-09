@@ -19,13 +19,13 @@ public class CompanyMapper  {
 	}
 
 
-	public static List<Company> resultToList(ResultSet result) throws SQLException {
-		List<Company> companies = new ArrayList<Company>();
-		while(result.next()){
-			companies.add(new Company(result.getInt("id"), result.getString("name")));
-		}
+	public static Company resultToList(ResultSet result) throws SQLException {
 		
-		return companies;
+		
+		return new Company(result.getInt("id"), result.getString("name"));
+		
+		
+		
 	}
 
 

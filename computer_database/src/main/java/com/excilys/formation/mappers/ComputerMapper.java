@@ -35,27 +35,26 @@ public class ComputerMapper {
 	}
 
 	
-	public static List<Computer> resultToList(ResultSet result) throws SQLException {
-		List<Computer> computers = new ArrayList<Computer>();
-		while(result.next()) {
+	public static Computer resultToList(ResultSet result) throws SQLException {
+		//List<Computer> computers = new ArrayList<Computer>();
+		
 			Computer computer = new Computer();
 			
 			computer.setName(result.getString("name"));
 			computer.setId(result.getInt("id"));
 			if(result.getDate("introduced") != null) {
-				System.out.println("int"+result.getDate("introduced").toLocalDate());
+				
 				computer.setDateInt(result.getDate("introduced").toLocalDate());
 			}
 			if(result.getDate("discontinued") != null) {
-				System.out.println("disc"+result.getDate("discontinued").toLocalDate());
+				
 				computer.setDateDisc(result.getDate("discontinued").toLocalDate());
 			}
 			if(result.getInt("company_id") != 0) {
 				computer.setCompany(new Company(result.getInt("company_id"),result.getString("c.name")));
 			}
-			computers.add(computer);
-		}
-		return computers;
+			
+		return computer;
 	}
 
 }

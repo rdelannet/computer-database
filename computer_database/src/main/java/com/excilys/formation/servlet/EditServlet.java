@@ -79,7 +79,7 @@ public class EditServlet extends HttpServlet{
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("je suis la");
+		
 		ComputerDTO computer = new ComputerDTO();
 		Computer comp = new Computer();
 		ComputerDAO c = computerDao;
@@ -88,16 +88,16 @@ public class EditServlet extends HttpServlet{
 		try {
 			computer.setCompanyDTO(new CompanyDTO(Integer.parseInt(request.getParameter("companyId"))));
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
-		if(request.getParameter("introduced") != "") {
+		if(!("".equals(request.getParameter("introduced")))) {
 			computer.setIntroduced(request.getParameter("introduced"));
 		}
-		if(request.getParameter("discontinued") != "") {
+		if(!("".equals(request.getParameter("discontinued")))) {
 			computer.setDiscontinued(request.getParameter("discontinued"));
 		}
 		

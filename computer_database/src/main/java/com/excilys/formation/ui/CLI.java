@@ -1,4 +1,4 @@
-package com.excilys.formation.service;
+package com.excilys.formation.ui;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
