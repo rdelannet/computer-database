@@ -34,13 +34,17 @@ public class ComputerDAO extends DAO<Computer>{
 	private String sqlUpdate = "UPDATE computer SET name = :name , introduced = :introduced , discontinued = :discontinued , company_id = :company_id WHERE id = :id";
 	private String findComputer = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.id = :id";
 	private String findAllComputer = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id";
+	private String findAllPagesQ = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id LIMIT :offset , :nbPage";
+	private String findSearch = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.name LIKE :search OR c.name LIKE :search LIMIT  :offset , :nbPage";
+	private String findOrder = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY :order :ascending LIMIT :getOffset, :getNbPages";
 	private String count = "SELECT count(*) as count FROM computer";
 	private String sqlId = "SELECT id FROM computer";
 	private SpringConf hikari;
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	@Autowired
 	private ConnectDB connect;
-	private NamedParameterJdbcTemplate jdbcTemplate;
+	
+	//private NamedParameterJdbcTemplate jdbcTemplate;
 	
 	public ComputerDAO() throws SQLException {
 		
@@ -87,24 +91,20 @@ public class ComputerDAO extends DAO<Computer>{
 
 	public boolean update(Computer computer) {
 		
-		try {
+		
 			MapSqlParameterSource vParams = new MapSqlParameterSource();
-			vParams.addValue("computer.id", computer.getId());
-			vParams.addValue("computer.name",computer.getName());
+			vParams.addValue("id", computer.getId());
+			vParams.addValue("name",computer.getName());
 			vParams.addValue("introduced", computer.getDateInt());
 			vParams.addValue("discontinued", computer.getDateDisc());
 			vParams.addValue("company_id", computer.getCompany().getId());
 			NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
 			vJdbcTemplate.update(sqlUpdate,vParams);
+			
 
+			System.out.println(computer.getName() + "kdz");
 			
-			
-		} catch (Exception e) {
-			logger.error("Error update Computer");
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+			return true;
 	}
 
 	public Computer find(int id) {
@@ -113,13 +113,22 @@ public class ComputerDAO extends DAO<Computer>{
 				.addValue("id", id);
 		RowMapper<Computer> vRowMapper = new RowMapper<Computer>() {
 			public Computer mapRow(ResultSet result,int numRow) throws SQLException{
-				Computer computerR = new Computer();
-				computerR.setId(result.getInt("computer.id"));
-				computerR.setName(result.getString("computer.name"));
-				computerR.setDateInt((result.getDate("introduced").toLocalDate()));
-				computerR.setDateDisc((result.getDate("discontinued").toLocalDate()));
-				computerR.setCompany(new Company(result.getInt("company_id"),result.getString("c.name")));
-				return computerR;
+				Computer computer = new Computer();
+				computer.setId(result.getInt("computer.id"));
+				computer.setName(result.getString("computer.name"));
+				if(result.getDate("introduced") != null) {
+					computer.setDateInt(result.getDate("introduced").toLocalDate());
+				}
+				
+				if(result.getDate("discontinued") != null) {
+					computer.setDateDisc(result.getDate("discontinued").toLocalDate());
+				}
+				
+				if(result.getInt("company_id") != 0) {
+					Company company = new Company(result.getInt("company_id"),result.getString("c.name"));
+					computer.setCompany(company);
+				}
+				return computer;
 			}
 		};
 		Computer computer = vJdbcTemplate.queryForObject(findComputer, vParams,vRowMapper);
@@ -138,9 +147,18 @@ public class ComputerDAO extends DAO<Computer>{
 					Computer computer = new Computer();
 					computer.setId(result.getInt("computer.id"));
 					computer.setName(result.getString("computer.name"));
-					computer.setDateInt((result.getDate("introduced").toLocalDate()));
-					computer.setDateDisc((result.getDate("discontinued").toLocalDate()));
-					computer.setCompany(new Company(result.getInt("company_id"),result.getString("c.name")));
+					if(result.getDate("introduced") != null) {
+						computer.setDateInt(result.getDate("introduced").toLocalDate());
+					}
+					
+					if(result.getDate("discontinued") != null) {
+						computer.setDateDisc(result.getDate("discontinued").toLocalDate());
+					}
+					
+					if(result.getInt("company_id") != 0) {
+						Company company = new Company(result.getInt("company_id"),result.getString("c.name"));
+						computer.setCompany(company);
+					}
 					return computer;
 				}
 				
@@ -166,58 +184,103 @@ public class ComputerDAO extends DAO<Computer>{
 	
 	public List<Computer> findAllPages(int offset,int nbPage) {
 		List<Computer> computers = new ArrayList<Computer>();
-		
-		try {
-			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id LIMIT "+ offset+", "+nbPage);
-			while(result.next()) {
-				computers.add(ComputerMapper.resultToList(result));
+		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		MapSqlParameterSource vParams = new MapSqlParameterSource()
+				.addValue("offset", offset)
+				.addValue("nbPage",nbPage);
+		RowMapper<Computer> vRowMapper = new RowMapper<Computer>() {
+			public Computer mapRow(ResultSet result,int numRow) throws SQLException{
+				Computer computer = new Computer();
+				computer.setId(result.getInt("computer.id"));
+				computer.setName(result.getString("computer.name"));
+				if(result.getDate("introduced") != null) {
+					computer.setDateInt(result.getDate("introduced").toLocalDate());
+				}
+				
+				if(result.getDate("discontinued") != null) {
+					computer.setDateDisc(result.getDate("discontinued").toLocalDate());
+				}
+				
+				if(result.getInt("company_id") != 0) {
+					Company company = new Company(result.getInt("company_id"),result.getString("c.name"));
+					computer.setCompany(company);
+				}
+				return computer;
 			}
 			
-		}catch(SQLException e) {
-			logger.error("Error fidnd all pages Computer");
-			e.printStackTrace();
-		}
+			
+		};
+		computers = vJdbcTemplate.query(findAllPagesQ,vParams, vRowMapper);
 		return computers;
 	}
 	
 	public List<Computer> findBySearch(int offset,int nbPage,String search){
 		List<Computer> computers = new ArrayList<Computer>();
-		try {
-			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.name LIKE '%"+search+"%' OR c.name LIKE '%"+search+"%' LIMIT "+ offset + ", "+ nbPage);
-			while(result.next()) {
-				computers.add(ComputerMapper.resultToList(result));
+		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		MapSqlParameterSource vParams = new MapSqlParameterSource()
+				.addValue("search", "%"+search+"%")
+				.addValue("offset", offset)
+				.addValue("nbPage",nbPage);
+		RowMapper<Computer> vRowMapper = new RowMapper<Computer>() {
+			public Computer mapRow(ResultSet result,int numRow) throws SQLException{
+				Computer computer = new Computer();
+				computer.setId(result.getInt("computer.id"));
+				computer.setName(result.getString("computer.name"));
+				if(result.getDate("introduced") != null) {
+					computer.setDateInt(result.getDate("introduced").toLocalDate());
+				}
+				
+				if(result.getDate("discontinued") != null) {
+					computer.setDateDisc(result.getDate("discontinued").toLocalDate());
+				}
+				
+				if(result.getInt("company_id") != 0) {
+					Company company = new Company(result.getInt("company_id"),result.getString("c.name"));
+					computer.setCompany(company);
+				}
+				return computer;
 			}
-		}catch(SQLException e) {
-			logger.error("Error find by search");
-			e.printStackTrace();
-		}
+			
+			
+		};
+		computers = vJdbcTemplate.query(findSearch,vParams, vRowMapper);
 		return computers;
 	}
 	public List<Computer> findOrder(Page page,String order,String ascending){
 		List<Computer> computers = new ArrayList<Computer>();
-		try {
-			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY "+ order+" "+ascending+" LIMIT "+ page.getOffset() + ", "+ page.getNbPages()+" ");
-			while(result.next()) {
-				computers.add(ComputerMapper.resultToList(result));
+		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		MapSqlParameterSource vParams = new MapSqlParameterSource()
+				
+				.addValue("getOffset", page.getOffset())
+				.addValue("getNbPages",page.getNbPages());
+		System.out.println("je susi le order "+order);
+		RowMapper<Computer> vRowMapper = new RowMapper<Computer>() {
+			public Computer mapRow(ResultSet result,int numRow) throws SQLException{
+				Computer computer = new Computer();
+				computer.setId(result.getInt("computer.id"));
+				computer.setName(result.getString("computer.name"));
+				if(result.getDate("introduced") != null) {
+					computer.setDateInt(result.getDate("introduced").toLocalDate());
+				}
+				
+				if(result.getDate("discontinued") != null) {
+					computer.setDateDisc(result.getDate("discontinued").toLocalDate());
+				}
+				
+				if(result.getInt("company_id") != 0) {
+					Company company = new Company(result.getInt("company_id"),result.getString("c.name"));
+					computer.setCompany(company);
+				}
+				return computer;
 			}
 			
-		}catch(SQLException e) {
-			logger.error("Error find by order");
-			e.printStackTrace();
-		}
+			
+		};
+		computers = vJdbcTemplate.query("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY "+order+" "+ascending+" LIMIT :getOffset, :getNbPages",vParams, vRowMapper);
 		return computers;
 	}
 	
-	public Integer getComputersNbPages(Page page) {
-		Integer nbEntries = findMaxElement();
-		Integer nbPages = nbEntries/page.getItemsByPage();
-		return nbEntries%page.getItemsByPage() == 0?nbPages:nbPages+1;
-	}
+
 	
 	
 

@@ -44,17 +44,14 @@ public class ListServlet extends HttpServlet {
 	@Autowired
 	private Page pages;
 	private String order = "computer.name";
-	//private ConnectDB conn;
+	
        
     /**
      * @throws SQLException 
      * @see HttpServlet#HttpServlet()
      */
     public ListServlet()  {
-        //this.conn = new ConnectDB();
-       
-        //this.computerService = new ComputerServiceImp();
-        //this.pages = new Page();
+        
     }
 	@Override
 	public void init(ServletConfig config) throws ServletException {

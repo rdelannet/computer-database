@@ -11,6 +11,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.connect.ConnectDB;
@@ -26,8 +30,10 @@ public class CompanyDAO extends DAO<Company>{
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	private String sqlComp = "SELECT id,name FROM company";
 	private String count = "SELECT count(*) as count FROM company";
-	
-	
+	private String findCompany = "SELECT id,name FROM company WHERE id = :id";
+	private String findAllPagesQ = "SELECT id,name FROM company LIMIT :offset , :nbPage";
+	private String deleteComp = "DELETE FROM computer WHERE company_id = :id";
+	private String delete = "DELETE FROM company WHERE id = :id";
 	@Autowired
 	private ConnectDB connect;
 		
@@ -39,31 +45,15 @@ public class CompanyDAO extends DAO<Company>{
 	
 
 	public boolean delete(Company company) {
-		String sqlCompany = "DELETE FROM company WHERE id = ?";
-		String sqlComputer = "DELETE FROM computer WHERE company_id = ?";
-		try {
-			connect.getInstance().setAutoCommit(false);
-			PreparedStatement statementComputer = this.connect.getInstance().prepareStatement(sqlComputer);
-			statementComputer.setInt(1,company.getId());
-			statementComputer.executeUpdate();
-			
-			PreparedStatement statementCompany = this.connect.getInstance().prepareStatement(sqlCompany);
-			statementCompany.setInt(1,company.getId());
-			statementCompany.executeUpdate();
-			connect.getInstance().commit();
-			
-		} catch (SQLException e) {
-			logger.error("Error delete Company");
-			try {
-				connect.getInstance().rollback();
-			} catch (SQLException e1) {
-				
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+		MapSqlParameterSource vParams = new MapSqlParameterSource();
+		 vParams.addValue("company_id",company.getId());
+		 NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		 vJdbcTemplate.update(deleteComp,vParams);
+		 MapSqlParameterSource params = new MapSqlParameterSource();
+		 vParams.addValue("id",company.getId());
+		 NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		 vJdbcTemplate.update(delete,vParams);
+		 return true;
 	}
 
 
@@ -71,75 +61,75 @@ public class CompanyDAO extends DAO<Company>{
 
 	
 	public Company find(int id) {
-		Company company = null;  
-		
-	    try {
-	   
-	      ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-	    		    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT id,name FROM company WHERE id = " + id);
-	      System.out.println(result);
-	      company = CompanyMapper.resultToObject(result);
-	       
-	    } catch (SQLException e) {
-	    	
-	    	logger.error("Error find Company");
-	      e.printStackTrace();
-	    }
-	    return company;
+		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		MapSqlParameterSource vParams = new MapSqlParameterSource()
+				.addValue("id", id);
+		RowMapper<Company> vRowMapper = new RowMapper<Company>() {
+			public Company mapRow(ResultSet result,int numRow) throws SQLException{
+				Company company = new Company();
+				company.setId(result.getInt("id"));
+				company.setName(result.getString("name"));
+				
+				return company;
+			}
+		};
+		Company company = vJdbcTemplate.queryForObject(findCompany, vParams,vRowMapper);
+		return company;
 	}
 
 
 	@Override
 	public List<Company> findAll() {
-		List<Company> companies = new ArrayList<Company>();
+		List<Company> vListStatut = null;
 		try {
-			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery(sqlComp);
-			System.out.println(result);
-			while(result.next()) {
-				companies.add(CompanyMapper.resultToList(result));
-			}
 			
+			JdbcTemplate vJdbcTemplate = new JdbcTemplate(connect.getHikariDataSource());
+			RowMapper<Company> vRowMapper = new RowMapper<Company>() {
+				public Company mapRow(ResultSet result,int numRow) throws SQLException{
+					Company company = new Company();
+					company.setId(result.getInt("id"));
+					company.setName(result.getString("name"));
+					
+				
+					return company;
+				}
+				
+				
+			};
+			vListStatut = vJdbcTemplate.query(sqlComp, vRowMapper);
 			
-		}catch(SQLException e) {
-			logger.error("Error find all Company");
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return companies;
+		
+		return vListStatut;
 	}
 	public int findMaxElement() {
 		
-		Page page = new Page();
-		try {
-			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery(count);
-			if(result.first()) {
-				page.setMaxElem(result.getInt(1));
-			}
-			
-		}catch(SQLException e) {
-			logger.error("Error find max Company");
-			e.printStackTrace();
-		}
-		return page.getMaxElem();
+		JdbcTemplate vJdbcTemplate = new JdbcTemplate(connect.getHikariDataSource());
+		int maxElem = vJdbcTemplate.queryForObject(count, Integer.class);
+		
+		return maxElem;
 	}
 	
 	public List<Company> findAllPages(int offset,int nbPage) {
-		List<Company> computers = new ArrayList<Company>();
-		
-		try {
-			ResultSet result = this.connect.getInstance().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-				    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT id,name FROM company LIMIT "+ offset+", "+nbPage);
-			while(result.next()) {
-				computers.add(CompanyMapper.resultToList(result));
+		List<Company> company = new ArrayList<Company>();
+		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		MapSqlParameterSource vParams = new MapSqlParameterSource()
+				.addValue("offset", offset)
+				.addValue("nbPage",nbPage);
+		RowMapper<Company> vRowMapper = new RowMapper<Company>() {
+			public Company mapRow(ResultSet result,int numRow) throws SQLException{
+				Company company = new Company();
+				company.setId(result.getInt("id"));
+				company.setName(result.getString("name"));
+				return company;
 			}
-				
 			
-		}catch(SQLException e) {
-			logger.error("Error fidnd all pages Companies");
-			e.printStackTrace();
-		}
-		return computers;
+			
+		};
+		company = vJdbcTemplate.query(findAllPagesQ,vParams, vRowMapper);
+		return company;
 	}
 
 
