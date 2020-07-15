@@ -67,7 +67,7 @@ public class EditServlet extends HttpServlet{
 			request.setAttribute("computer", computerDto);
 			request.getRequestDispatcher("WEB-INF/views/editComputer.jsp").forward(request,response);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -103,9 +103,9 @@ public class EditServlet extends HttpServlet{
 		
 		
 		
-		System.out.println(computer.getId());
+		
 		comp = ComputerDTOMapper.dtoToComputer(computer);
-		System.out.println(comp);
+		
 		c.update(comp);
 		doGet(request, response);
 	}

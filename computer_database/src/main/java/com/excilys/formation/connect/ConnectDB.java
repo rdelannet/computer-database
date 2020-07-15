@@ -40,6 +40,14 @@ public class ConnectDB  {
 		}
 		return connect;
 	}
+
+
+
+	public DataSource getHikariDataSource() {
+		return hikariDataSource;
+	}
+
+
 	 
 		
 		

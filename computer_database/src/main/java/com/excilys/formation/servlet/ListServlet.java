@@ -40,7 +40,7 @@ public class ListServlet extends HttpServlet {
 	@Autowired
 	private ComputerDAO computerDao;
 	@Autowired
-	private ComputerServiceImp computerService;
+	private ComputerService computerService;
 	@Autowired
 	private Page pages;
 	private String order = "computer.name";
@@ -147,7 +147,7 @@ public class ListServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if(request.getParameter("selection") != null && !request.getParameter("selection").equals("")) {
+		if(request.getParameter("selection") != null && !("".equals(request.getParameter("selection")))) {
 			String listIds = request.getParameter("selection");
 			System.out.println(listIds);
 			List<Integer> ids = Stream.of(listIds.split(","))

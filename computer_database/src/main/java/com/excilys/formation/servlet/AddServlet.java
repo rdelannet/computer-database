@@ -25,7 +25,9 @@ import com.excilys.formation.mappers.CompanyDTOMapper;
 import com.excilys.formation.mappers.ComputerDTOMapper;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
+import com.excilys.formation.services.CompanyService;
 import com.excilys.formation.services.CompanyServiceImp;
+import com.excilys.formation.services.ComputerService;
 import com.excilys.formation.services.ComputerServiceImp;
 
 /**
@@ -35,9 +37,9 @@ import com.excilys.formation.services.ComputerServiceImp;
 public class AddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Autowired
-	private ComputerServiceImp computerService;
+	private ComputerService computerService;
 	@Autowired
-	private CompanyServiceImp companyService;
+	private CompanyService companyService;
 	
        
     /**
