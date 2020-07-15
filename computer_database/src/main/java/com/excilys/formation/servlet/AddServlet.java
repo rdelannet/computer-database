@@ -33,7 +33,7 @@ import com.excilys.formation.services.ComputerServiceImp;
 /**
  * Servlet implementation class AddServlet
  */
-@WebServlet(urlPatterns = "/AddServlet")
+@WebServlet(urlPatterns = "/poudpet")
 public class AddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Autowired
@@ -88,9 +88,7 @@ public class AddServlet extends HttpServlet {
 			computer.setCompanyDTO(new CompanyDTO(Integer.parseInt(request.getParameter("companyId"))));
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
+		
 		}
 		
 		computer.setName(request.getParameter("computerName"));

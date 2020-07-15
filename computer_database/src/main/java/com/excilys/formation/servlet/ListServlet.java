@@ -30,7 +30,7 @@ import com.excilys.formation.services.ComputerServiceImp;
 /**
  * Servlet implementation class ListServlet
  */
-@WebServlet(urlPatterns = "/ListServlet")
+@WebServlet(urlPatterns = "/pouet")
 public class ListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public int page;
@@ -89,12 +89,12 @@ public class ListServlet extends HttpServlet {
 			search = request.getParameter("search");
 			computers = computerService.getComputersSearchByPage(pages,search);
 			for(Computer computer : computers) {
-				try {
+				
 					computersDto.add(ComputerDTOMapper.computerToDTO(computer));
-				} catch (SQLException e) {
+				
 					
-					e.printStackTrace();
-				}
+		
+				
 			}
 		}
 		if(request.getParameter("order") != null && !("".equals(request.getParameter("order"))) && request.getParameter("ascending") != null && !("".equals(request.getParameter("ascending"))) ){
@@ -105,24 +105,19 @@ public class ListServlet extends HttpServlet {
 			computers = computerService.getComputersOrderByPage(pages,order,ascending);
 			
 			for (Computer computer : computers) {
-				try {
+				
 					computersDto.add(ComputerDTOMapper.computerToDTO(computer));
-				} catch (SQLException e) {
+				
 					
-					e.printStackTrace();
-				}
+					
 			}
 		}
 		else {
 			computers = computerService.getComputersByPage(pages);
 			for (Computer computer : computers) {
 				
-				try {
 					computersDto.add(ComputerDTOMapper.computerToDTO(computer));
-				} catch (SQLException e) {
-					
-					e.printStackTrace();
-				}
+			
 			}
 		}
 		
@@ -151,7 +146,7 @@ public class ListServlet extends HttpServlet {
 					.map(Integer::parseInt)
 					.collect(Collectors.toList());
 			for(Integer id: ids) {
-				computerDao.delete(computerDao.find(id));
+				computerDao.delete(id);
 			}
 		}
 		

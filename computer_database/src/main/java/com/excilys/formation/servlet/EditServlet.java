@@ -62,14 +62,11 @@ public class EditServlet extends HttpServlet{
 		System.out.println(request.getParameter("id"));
 		Computer computer = computerDao.find(id);
 		ComputerDTO computerDto;
-		try {
+		
 			computerDto = ComputerDTOMapper.computerToDTO(computer);
 			request.setAttribute("computer", computerDto);
 			request.getRequestDispatcher("WEB-INF/views/editComputer.jsp").forward(request,response);
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
+		
 
 		
 	}
@@ -90,10 +87,8 @@ public class EditServlet extends HttpServlet{
 		} catch (NumberFormatException e) {
 			
 			e.printStackTrace();
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
 		}
+		
 		if(!("".equals(request.getParameter("introduced")))) {
 			computer.setIntroduced(request.getParameter("introduced"));
 		}

@@ -356,7 +356,7 @@ public class CLI {
 			delete = null;
 			//e.printStackTrace();
 		}
-		computer.delete(computer.find(delete));
+		computer.delete(delete);
 		
 		
 	}

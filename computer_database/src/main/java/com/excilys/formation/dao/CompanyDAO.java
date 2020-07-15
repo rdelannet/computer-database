@@ -44,13 +44,13 @@ public class CompanyDAO extends DAO<Company>{
 
 	
 
-	public boolean delete(Company company) {
+	public boolean delete(int id) {
 		MapSqlParameterSource vParams = new MapSqlParameterSource();
-		 vParams.addValue("company_id",company.getId());
+		 vParams.addValue("company_id",id);
 		 NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
 		 vJdbcTemplate.update(deleteComp,vParams);
 		 MapSqlParameterSource params = new MapSqlParameterSource();
-		 vParams.addValue("id",company.getId());
+		 vParams.addValue("id",id);
 		 NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
 		 vJdbcTemplate.update(delete,vParams);
 		 return true;

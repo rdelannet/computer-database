@@ -19,7 +19,7 @@ public class CompanyDTO {
 	@Autowired
 	CompanyDAO companyD;
 	
-	public CompanyDTO(Company company) throws SQLException {
+	public CompanyDTO(Company company) {
 		//conn = new ConnectDB();
 		
 
@@ -28,7 +28,7 @@ public class CompanyDTO {
 		this.name = company.getName();
 		
 	}
-	public CompanyDTO(int id) throws SQLException {
+	public CompanyDTO(int id) {
 		//conn = new ConnectDB();
 		this.id = id;
 		

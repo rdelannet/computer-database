@@ -73,11 +73,11 @@ public class ComputerDAO extends DAO<Computer>{
 		return true;
 	}
 
-	public boolean delete(Computer computer) {
+	public boolean delete(int id) {
 		
 		try {
 			MapSqlParameterSource vParams = new MapSqlParameterSource();
-			 vParams.addValue("id",computer.getId());
+			 vParams.addValue("id",id);
 			 NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
 			 vJdbcTemplate.update(delete,vParams);
 	

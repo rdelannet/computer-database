@@ -46,7 +46,7 @@ public class ComputerServiceImp implements ComputerService {
 
 	@Override
 	public boolean deleteComputer(Computer computer) {
-		return computerDao.delete(computer);
+		return computerDao.delete(computer.getId());
 		
 	}
 	@Override

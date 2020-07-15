@@ -23,7 +23,7 @@ public class CompanyServiceImp implements CompanyService {
 	@Override
 	public boolean deleteCompany(Company company) {
 		
-		return companyDao.delete(company);
+		return companyDao.delete(company.getId());
 	}
 
 	@Override

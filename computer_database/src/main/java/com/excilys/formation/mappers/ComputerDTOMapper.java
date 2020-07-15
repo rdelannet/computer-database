@@ -84,7 +84,7 @@ public class ComputerDTOMapper {
 		
 	}
 	
-	public static ComputerDTO computerToDTO (Computer computer) throws SQLException {
+	public static ComputerDTO computerToDTO (Computer computer)  {
 		ComputerDTO computerDto = new ComputerDTO();
 		
 		computerDto.setName(computer.getName());
