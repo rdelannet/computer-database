@@ -1,3 +1,0 @@
-module FizzBuzz {
-	requires junit;
-}
