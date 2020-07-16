@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.CompanyMapper;
-
+import com.excilys.formation.mappers.MapperRowCompany;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
@@ -36,9 +36,12 @@ public class CompanyDAO extends DAO<Company>{
 	private String delete = "DELETE FROM company WHERE id = :id";
 	@Autowired
 	private ConnectDB connect;
-		
-	public CompanyDAO() throws SQLException {
-		
+	
+	NamedParameterJdbcTemplate jdbcTemplate;
+	
+	
+	public CompanyDAO(NamedParameterJdbcTemplate jdbcTemplate) throws SQLException {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 	
 
@@ -47,12 +50,10 @@ public class CompanyDAO extends DAO<Company>{
 	public boolean delete(int id) {
 		MapSqlParameterSource vParams = new MapSqlParameterSource();
 		 vParams.addValue("company_id",id);
-		 NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
-		 vJdbcTemplate.update(deleteComp,vParams);
+		 jdbcTemplate.update(deleteComp,vParams);
 		 MapSqlParameterSource params = new MapSqlParameterSource();
 		 vParams.addValue("id",id);
-		 NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
-		 vJdbcTemplate.update(delete,vParams);
+		 jdbcTemplate.update(delete,vParams);
 		 return true;
 	}
 
@@ -61,19 +62,11 @@ public class CompanyDAO extends DAO<Company>{
 
 	
 	public Company find(int id) {
-		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		
 		MapSqlParameterSource vParams = new MapSqlParameterSource()
 				.addValue("id", id);
-		RowMapper<Company> vRowMapper = new RowMapper<Company>() {
-			public Company mapRow(ResultSet result,int numRow) throws SQLException{
-				Company company = new Company();
-				company.setId(result.getInt("id"));
-				company.setName(result.getString("name"));
-				
-				return company;
-			}
-		};
-		Company company = vJdbcTemplate.queryForObject(findCompany, vParams,vRowMapper);
+		
+		Company company = jdbcTemplate.queryForObject(findCompany, vParams,new MapperRowCompany());
 		return company;
 	}
 
@@ -84,19 +77,8 @@ public class CompanyDAO extends DAO<Company>{
 		try {
 			
 			JdbcTemplate vJdbcTemplate = new JdbcTemplate(connect.getHikariDataSource());
-			RowMapper<Company> vRowMapper = new RowMapper<Company>() {
-				public Company mapRow(ResultSet result,int numRow) throws SQLException{
-					Company company = new Company();
-					company.setId(result.getInt("id"));
-					company.setName(result.getString("name"));
-					
-				
-					return company;
-				}
-				
-				
-			};
-			vListStatut = vJdbcTemplate.query(sqlComp, vRowMapper);
+			
+			vListStatut = vJdbcTemplate.query(sqlComp, new MapperRowCompany());
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -114,21 +96,12 @@ public class CompanyDAO extends DAO<Company>{
 	
 	public List<Company> findAllPages(int offset,int nbPage) {
 		List<Company> company = new ArrayList<Company>();
-		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		
 		MapSqlParameterSource vParams = new MapSqlParameterSource()
 				.addValue("offset", offset)
 				.addValue("nbPage",nbPage);
-		RowMapper<Company> vRowMapper = new RowMapper<Company>() {
-			public Company mapRow(ResultSet result,int numRow) throws SQLException{
-				Company company = new Company();
-				company.setId(result.getInt("id"));
-				company.setName(result.getString("name"));
-				return company;
-			}
-			
-			
-		};
-		company = vJdbcTemplate.query(findAllPagesQ,vParams, vRowMapper);
+		
+		company = jdbcTemplate.query(findAllPagesQ,vParams, new MapperRowCompany());
 		return company;
 	}
 

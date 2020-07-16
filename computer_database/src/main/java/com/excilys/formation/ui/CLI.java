@@ -12,11 +12,15 @@ import com.excilys.formation.dao.ComputerDAO;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
+import com.excilys.formation.services.CompanyService;
+import com.excilys.formation.services.ComputerService;
 
 public class CLI {
 	
 	private Scanner scan;
 	ConnectDB conn ;
+	ComputerService computerService;
+	CompanyService companyService;
 	
 	public CLI(ConnectDB con) {
 		this.scan = new Scanner(System.in);
@@ -107,13 +111,13 @@ public class CLI {
 	}
 	
 	public void showListComputers() throws SQLException {
-		ComputerDAO computers = new ComputerDAO();
+		//ComputerDAO computers = new ComputerDAO();
 		
 		System.out.println("---------List of all computers-----------");
 		System.out.println("Enter 1 to see an other pages, 0 to end");
 		int pages;
 		Page page = new Page();
-		page.setMaxElem(computers.findMaxElement());
+		page.setMaxElem(computerService.getNbComputers());
 		
 		try {
 			pages = Integer.parseInt(scan.next());
@@ -132,9 +136,9 @@ public class CLI {
 			switch(pages) {
 				case 1:
 					
-					for(int j = 0; j < computers.findAllPages(10,page.getNbPages()).size();j++) {
+					for(int j = 0; j < computerService.getComputersByPage(page).size();j++) {
 						
-						System.out.println(computers.findAllPages(10,page.getNbPages()).get(j));
+						System.out.println(computerService.getComputersByPage(page).get(j));
 					}
 					
 					page.setNbPages(page.getNbPages()+10);
@@ -153,8 +157,8 @@ public class CLI {
 				case 0:
 					break;
 				case 2:
-					for(int j = 0; j < computers.findAllPages(10,page.getNbPages()).size();j++) {
-						System.out.println(computers.findAllPages(10,page.getNbPages()).get(j));
+					for(int j = 0; j < computerService.getComputersByPage(page).size();j++) {
+						System.out.println(computerService.getComputersByPage(page).get(j));
 					}
 					if(page.getNbPages()>= 10) {
 						page.setNbPages(page.getNbPages()-10);
@@ -187,7 +191,7 @@ public class CLI {
 		
 	}
 	public void showListCompanies() throws SQLException {
-		CompanyDAO companies = new CompanyDAO();
+		//CompanyDAO companies = new CompanyDAO();
 		
 		System.out.println("---------List of all companies-----------");
 		System.out.println("Enter 1 to see an other pages, 0 to end");
@@ -200,7 +204,7 @@ public class CLI {
 			
 		}
 		Page page = new Page();
-		page.setMaxElem(companies.findMaxElement());
+		page.setMaxElem(companyService.getNbCompany());
 		while(page.getNbPages() <= page.getMaxElem()) {
 			
 			if(pages == 0){
@@ -209,8 +213,8 @@ public class CLI {
 			switch(pages) {
 				case 1:
 					
-					for(int j = 0; j < companies.findAllPages(10,page.getNbPages()).size();j++) {
-						System.out.println(companies.findAllPages(10,page.getNbPages()).get(j));
+					for(int j = 0; j < companyService.getCompanyPages(10,page.getNbPages()).size();j++) {
+						System.out.println(companyService.getCompanyPages(10,page.getNbPages()).get(j));
 					}
 					page.setNbPages(page.getNbPages()+10);
 					try {
@@ -227,8 +231,8 @@ public class CLI {
 				case 0:
 					break;
 				case 2:
-					for(int j = 0; j < companies.findAllPages(10,page.getNbPages()).size();j++) {
-						System.out.println(companies.findAllPages(10,page.getNbPages()).get(j));
+					for(int j = 0; j < companyService.getCompanyPages(10,page.getNbPages()).size();j++) {
+						System.out.println(companyService.getCompanyPages(10,page.getNbPages()).get(j));
 					}
 					if(page.getNbPages()>= 10) {
 						page.setNbPages(page.getNbPages()-10);
@@ -257,8 +261,8 @@ public class CLI {
 	}
 	
 	public void showDetails(int i) throws SQLException {
-		ComputerDAO computer = new ComputerDAO();
-		System.out.println(computer.find(i));
+		//ComputerDAO computer = new ComputerDAO();
+		System.out.println(computerService.getComputer(i));
 		
 	}
 	
@@ -300,7 +304,7 @@ public class CLI {
 		return null;
 	}
 	public void createComputer() throws SQLException {
-		ComputerDAO computerD = new ComputerDAO();
+		//ComputerDAO computerD = new ComputerDAO();
 		Computer computer = new Computer();
 		
 		System.out.println("Entrer the id of the computer :");
@@ -341,12 +345,12 @@ public class CLI {
 			}
 			
 		}
-		computerD.create(computer);
+		computerService.createComputer(computer);
 		
 	}
 	
 	public void deleteComputer() throws SQLException {
-		ComputerDAO computer = new ComputerDAO();
+		//ComputerDAO computer = new ComputerDAO();
 		System.out.println("Enter the id of the computer you want to delete :");
 		Integer delete;
 		try {
@@ -356,13 +360,13 @@ public class CLI {
 			delete = null;
 			//e.printStackTrace();
 		}
-		computer.delete(delete);
+		computerService.deleteComputer(delete);
 		
 		
 	}
 	
 	public void updateComputer() throws SQLException {
-		ComputerDAO computer = new ComputerDAO();
+		//ComputerDAO computer = new ComputerDAO();
 		
 		System.out.println("Enter the id of the computer that you want to update :");
 		Integer id;
@@ -374,7 +378,7 @@ public class CLI {
 			id = null;
 			//e.printStackTrace();
 		}
-		Computer computerA = computer.find(id);
+		Computer computerA = computerService.getComputer(id);
 		
 		
 	
@@ -407,7 +411,7 @@ public class CLI {
 			}
 			
 		}
-		computer.update(computerA);
+		computerService.updateComputer(computerA);
 		
 	}
 	

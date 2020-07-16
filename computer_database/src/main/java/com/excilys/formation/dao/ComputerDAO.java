@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import com.excilys.formation.configuration.SpringConf;
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.ComputerMapper;
+import com.excilys.formation.mappers.MapperRowComputer;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.pagination.Page;
@@ -44,11 +45,11 @@ public class ComputerDAO extends DAO<Computer>{
 	@Autowired
 	private ConnectDB connect;
 	
-	//private NamedParameterJdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate jdbcTemplate;
 	
-	public ComputerDAO() throws SQLException {
+	public ComputerDAO(NamedParameterJdbcTemplate jdbcTemplate) throws SQLException {
 		
-		
+		this.jdbcTemplate =  jdbcTemplate;
 ;		
 	}
 
@@ -61,8 +62,8 @@ public class ComputerDAO extends DAO<Computer>{
 			 vParams.addValue("introduced", computer.getDateInt());
 			 vParams.addValue("discontinued", computer.getDateDisc());
 			 vParams.addValue("company_id", computer.getCompany().getId());
-			 NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
-			 vJdbcTemplate.update(insert,vParams);
+			 
+			 jdbcTemplate.update(insert,vParams);
 			
 		} catch (Exception e) {
 			logger.error("Error Add Computer");
@@ -98,40 +99,20 @@ public class ComputerDAO extends DAO<Computer>{
 			vParams.addValue("introduced", computer.getDateInt());
 			vParams.addValue("discontinued", computer.getDateDisc());
 			vParams.addValue("company_id", computer.getCompany().getId());
-			NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
-			vJdbcTemplate.update(sqlUpdate,vParams);
+			
+			jdbcTemplate.update(sqlUpdate,vParams);
 			
 
-			System.out.println(computer.getName() + "kdz");
 			
 			return true;
 	}
 
 	public Computer find(int id) {
-		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		
 		MapSqlParameterSource vParams = new MapSqlParameterSource()
 				.addValue("id", id);
-		RowMapper<Computer> vRowMapper = new RowMapper<Computer>() {
-			public Computer mapRow(ResultSet result,int numRow) throws SQLException{
-				Computer computer = new Computer();
-				computer.setId(result.getInt("computer.id"));
-				computer.setName(result.getString("computer.name"));
-				if(result.getDate("introduced") != null) {
-					computer.setDateInt(result.getDate("introduced").toLocalDate());
-				}
-				
-				if(result.getDate("discontinued") != null) {
-					computer.setDateDisc(result.getDate("discontinued").toLocalDate());
-				}
-				
-				if(result.getInt("company_id") != 0) {
-					Company company = new Company(result.getInt("company_id"),result.getString("c.name"));
-					computer.setCompany(company);
-				}
-				return computer;
-			}
-		};
-		Computer computer = vJdbcTemplate.queryForObject(findComputer, vParams,vRowMapper);
+		
+		Computer computer = jdbcTemplate.queryForObject(findComputer, vParams,new MapperRowComputer());
 		return computer;
 	}
 
@@ -139,36 +120,8 @@ public class ComputerDAO extends DAO<Computer>{
 	public List<Computer> findAll() {
 		
 		List<Computer> vListStatut = null;
-		try {
+		vListStatut = jdbcTemplate.query(findAllComputer, new MapperRowComputer());
 			
-			JdbcTemplate vJdbcTemplate = new JdbcTemplate(connect.getHikariDataSource());
-			RowMapper<Computer> vRowMapper = new RowMapper<Computer>() {
-				public Computer mapRow(ResultSet result,int numRow) throws SQLException{
-					Computer computer = new Computer();
-					computer.setId(result.getInt("computer.id"));
-					computer.setName(result.getString("computer.name"));
-					if(result.getDate("introduced") != null) {
-						computer.setDateInt(result.getDate("introduced").toLocalDate());
-					}
-					
-					if(result.getDate("discontinued") != null) {
-						computer.setDateDisc(result.getDate("discontinued").toLocalDate());
-					}
-					
-					if(result.getInt("company_id") != 0) {
-						Company company = new Company(result.getInt("company_id"),result.getString("c.name"));
-						computer.setCompany(company);
-					}
-					return computer;
-				}
-				
-				
-			};
-			vListStatut = vJdbcTemplate.query(findAllComputer, vRowMapper);
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
 		
 		return vListStatut;
         
@@ -184,99 +137,39 @@ public class ComputerDAO extends DAO<Computer>{
 	
 	public List<Computer> findAllPages(int offset,int nbPage) {
 		List<Computer> computers = new ArrayList<Computer>();
-		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		
 		MapSqlParameterSource vParams = new MapSqlParameterSource()
 				.addValue("offset", offset)
 				.addValue("nbPage",nbPage);
-		RowMapper<Computer> vRowMapper = new RowMapper<Computer>() {
-			public Computer mapRow(ResultSet result,int numRow) throws SQLException{
-				Computer computer = new Computer();
-				computer.setId(result.getInt("computer.id"));
-				computer.setName(result.getString("computer.name"));
-				if(result.getDate("introduced") != null) {
-					computer.setDateInt(result.getDate("introduced").toLocalDate());
-				}
-				
-				if(result.getDate("discontinued") != null) {
-					computer.setDateDisc(result.getDate("discontinued").toLocalDate());
-				}
-				
-				if(result.getInt("company_id") != 0) {
-					Company company = new Company(result.getInt("company_id"),result.getString("c.name"));
-					computer.setCompany(company);
-				}
-				return computer;
-			}
-			
-			
-		};
-		computers = vJdbcTemplate.query(findAllPagesQ,vParams, vRowMapper);
+		
+		computers = jdbcTemplate.query(findAllPagesQ,vParams, new MapperRowComputer());
 		return computers;
 	}
 	
 	public List<Computer> findBySearch(int offset,int nbPage,String search){
 		List<Computer> computers = new ArrayList<Computer>();
-		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		
 		MapSqlParameterSource vParams = new MapSqlParameterSource()
 				.addValue("search", "%"+search+"%")
 				.addValue("offset", offset)
 				.addValue("nbPage",nbPage);
-		RowMapper<Computer> vRowMapper = new RowMapper<Computer>() {
-			public Computer mapRow(ResultSet result,int numRow) throws SQLException{
-				Computer computer = new Computer();
-				computer.setId(result.getInt("computer.id"));
-				computer.setName(result.getString("computer.name"));
-				if(result.getDate("introduced") != null) {
-					computer.setDateInt(result.getDate("introduced").toLocalDate());
-				}
-				
-				if(result.getDate("discontinued") != null) {
-					computer.setDateDisc(result.getDate("discontinued").toLocalDate());
-				}
-				
-				if(result.getInt("company_id") != 0) {
-					Company company = new Company(result.getInt("company_id"),result.getString("c.name"));
-					computer.setCompany(company);
-				}
-				return computer;
-			}
-			
-			
-		};
-		computers = vJdbcTemplate.query(findSearch,vParams, vRowMapper);
+	
+		computers = jdbcTemplate.query(findSearch,vParams, new MapperRowComputer());
 		return computers;
 	}
 	public List<Computer> findOrder(Page page,String order,String ascending){
 		List<Computer> computers = new ArrayList<Computer>();
-		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
+		
 		MapSqlParameterSource vParams = new MapSqlParameterSource()
 				
 				.addValue("getOffset", page.getOffset())
 				.addValue("getNbPages",page.getNbPages());
-		System.out.println("je susi le order "+order);
-		RowMapper<Computer> vRowMapper = new RowMapper<Computer>() {
-			public Computer mapRow(ResultSet result,int numRow) throws SQLException{
-				Computer computer = new Computer();
-				computer.setId(result.getInt("computer.id"));
-				computer.setName(result.getString("computer.name"));
-				if(result.getDate("introduced") != null) {
-					computer.setDateInt(result.getDate("introduced").toLocalDate());
-				}
-				
-				if(result.getDate("discontinued") != null) {
-					computer.setDateDisc(result.getDate("discontinued").toLocalDate());
-				}
-				
-				if(result.getInt("company_id") != 0) {
-					Company company = new Company(result.getInt("company_id"),result.getString("c.name"));
-					computer.setCompany(company);
-				}
-				return computer;
-			}
+		
+		
 			
 			
-		};
-		computers = vJdbcTemplate.query("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY "+order+" "+ascending+" LIMIT :getOffset, :getNbPages",vParams, vRowMapper);
+		
+		computers = jdbcTemplate.query("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY "+order+" "+ascending+" LIMIT :getOffset, :getNbPages",vParams, new MapperRowComputer());
 		return computers;
 	}
 	

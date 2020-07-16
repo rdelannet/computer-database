@@ -59,7 +59,11 @@ public class DashboardController {
 			searchP = search;
 			computers = computerService.getComputersSearchByPage(pages,searchP);
 			computersDto = computers.stream().map(computer->ComputerDTOMapper.computerToDTO(computer)).collect(Collectors.toList());
-			
+			System.out.println(computersDto);
+		}
+		else {
+			computers = computerService.getComputersByPage(pages);
+			computersDto = computers.stream().map(computer->ComputerDTOMapper.computerToDTO(computer)).collect(Collectors.toList());
 		}
 		if(order != null && !("".equals(order)) && ascending != null && !("".equals(ascending))) {
 			orderP = order;
@@ -70,10 +74,7 @@ public class DashboardController {
 			computersDto = computers.stream().map(computer->ComputerDTOMapper.computerToDTO(computer)).collect(Collectors.toList());
 			
 		}
-		else {
-			computers = computerService.getComputersByPage(pages);
-			computersDto = computers.stream().map(computer->ComputerDTOMapper.computerToDTO(computer)).collect(Collectors.toList());
-		}
+		
 		
 		model.addAttribute("page",pages);		
 		model.addAttribute("search",searchP);
@@ -91,7 +92,7 @@ public class DashboardController {
 			List<Integer> ids = Stream.of(listIds.split(","))
 					.map(Integer::parseInt)
 					.collect(Collectors.toList());
-			ids.parallelStream().forEach(id->computerService.deleteComputer(computerService.getComputer(id)));
+			ids.parallelStream().forEach(id->computerService.deleteComputer(id));
 			
 		}
 		return "redirect:/ListServlet";

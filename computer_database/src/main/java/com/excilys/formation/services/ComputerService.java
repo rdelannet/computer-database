@@ -14,7 +14,7 @@ public interface ComputerService {
 	
 	boolean createComputer(Computer computer);
 	
-	boolean deleteComputer(Computer computer);
+	boolean deleteComputer(int i);
 	
 	List<Computer> getComputersByPage(Page page);
 	

@@ -25,7 +25,7 @@ import com.excilys.formation.mappers.ComputerDTOMapper;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 
-@WebServlet(urlPatterns = "/EditServlet")
+@WebServlet(urlPatterns = "/k")
 public class EditServlet extends HttpServlet{
 	
 	private static final long serialVersionUID = 1L;
@@ -79,7 +79,7 @@ public class EditServlet extends HttpServlet{
 		
 		ComputerDTO computer = new ComputerDTO();
 		Computer comp = new Computer();
-		ComputerDAO c = computerDao;
+		
 		computer.setId(request.getParameter("id"));
 		computer.setName(request.getParameter("computerName"));
 		try {
@@ -101,7 +101,7 @@ public class EditServlet extends HttpServlet{
 		
 		comp = ComputerDTOMapper.dtoToComputer(computer);
 		
-		c.update(comp);
+		computerDao.update(comp);
 		doGet(request, response);
 	}
 

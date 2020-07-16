@@ -39,7 +39,7 @@ public class AddController {
 			companiesDto.add(CompanyDTOMapper.companytoCompanyDto(company));
 			
 		}
-		model.addAttribute("companies", companiesDto);
+		model.addAttribute("company", companiesDto);
 		
 		
 		return "addComputer";
