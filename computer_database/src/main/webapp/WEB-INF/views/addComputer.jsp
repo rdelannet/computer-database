@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page isELIgnored="false"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +14,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="ListServlet"> Application - Computer Database </a>
+            <a class="navbar-brand" href="ListServlet"> <spring:message code="title"/></a>
         </div>
     </header>
 
@@ -22,24 +22,24 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
-                    <h1>Add Computer</h1>
+                    <h1><spring:message code="addComputer.title"/></h1>
                     <form action="AddServlet" method="POST" onsubmit="return verifForm(this)">
                         <fieldset>
                          
                             <div class="form-group">
-                                <label for="computerName">Computer name</label>
+                                <label for="computerName"><spring:message code="form.input.name"/></label>
                                 <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name"  onblur="verifName(this)">
                             </div>
                             <div class="form-group">
-                                <label for="introduced">Introduced date</label>
+                                <label for="introduced"><spring:message code="form.input.introduced"/></label>
                                 <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date" onblur="verifDates(this.introduced, this.discontinued)">
                             </div>
                             <div class="form-group">
-                                <label for="discontinued">Discontinued date</label>
+                                <label for="discontinued"><spring:message code="form.input.discontinued"/></label>
                                 <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date" onblur="verifDates(this.introduced, this.discontinued)">
                             </div>
                             <div class="form-group">
-                                <label for="companyId">Company</label>
+                                <label for="companyId"><spring:message code="form.input.company"/></label>
                                 <select class="form-control" id="companyId" name="companyId" >
                                 	<c:forEach items="${company}" var="companies">
                                     	<option value="${companies.id}">${companies.name}</option>
@@ -48,10 +48,10 @@
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Add" class="btn btn-primary">
+                            <input type="submit" value="<spring:message code="form.button.add"/>" class="btn btn-primary">
                             
                             or
-                            <a href="ListServlet" class="btn btn-default">Cancel</a>
+                            <a href="ListServlet" class="btn btn-default"><spring:message code="form.button.cancel"/></a>
                         </div>
                     </form>
                 </div>

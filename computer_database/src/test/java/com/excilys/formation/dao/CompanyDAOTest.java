@@ -1,21 +1,21 @@
 package com.excilys.formation.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.excilys.formation.connect.ConnectionH2;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 
 public class CompanyDAOTest {
 	
 	private CompanyDAO companyDao;
-	private ConnectionH2 connect;
+	//private ConnectionH2 connect;
 	@Before
 	public void setUp() throws Exception {
-		companyDao = new CompanyDAO();
+		//companyDao = new CompanyDAO();
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class CompanyDAOTest {
 	@Test
 	public void delete() {
 		Company company = new Company(1,"JOJO Company");
-		companyDao.delete(company);
+		//companyDao.delete(company);
 		assertTrue(companyDao.findMaxElement() == 49);
 	}
 	

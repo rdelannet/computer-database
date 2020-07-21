@@ -1,15 +1,25 @@
 package com.excilys.formation.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Company {
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
 	private int id;
+	@Column(name = "name", nullable = true)
 	private String name;
 
-	public Company(int id,String name) {
+	public Company(int id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -19,17 +29,16 @@ public class Company {
 	}
 
 	public Company() {
-		
+
 	}
 
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	
 
 	@Override
 	public int hashCode() {
@@ -61,9 +70,7 @@ public class Company {
 
 	@Override
 	public String toString() {
-		return "Company [name=" + name + "id ="+ id+"]";
+		return "Company [name=" + name + "id =" + id + "]";
 	}
 
-	
-	
 }

@@ -2,13 +2,12 @@ package com.excilys.formation.dao;
 
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.excilys.formation.connect.ConnectionH2;
-import com.excilys.formation.dao.ComputerDAO;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 
@@ -16,11 +15,11 @@ import com.excilys.formation.model.Computer;
 public class ComputerDAOTest {
 	
 	private ComputerDAO computerDao;
-	private ConnectionH2 connect;
+	//private ConnectionH2 connect;
 
 	@Before
 	public void setUp() throws Exception {
-		computerDao = new ComputerDAO();
+		//computerDao = new ComputerDAO();
 	}
 
 	@Test
@@ -58,7 +57,7 @@ public class ComputerDAOTest {
 	@Test
 	public void delete() {
 		Computer computer = new Computer("MacBook Pro 15.4 inch");
-		computerDao.delete(computer);
+		//computerDao.delete(computer);
 		assertTrue(computerDao.findMaxElement() == 49);
 	}
 	

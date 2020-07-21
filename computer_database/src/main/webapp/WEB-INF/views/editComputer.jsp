@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page isELIgnored="false"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,25 +26,25 @@
                     <div class="label label-default pull-right">
                         id:${computer.id}
                     </div>
-                    <h1>Edit Computer</h1>
+                    <h1><spring:message code="editComputer.title"/></h1>
 
                     <form action="EditServlet?id=${computer.id}" method="POST" onsubmit="return verifForm(this)">
                         <input type="hidden" value="0" id="id"/> <!-- TODO: Change this value with the computer id -->
                         <fieldset>
                             <div class="form-group">
-                                <label for="computerName">Computer name</label>
+                                <label for="computerName"><spring:message code="form.input.name"/></label>
                                 <input type="text" class="form-control" id="computerName" name="computerName" value="${computer.name}" placeholder="Computer name" onblur="verifName(this)">
                             </div>
                             <div class="form-group">
-                                <label for="introduced">Introduced date</label>
+                                <label for="introduced"><spring:message code="form.input.introduced"/></label>
                                 <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.introduced}" placeholder="Introduced date" onblur="verifDates(this.introduced, this.discontinued)">
                             </div>
                             <div class="form-group">
-                                <label for="discontinued">Discontinued date</label>
+                                <label for="discontinued"><spring:message code="form.input.discontinued"/></label>
                                 <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.discontinued}" placeholder="Discontinued date" onblur="verifDates(this.introduced, this.discontinued)">
                             </div>
                             <div class="form-group">
-                                <label for="companyId">Company</label>
+                                <label for="companyId"><spring:message code="form.input.company"/></label>
                                 <select class="form-control" id="companyId" name="companyId" >
                                 	
                                 	
@@ -61,9 +61,9 @@
                             </div>            
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Edit" class="btn btn-primary">
+                            <input type="submit" value="<spring:message code="form.button.edit"/>" class="btn btn-primary">
                             or
-                            <a href="ListServlet" class="btn btn-default">Cancel</a>
+                            <a href="ListServlet" class="btn btn-default"><spring:message code="form.button.cancel"/></a>
                         </div>
                     </form>
                 </div>

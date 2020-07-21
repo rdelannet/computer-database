@@ -2,20 +2,34 @@ package com.excilys.formation.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+@Entity
 public class Computer {
-	
-	 private int id;
-	 private String name;
-	 private LocalDate introduced;
-	 private LocalDate discontinued;
-	 private Company company;
-	 
-	 public Computer() {
-		 
-	 }
-	 
-	 public int getId() {
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
+	private int id;
+	@Column(name = "name")
+	private String name;
+	@Column(name = "introduced")
+	private LocalDate introduced;
+	@Column(name = "discontinued")
+	private LocalDate discontinued;
+	@ManyToOne
+	@JoinColumn(nullable = true, name = "company_id")
+	private Company company;
+
+	public Computer() {
+
+	}
+
+	public int getId() {
 		return id;
 	}
 
@@ -24,50 +38,43 @@ public class Computer {
 	}
 
 	public Computer(String name) {
-		
+
 		this.name = name;
-	 }
+	}
 
 	public Computer(String name, LocalDate dateIn, LocalDate dateOut, Company company) {
 		this.name = name;
 		this.company = company;
-		
-		if(dateIn.isBefore(dateOut)) {
+
+		if (dateIn.isBefore(dateOut)) {
 			this.introduced = dateIn;
 			this.discontinued = dateOut;
 		}
 	}
-	
-	public Computer(String name,LocalDate dateIn,LocalDate dateOut) {
-		
+
+	public Computer(String name, LocalDate dateIn, LocalDate dateOut) {
+
 		this.name = name;
-		if(dateIn.isBefore(dateOut)) {
+		if (dateIn.isBefore(dateOut)) {
 			this.introduced = dateIn;
 			this.discontinued = dateOut;
 		}
-	 }
-	
-	public Computer(String name,Company company) {
-		
+	}
+
+	public Computer(String name, Company company) {
+
 		this.name = name;
 		this.company = company;
-		
-	 }
-	public Computer(String name,LocalDate dateIn,Company company) {
-		
+
+	}
+
+	public Computer(String name, LocalDate dateIn, Company company) {
+
 		this.name = name;
 		this.introduced = dateIn;
 		this.company = company;
-		
-	 }
 
-
-
-
-
-	
-
-
+	}
 
 	@Override
 	public int hashCode() {
@@ -140,8 +147,8 @@ public class Computer {
 	}
 
 	public Company getCompany() {
-		if(company == null) {
-			return  null;
+		if (company == null) {
+			return null;
 		}
 		return company;
 	}
@@ -152,10 +159,8 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "Computer [id=" + id + ", name= " + name + ", introduced= " + introduced + ", discontinued= " + discontinued
-				+ ", companyId= " + company + "]";
+		return "Computer [id=" + id + ", name= " + name + ", introduced= " + introduced + ", discontinued= "
+				+ discontinued + ", companyId= " + company + "]";
 	}
-	 
-	
-	 
+
 }
