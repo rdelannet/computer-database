@@ -35,40 +35,38 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer{
 	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(localeChangeInterceptor());
+	}
+
+	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-       registry.addResourceHandler("/js/**").addResourceLocations("/js/");
-       registry.addResourceHandler("/css/**").addResourceLocations("/css/");
 	}
 	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-	    registry.addInterceptor(localeChangeInterceptor());
-	}
-	@Bean
-	public ViewResolver viewResolver() {
+	 @Bean
+	 public ViewResolver viewResolver() {
 		InternalResourceViewResolver bean = new InternalResourceViewResolver();
+	    bean.setViewClass(JstlView.class);
+	    bean.setPrefix("/WEB-INF/views/");
+	    bean.setSuffix(".jsp");
+	    return bean;
+	   }
 	 
-		bean.setViewClass(JstlView.class);
-		bean.setPrefix("/WEB-INF/views/");
-		bean.setSuffix(".jsp");
-	
-		return bean;
-	}
-	@Bean
-	public LocaleResolver localeResolver() {
-	    SessionLocaleResolver slr = new SessionLocaleResolver();
-	    slr.setDefaultLocale(Locale.ENGLISH);
-	    return slr;
-	}
-	
-	@Bean
-	public LocaleChangeInterceptor localeChangeInterceptor() {
-	    LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-	    lci.setParamName("lang");
-	    return lci;
-	}
-	
+	 @Bean
+		public LocaleResolver localeResolver() {
+		    SessionLocaleResolver slr = new SessionLocaleResolver();
+		    slr.setDefaultLocale(Locale.ENGLISH);
+		    return slr;
+		}
+	 
+	 @Bean
+		public LocaleChangeInterceptor localeChangeInterceptor() {
+		    LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+		    lci.setParamName("lang");
+		    return lci;
+		}
+	 
 	 @Bean
 	 public MessageSource messageSource() {
 	      ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

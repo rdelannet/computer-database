@@ -20,7 +20,7 @@ import com.excilys.formation.pagination.Page;
 import com.excilys.formation.services.ComputerService;
 
 @Controller
-@RequestMapping( { "/","/ListServlet"})
+@RequestMapping({ "/","/ListServlet"})
 public class DashboardController {
 	@Autowired
 	private ComputerService computerService;
