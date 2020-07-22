@@ -62,7 +62,7 @@ public class ComputerServiceImp implements ComputerService {
 	}
 
 	@Override
-	public Integer getNbComputers() {
+	public Long getNbComputers() {
 		
 		return computerDao.findMaxElement();
 	}
@@ -71,9 +71,9 @@ public class ComputerServiceImp implements ComputerService {
 		page.setOffset((page.getCurrentPage()-1)*page.getItemsByPage());
 		return computerDao.findOrder(page,order,ascending);
 	}
-	public Integer getComputersNbPages(Page page) {
-		Integer nbEntries = computerDao.findMaxElement();
-		Integer nbPages = nbEntries/page.getItemsByPage();
+	public Long getComputersNbPages(Page page) {
+		Long nbEntries = computerDao.findMaxElement();
+		Long nbPages = nbEntries/page.getItemsByPage();
 		return nbEntries%page.getItemsByPage() == 0?nbPages:nbPages+1;
 	}
 

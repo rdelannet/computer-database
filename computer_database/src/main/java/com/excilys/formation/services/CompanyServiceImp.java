@@ -39,7 +39,7 @@ public class CompanyServiceImp implements CompanyService {
 	}
 
 	@Override
-	public int getNbCompany() {
+	public Long getNbCompany() {
 		
 		return companyDao.findMaxElement();
 	}

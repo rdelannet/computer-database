@@ -14,22 +14,19 @@ public class CompanyDTO {
 	
 	private Integer id;
 	private String name;
-	@Autowired
-	ConnectDB conn ;
+	//@Autowired
+	//ConnectDB conn ;
 	@Autowired
 	CompanyDAO companyD;
 	
 	public CompanyDTO(Company company) {
-		//conn = new ConnectDB();
-		
-
 		
 		this.id = company.getId();
 		this.name = company.getName();
 		
 	}
 	public CompanyDTO(int id) {
-		//conn = new ConnectDB();
+
 		this.id = id;
 		
 		}

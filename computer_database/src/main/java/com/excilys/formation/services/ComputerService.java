@@ -20,10 +20,10 @@ public interface ComputerService {
 	
 	List<Computer> getComputersSearchByPage(Page page,String searc);
 	
-	Integer getNbComputers();
+	Long getNbComputers();
 	
 	
 	List<Computer> getComputersOrderByPage(Page page,String order,String ascending);
-	Integer getComputersNbPages(Page page);
+	Long getComputersNbPages(Page page);
 
 }

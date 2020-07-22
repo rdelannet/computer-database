@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.formation.configuration.SpringConf;
+
 import com.excilys.formation.connect.ConnectDB;
 import com.excilys.formation.mappers.MapperRowComputer;
 import com.excilys.formation.model.Computer;
@@ -42,23 +42,30 @@ public class ComputerDAO extends DAO<Computer>{
 	private String findOrder = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY :order :ascending LIMIT :getOffset, :getNbPages";
 	private String count = "SELECT count(*) as count FROM computer";
 	private String sqlId = "SELECT id FROM computer";
-	private SpringConf hikari;
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	@Autowired
 	private ConnectDB connect;
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
-	public ComputerDAO(NamedParameterJdbcTemplate jdbcTemplate) throws SQLException {
+	public ComputerDAO() {
 		
-		this.jdbcTemplate =  jdbcTemplate;
+		
 ;		
 	}
 
 	public boolean create(Computer computer)  {
-		/*Configuration templates;
-		QComputer qcomputer = QComputer.computer;
-		SQLQueryFactory query = new SQLQueryFactory(templates,connect.getHikariDataSource());
+		
+		
+		try {
+			entityManager.persist(computer);
+			return true;
+
+		}catch (Exception dae) {
+			logger.error("Not able to add computer",dae);
+			return false;
+		}	
+		/*
 		try {
 			query.insert(computer);
 			return true;
@@ -138,8 +145,15 @@ public class ComputerDAO extends DAO<Computer>{
 	public Computer find(int id) {
 		QComputer computer = QComputer.computer;
 		QCompany company = QCompany.company;
-		JPAQuery<Computer>  query = new JPAQuery<Computer> (entityManager);	
-		return query.from(computer).leftJoin(company).on(computer.company.id.eq(company.id)).where(computer.id.eq(id)).fetchOne();
+		JPAQuery<Computer>  query = new JPAQuery<Computer> (entityManager);
+		try {
+				
+			return query.from(computer).leftJoin(company).on(computer.company.id.eq(company.id)).where(computer.id.eq(id)).fetchOne();
+		} catch (Exception e) {
+			logger.error("Not able to find");
+			return null;
+		}
+		
 		/*MapSqlParameterSource vParams = new MapSqlParameterSource()
 				.addValue("id", id);
 		
@@ -150,11 +164,17 @@ public class ComputerDAO extends DAO<Computer>{
 	@Override
 	public List<Computer> findAll() {
 		QComputer computer = QComputer.computer;
-		
+		JPAQuery<Computer>  query = new JPAQuery<Computer> (entityManager);	
 		/*List<Computer> vListStatut = null;
 		vListStatut = jdbcTemplate.query(findAllComputer, new MapperRowComputer());*/
-		JPAQuery<Computer>  query = new JPAQuery<Computer> (entityManager);	
-		return  (ArrayList<Computer>)  query.from(computer).fetch();
+		try {
+			
+			return  (ArrayList<Computer>)  query.from(computer).fetch();
+		} catch (Exception e) {
+			logger.error("Not able to find all");
+			return null;
+		}
+		
 	
         
 	}
@@ -166,7 +186,7 @@ public class ComputerDAO extends DAO<Computer>{
 		try {
 			return query.from(computer).fetchCount();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Not able to find max elem");
 			return 0L;
 		}
 		/*JdbcTemplate vJdbcTemplate = new JdbcTemplate(connect.getHikariDataSource());
@@ -178,8 +198,14 @@ public class ComputerDAO extends DAO<Computer>{
 	public List<Computer> findAllPages(int offset,int nbPage) {
 		QComputer computer = QComputer.computer;
 		JPAQuery<Computer> query = new JPAQuery<Computer>(entityManager);
+		try {
+			return (ArrayList<Computer>) query.from(computer).offset(offset).limit(nbPage).fetch();
+		} catch (Exception e) {
+			logger.error("Not able to find all pages");
+			return null;
+		}
 		
-		return (ArrayList<Computer>) query.from(computer).offset(offset).limit(nbPage).fetch();
+		
 		/*List<Computer> computers = new ArrayList<Computer>();
 		
 		MapSqlParameterSource vParams = new MapSqlParameterSource()
@@ -195,8 +221,13 @@ public class ComputerDAO extends DAO<Computer>{
 		QComputer computer = QComputer.computer;
 		QCompany company = QCompany.company;
 		JPAQuery<Computer> query = new JPAQuery<Computer>(entityManager);
+		try {
+			return (ArrayList<Computer>) query.from(computer).where(computer.name.contains(search).or(company.name.contains(search))).offset(offset).limit(nbPage).fetch();	
+		} catch (Exception e) {
+			logger.error("Find by search");
+			return null;
+		}
 		
-		return (ArrayList<Computer>) query.from(computer).where(computer.name.contains(search).or(company.name.contains(search))).offset(offset).limit(nbPage).fetch();
 		/*List<Computer> computers = new ArrayList<Computer>();
 		
 		MapSqlParameterSource vParams = new MapSqlParameterSource()
@@ -212,8 +243,14 @@ public class ComputerDAO extends DAO<Computer>{
 		QComputer computer = QComputer.computer;
 		QCompany company = QCompany.company;
 		JPAQuery<Computer> query = new JPAQuery<Computer>(entityManager);
+		try {
+			return (ArrayList<Computer>) query.from(computer).orderBy().offset(page.getOffset()).limit(page.getNbPages()).fetch();
+		} catch (Exception e) {
+			logger.error("findOrder");
+			return null;
+		}
 		
-		return (ArrayList<Computer>) query.from(computer).orderBy().offset(page.getOffset()).limit(page.getNbPages()).fetch();
+		
 		/*List<Computer> computers = new ArrayList<Computer>();
 		
 		MapSqlParameterSource vParams = new MapSqlParameterSource()

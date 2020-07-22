@@ -13,7 +13,7 @@ public class Page {
 		this.offset = offset;
 	}
 	private  int nbPages = 10;
-	private int maxElem;
+	private Long maxElem;
 	private int offset;
 	private Integer itemsBypage;
 	private Integer currentPage;
@@ -29,10 +29,10 @@ public class Page {
 		this.nbPages = nbPage;
 	}
 	
-	public int getMaxElem() {
+	public Long getMaxElem() {
 		return this.maxElem;
 	}
-	public void setMaxElem(int result) {
+	public void setMaxElem(Long result) {
 		this.maxElem = result;
 	}
 	

@@ -163,7 +163,7 @@ public class CLI {
 					if(page.getNbPages()>= 10) {
 						page.setNbPages(page.getNbPages()-10);
 					}
-					else {
+					else { 
 						System.out.println("End of the list");
 						pages = 1;
 						break;
@@ -204,7 +204,7 @@ public class CLI {
 			
 		}
 		Page page = new Page();
-		page.setMaxElem(companyService.getNbCompany());
+		page.setMaxElem(Long.valueOf(companyService.getNbCompany()));
 		while(page.getNbPages() <= page.getMaxElem()) {
 			
 			if(pages == 0){

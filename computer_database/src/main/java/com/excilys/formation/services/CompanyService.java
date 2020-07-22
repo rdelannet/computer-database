@@ -10,7 +10,7 @@ public interface CompanyService {
 	public boolean deleteCompany(Company company);
 	public Company getCompany(int id);
 	public List<Company> getAllCompany();
-	public int getNbCompany();
+	public Long getNbCompany();
 	public List<Company> getCompanyPages(int offset,int nbPage);
 	public Company getCompanyFromComputer(Computer computer);
 	

@@ -22,7 +22,11 @@ import com.excilys.formation.mappers.CompanyMapper;
 import com.excilys.formation.mappers.MapperRowCompany;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
+import com.excilys.formation.model.QCompany;
+import com.excilys.formation.model.QComputer;
 import com.excilys.formation.pagination.Page;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
 public class CompanyDAO extends DAO<Company>{
@@ -40,21 +44,28 @@ public class CompanyDAO extends DAO<Company>{
 	NamedParameterJdbcTemplate jdbcTemplate;
 	
 	
-	public CompanyDAO(NamedParameterJdbcTemplate jdbcTemplate) throws SQLException {
-		this.jdbcTemplate = jdbcTemplate;
+	public CompanyDAO() {
+		
 	}
 	
 
 	
 
 	public boolean delete(int id) {
-		MapSqlParameterSource vParams = new MapSqlParameterSource();
-		 vParams.addValue("company_id",id);
-		 jdbcTemplate.update(deleteComp,vParams);
-		 MapSqlParameterSource params = new MapSqlParameterSource();
-		 vParams.addValue("id",id);
-		 jdbcTemplate.update(delete,vParams);
-		 return true;
+		QCompany company = QCompany.company; 
+		QComputer computer = QComputer.computer;
+		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
+		try {
+			queryFactory.delete(computer).where(company.id.eq(id)).execute();
+			queryFactory.delete(company).where(company.id.eq(id)).execute();
+			return true;
+
+		}catch (Exception dae) {
+			logger.error("Not able to delete computer",dae);
+			return false;
+		}
+			
 	}
 
 
@@ -63,46 +74,53 @@ public class CompanyDAO extends DAO<Company>{
 	
 	public Company find(int id) {
 		
-		MapSqlParameterSource vParams = new MapSqlParameterSource()
-				.addValue("id", id);
-		
-		Company company = jdbcTemplate.queryForObject(findCompany, vParams,new MapperRowCompany());
-		return company;
+		QCompany company = QCompany.company;
+		JPAQuery<Company>  query = new JPAQuery<Company>(entityManager);
+		try {
+			return query.from(company)
+					.where(company.id.eq(id)).fetchOne();
+		}catch (Exception dae) {
+			logger.error("Not able to find company",dae);
+			return null;
+		}	
 	}
 
 
 	@Override
 	public List<Company> findAll() {
-		List<Company> vListStatut = null;
+		QCompany company = QCompany.company;
+		JPAQuery<Company>  query = new JPAQuery<Company> (entityManager);	
+		
 		try {
-			
-			JdbcTemplate vJdbcTemplate = new JdbcTemplate(connect.getHikariDataSource());
-			
-			vListStatut = vJdbcTemplate.query(sqlComp, new MapperRowCompany());
-			
-		}catch(Exception e) {
-			e.printStackTrace();
+			return  (ArrayList<Company>)  query.from(company).fetch();
+		}catch (Exception e) {
+			logger.error("Not able to find all companies",e);
+			return new ArrayList<Company>();
 		}
-		
-		return vListStatut;
 	}
-	public int findMaxElement() {
+	public Long findMaxElement() {
 		
-		JdbcTemplate vJdbcTemplate = new JdbcTemplate(connect.getHikariDataSource());
-		int maxElem = vJdbcTemplate.queryForObject(count, Integer.class);
-		
-		return maxElem;
+		QCompany company = QCompany.company;
+		JPAQuery<Company>  query = new JPAQuery<Company>(entityManager);	
+		try {
+			return query.from(company).fetchCount();
+		}catch (Exception dae) {
+			logger.error("Not able to get max",dae);
+			return 0L;
+		}
 	}
 	
 	public List<Company> findAllPages(int offset,int nbPage) {
-		List<Company> company = new ArrayList<Company>();
+		QCompany company = QCompany.company;
+		JPAQuery<Company> query = new JPAQuery<Company>(entityManager);
+		try {
+			return (ArrayList<Company>) query.from(company).offset(offset).limit(nbPage).fetch();
+		} catch (Exception e) {
+			logger.error("find all pages");
+			return null;
+		}
 		
-		MapSqlParameterSource vParams = new MapSqlParameterSource()
-				.addValue("offset", offset)
-				.addValue("nbPage",nbPage);
 		
-		company = jdbcTemplate.query(findAllPagesQ,vParams, new MapperRowCompany());
-		return company;
 	}
 
 

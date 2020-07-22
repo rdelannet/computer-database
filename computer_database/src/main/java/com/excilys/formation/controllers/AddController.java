@@ -29,6 +29,7 @@ public class AddController {
 	private ComputerService computerService;
 	@Autowired
 	private CompanyService companyService;
+	
 	@GetMapping
 	public String ShowAdd(
 			Model model) {
