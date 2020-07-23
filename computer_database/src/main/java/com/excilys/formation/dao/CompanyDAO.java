@@ -38,10 +38,9 @@ public class CompanyDAO extends DAO<Company>{
 	private String findAllPagesQ = "SELECT id,name FROM company LIMIT :offset , :nbPage";
 	private String deleteComp = "DELETE FROM computer WHERE company_id = :id";
 	private String delete = "DELETE FROM company WHERE id = :id";
-	@Autowired
-	private ConnectDB connect;
 	
-	NamedParameterJdbcTemplate jdbcTemplate;
+	
+	//NamedParameterJdbcTemplate jdbcTemplate;
 	
 	
 	public CompanyDAO() {

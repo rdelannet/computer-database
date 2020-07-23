@@ -7,8 +7,8 @@ import javax.persistence.Id;
 
 @Entity
 public class Company {
+	
 	@Id
-	@GeneratedValue
 	@Column(name = "id")
 	private int id;
 	@Column(name = "name", nullable = true)

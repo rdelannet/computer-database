@@ -43,6 +43,7 @@ public class ComputerDAO extends DAO<Computer>{
 	private String count = "SELECT count(*) as count FROM computer";
 	private String sqlId = "SELECT id FROM computer";
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	
 	@Autowired
 	private ConnectDB connect;
 	
@@ -50,8 +51,7 @@ public class ComputerDAO extends DAO<Computer>{
 	
 	public ComputerDAO() {
 		
-		
-;		
+				
 	}
 
 	public boolean create(Computer computer)  {
