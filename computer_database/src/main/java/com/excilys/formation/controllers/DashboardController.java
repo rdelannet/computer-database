@@ -63,6 +63,7 @@ public class DashboardController {
 		}
 		else {
 			computers = computerService.getComputersByPage(pages);
+			System.out.println(computers);
 			computersDto = computers.stream().map(computer->ComputerDTOMapper.computerToDTO(computer)).collect(Collectors.toList());
 		}
 		if(order != null && !("".equals(order)) && ascending != null && !("".equals(ascending))) {

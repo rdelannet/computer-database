@@ -13,7 +13,7 @@ public class MainWebAppInitializer implements WebApplicationInitializer {
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
-		webContext.register(WebConfig.class, SpringConf.class);
+		webContext.register(WebConfig.class, SpringConf.class,MainWebAppInitializer.class);
 		webContext.setServletContext(servletContext);
 
 		ServletRegistration.Dynamic servlet = servletContext.addServlet("dynamicServlet",

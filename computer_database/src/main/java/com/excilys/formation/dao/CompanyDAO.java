@@ -32,12 +32,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 public class CompanyDAO extends DAO<Company>{
 	
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
-	private String sqlComp = "SELECT id,name FROM company";
-	private String count = "SELECT count(*) as count FROM company";
-	private String findCompany = "SELECT id,name FROM company WHERE id = :id";
-	private String findAllPagesQ = "SELECT id,name FROM company LIMIT :offset , :nbPage";
-	private String deleteComp = "DELETE FROM computer WHERE company_id = :id";
-	private String delete = "DELETE FROM company WHERE id = :id";
+	
 	
 	
 	//NamedParameterJdbcTemplate jdbcTemplate;
@@ -76,6 +71,9 @@ public class CompanyDAO extends DAO<Company>{
 		QCompany company = QCompany.company;
 		JPAQuery<Company>  query = new JPAQuery<Company>(entityManager);
 		try {
+			System.out.println("test");
+			System.out.println(query.from(company)
+					.where(company.id.eq(id)).fetchOne());
 			return query.from(company)
 					.where(company.id.eq(id)).fetchOne();
 		}catch (Exception dae) {

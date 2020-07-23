@@ -46,7 +46,7 @@ public class CompanyServiceImp implements CompanyService {
 
 	@Override
 	public List<Company> getCompanyPages(int offset, int nbPage) {
-		
+		System.out.println(" je suis la ");
 		return companyDao.findAllPages(offset, nbPage);
 	}
 

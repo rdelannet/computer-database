@@ -16,7 +16,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="ListServlet">  <spring:message code="title"/> </a>
+            <a class="navbar-brand" href="ListServlet"> Application - Computer Database </a>
         </div>
     </header>
     
@@ -42,20 +42,20 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                ${nbComputers}  <spring:message code="dashboard.computer.found"/>
+                ${nbComputers} Computers found
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="#" method="GET" class="form-inline">
 
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="<spring:message code="dashboard.search.placeholder"/>" />
-                        <input type="submit" id="searchsubmit" value="<spring:message code="dashboard.filter.button"/>"
+                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
+                        <input type="submit" id="searchsubmit" value="Filter by name"
                         class="btn btn-primary" />
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="AddServlet"><spring:message code="dashboard.addComputer.button"/></a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="dashboard.edit.button"/></a>
+                    <a class="btn btn-success" id="addComputer" href="AddServlet">Add Computer</a> 
+                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
         </div>

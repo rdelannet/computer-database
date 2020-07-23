@@ -42,10 +42,7 @@ public class SpringConf {
 		return new HikariDataSource(new HikariConfig("/datasource.properties"));
 	}
 
-	@Bean
-	public NamedParameterJdbcTemplate jdbcTemplate(DataSource hikariDataSource) {
-		return new NamedParameterJdbcTemplate(hikariDataSource);
-	}
+	
 
 	@Bean
 	public PlatformTransactionManager txManager(DataSource hikariDataSource) {

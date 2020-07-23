@@ -1,59 +1,36 @@
 package com.excilys.formation.dao;
 
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Provider;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-
-import com.excilys.formation.connect.ConnectDB;
-import com.excilys.formation.mappers.MapperRowComputer;
 import com.excilys.formation.model.Computer;
 import com.excilys.formation.model.QCompany;
 import com.excilys.formation.model.QComputer;
 import com.excilys.formation.pagination.Page;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.querydsl.sql.Configuration;
-import com.querydsl.sql.SQLQueryFactory;
-import com.querydsl.sql.SQLTemplates;
+
 
 
 @Repository
 public class ComputerDAO extends DAO<Computer>{
-	private String insert = "INSERT INTO computer(name,introduced,discontinued,company_id) values (:name,:introduced,:discontinued,:company_id)";
-	private String delete = "DELETE FROM computer WHERE id = :id";
-	private String sqlUpdate = "UPDATE computer SET name = :name , introduced = :introduced , discontinued = :discontinued , company_id = :company_id WHERE id = :id";
-	private String findComputer = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.id = :id";
-	private String findAllComputer = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id";
-	private String findAllPagesQ = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id LIMIT :offset , :nbPage";
-	private String findSearch = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id WHERE computer.name LIKE :search OR c.name LIKE :search LIMIT  :offset , :nbPage";
-	private String findOrder = "SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY :order :ascending LIMIT :getOffset, :getNbPages";
-	private String count = "SELECT count(*) as count FROM computer";
-	private String sqlId = "SELECT id FROM computer";
+
 	private Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	
-	@Autowired
-	private ConnectDB connect;
 	
-	private NamedParameterJdbcTemplate jdbcTemplate;
 	
 	public ComputerDAO() {
 		
 				
 	}
-
+	@Transactional
 	public boolean create(Computer computer)  {
 		
 		
@@ -65,33 +42,9 @@ public class ComputerDAO extends DAO<Computer>{
 			logger.error("Not able to add computer",dae);
 			return false;
 		}	
-		/*
-		try {
-			query.insert(computer);
-			return true;
-		} catch (Exception e) {
-			logger.error("Not able to create computer",e);
-			return false;
-		}*/
-
-		/*try {
-			MapSqlParameterSource vParams = new MapSqlParameterSource();
-			 vParams.addValue("name",computer.getName());
-			 vParams.addValue("introduced", computer.getDateInt());
-			 vParams.addValue("discontinued", computer.getDateDisc());
-			 vParams.addValue("company_id", computer.getCompany().getId());
-			 
-			 jdbcTemplate.update(insert,vParams);
-			
-		} catch (Exception e) {
-			logger.error("Error Add Computer");
-			e.printStackTrace();
-			return false;
-		}
-		 
-		return true;*/
 	}
-
+	
+	@Transactional
 	public boolean delete(int id) {
 		
 		/*try {
@@ -118,7 +71,7 @@ public class ComputerDAO extends DAO<Computer>{
 		
 		
 	}
-
+	@Transactional
 	public boolean update(Computer computer) {
 		
 		
@@ -199,6 +152,7 @@ public class ComputerDAO extends DAO<Computer>{
 		QComputer computer = QComputer.computer;
 		JPAQuery<Computer> query = new JPAQuery<Computer>(entityManager);
 		try {
+			
 			return (ArrayList<Computer>) query.from(computer).offset(offset).limit(nbPage).fetch();
 		} catch (Exception e) {
 			logger.error("Not able to find all pages");
@@ -241,15 +195,17 @@ public class ComputerDAO extends DAO<Computer>{
 	public List<Computer> findOrder(Page page,String order,String ascending){
 		
 		QComputer computer = QComputer.computer;
-		QCompany company = QCompany.company;
+		
 		JPAQuery<Computer> query = new JPAQuery<Computer>(entityManager);
 		try {
-			return (ArrayList<Computer>) query.from(computer).orderBy().offset(page.getOffset()).limit(page.getNbPages()).fetch();
+			return (ArrayList<Computer>) query.from(computer).orderBy(orderByConversionQ(order,ascending)).offset(page.getOffset()).limit(page.getNbPages()).fetch();
 		} catch (Exception e) {
 			logger.error("findOrder");
 			return null;
 		}
 		
+		
+	
 		
 		/*List<Computer> computers = new ArrayList<Computer>();
 		
@@ -259,6 +215,46 @@ public class ComputerDAO extends DAO<Computer>{
 				.addValue("getNbPages",page.getNbPages());
 		computers = jdbcTemplate.query("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY "+order+" "+ascending+" LIMIT :getOffset, :getNbPages",vParams, new MapperRowComputer());
 		return computers;*/
+	}
+	
+	private OrderSpecifier<?> orderByConversionQ(String order,String ascending) {
+		if(order==null) {
+			return QComputer.computer.id.asc();
+		}
+		if(order.equals("computer.name")) {
+			if(ascending.equals("ASC")) {
+				return QComputer.computer.name.asc();
+			}
+			else if(ascending.equals("DESC")) {
+				return QComputer.computer.name.desc();
+			}
+		}
+		else if(order.equals("computer.introduced")) {
+			if(ascending.equals("ASC")) {
+				return QComputer.computer.introduced.asc();
+			}
+			else if(ascending.equals("DESC")) {
+				return QComputer.computer.introduced.desc();
+			}
+		}
+		else if(order.equals("computer.discontinued")) {
+			if(ascending.equals("ASC")) {
+				return QComputer.computer.discontinued.asc();
+			}
+			else if(ascending.equals("DESC")) {
+				return QComputer.computer.discontinued.desc();
+			}
+		}
+		else if(order.equals("c.name")) {
+			if(ascending.equals("ASC")) {
+				return QComputer.computer.company.name.asc();
+			}
+			else if(ascending.equals("DESC")) {
+				return QComputer.computer.company.name.desc();
+			}
+		}
+		
+		return QComputer.computer.id.asc();
 	}
 	
 
