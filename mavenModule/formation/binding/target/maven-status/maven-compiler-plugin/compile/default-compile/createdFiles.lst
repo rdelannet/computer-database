@@ -1,0 +1,8 @@
+com/excilys/formation/mappers/ComputerDTOMapper.class
+com/excilys/formation/mappers/ComputerMapper.class
+com/excilys/formation/mappers/CompanyDTOMapper.class
+com/excilys/formation/mappers/MapperRowComputer.class
+com/excilys/formation/mappers/MapperRowCompany.class
+com/excilys/formation/dto/CompanyDTO.class
+com/excilys/formation/dto/ComputerDTO.class
+com/excilys/formation/mappers/CompanyMapper.class

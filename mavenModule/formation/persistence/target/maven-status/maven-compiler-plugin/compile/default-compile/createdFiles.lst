@@ -1,0 +1,6 @@
+com/excilys/formation/dao/ComputerDAO.class
+com/excilys/formation/configuration/SpringConf.class
+com/excilys/formation/configuration/MainWebAppInitializer.class
+com/excilys/formation/dao/CompanyDAO.class
+com/excilys/formation/configuration/WebConfig.class
+com/excilys/formation/dao/DAO.class
