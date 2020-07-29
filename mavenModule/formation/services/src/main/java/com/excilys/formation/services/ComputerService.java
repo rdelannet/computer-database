@@ -12,7 +12,7 @@ public interface ComputerService {
 	
 	boolean updateComputer(Computer computer);
 	
-	boolean createComputer(Computer computer);
+	Computer createComputer(Computer computer);
 	
 	boolean deleteComputer(int i);
 	

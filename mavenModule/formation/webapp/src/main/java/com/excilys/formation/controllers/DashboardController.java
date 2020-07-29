@@ -76,7 +76,7 @@ public class DashboardController {
 			
 		}
 		
-		System.out.println("coucou je suis dans le dash");
+		
 		model.addAttribute("page",pages);		
 		model.addAttribute("search",searchP);
 		model.addAttribute("nbByPage", nb);

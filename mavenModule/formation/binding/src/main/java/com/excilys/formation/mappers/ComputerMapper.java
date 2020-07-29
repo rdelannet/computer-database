@@ -2,10 +2,6 @@ package com.excilys.formation.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-
 
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;

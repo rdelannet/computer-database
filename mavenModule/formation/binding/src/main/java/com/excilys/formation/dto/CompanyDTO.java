@@ -2,9 +2,6 @@ package com.excilys.formation.dto;
 
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-
 import com.excilys.formation.model.Company;
 
 

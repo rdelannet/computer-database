@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.formation.dao.CompanyDAO;
-import com.excilys.formation.dao.ComputerDAO;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 @Service

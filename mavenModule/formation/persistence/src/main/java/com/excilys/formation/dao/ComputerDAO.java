@@ -31,40 +31,34 @@ public class ComputerDAO extends DAO<Computer>{
 				
 	}
 	@Transactional
-	public boolean create(Computer computer)  {
+	public Computer create(Computer computer)  {
 		
 		
 		try {
+			System.out.println("la"+computer);
 			entityManager.persist(computer);
-			return true;
+			
+			return computer;
 
 		}catch (Exception dae) {
 			logger.error("Not able to add computer",dae);
-			return false;
+			return computer;
 		}	
 	}
 	
 	@Transactional
 	public boolean delete(int id) {
 		
-		/*try {
-			MapSqlParameterSource vParams = new MapSqlParameterSource();
-			 vParams.addValue("id",id);
-			 NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(connect.getHikariDataSource());
-			 vJdbcTemplate.update(delete,vParams);
-	
-		}catch(Exception eSQL) {
-			logger.error("Error Delete Computer");
-			eSQL.printStackTrace();
-			return false;
-		}
-		return true;*/
+		
 		QComputer qcomputer = QComputer.computer;
 		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+		System.out.println(queryFactory);
 		try {
+			
 			queryFactory.delete(qcomputer).where(qcomputer.id.eq(id)).execute();
 			return true;
 		} catch (Exception e) {
+			
 			logger.error("Not able to delete computer",e);
 			return false;
 		}
@@ -107,19 +101,13 @@ public class ComputerDAO extends DAO<Computer>{
 			return null;
 		}
 		
-		/*MapSqlParameterSource vParams = new MapSqlParameterSource()
-				.addValue("id", id);
-		
-		Computer computer = jdbcTemplate.queryForObject(findComputer, vParams,new MapperRowComputer());
-		return computer;*/
 	}
 
 	@Override
 	public List<Computer> findAll() {
 		QComputer computer = QComputer.computer;
 		JPAQuery<Computer>  query = new JPAQuery<Computer> (entityManager);	
-		/*List<Computer> vListStatut = null;
-		vListStatut = jdbcTemplate.query(findAllComputer, new MapperRowComputer());*/
+		
 		try {
 			
 			return  (ArrayList<Computer>)  query.from(computer).fetch();
@@ -142,10 +130,7 @@ public class ComputerDAO extends DAO<Computer>{
 			logger.error("Not able to find max elem");
 			return 0L;
 		}
-		/*JdbcTemplate vJdbcTemplate = new JdbcTemplate(connect.getHikariDataSource());
-		int maxElem = vJdbcTemplate.queryForObject(count, Integer.class);
 		
-		return maxElem;*/
 	}
 	
 	public List<Computer> findAllPages(int offset,int nbPage) {
@@ -159,15 +144,6 @@ public class ComputerDAO extends DAO<Computer>{
 			return null;
 		}
 		
-		
-		/*List<Computer> computers = new ArrayList<Computer>();
-		
-		MapSqlParameterSource vParams = new MapSqlParameterSource()
-				.addValue("offset", offset)
-				.addValue("nbPage",nbPage);
-		
-		computers = jdbcTemplate.query(findAllPagesQ,vParams, new MapperRowComputer());
-		return computers;*/
 	}
 	
 	public List<Computer> findBySearch(int offset,int nbPage,String search){
@@ -182,15 +158,7 @@ public class ComputerDAO extends DAO<Computer>{
 			return null;
 		}
 		
-		/*List<Computer> computers = new ArrayList<Computer>();
 		
-		MapSqlParameterSource vParams = new MapSqlParameterSource()
-				.addValue("search", "%"+search+"%")
-				.addValue("offset", offset)
-				.addValue("nbPage",nbPage);
-	
-		computers = jdbcTemplate.query(findSearch,vParams, new MapperRowComputer());
-		return computers;*/
 	}
 	public List<Computer> findOrder(Page page,String order,String ascending){
 		
@@ -204,17 +172,6 @@ public class ComputerDAO extends DAO<Computer>{
 			return null;
 		}
 		
-		
-	
-		
-		/*List<Computer> computers = new ArrayList<Computer>();
-		
-		MapSqlParameterSource vParams = new MapSqlParameterSource()
-				
-				.addValue("getOffset", page.getOffset())
-				.addValue("getNbPages",page.getNbPages());
-		computers = jdbcTemplate.query("SELECT computer.id,computer.name,introduced,discontinued,company_id,c.name FROM computer LEFT JOIN company as c on computer.company_id = c.id ORDER BY "+order+" "+ascending+" LIMIT :getOffset, :getNbPages",vParams, new MapperRowComputer());
-		return computers;*/
 	}
 	
 	private OrderSpecifier<?> orderByConversionQ(String order,String ascending) {

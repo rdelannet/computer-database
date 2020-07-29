@@ -20,7 +20,7 @@ public  abstract class DAO<T> {
 		
 	}
 	
-	public abstract boolean create(T obj);
+	public abstract T create(T obj);
 	
 	public abstract boolean delete(int i);
 	

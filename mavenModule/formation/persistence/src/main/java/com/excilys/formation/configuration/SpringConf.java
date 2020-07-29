@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -46,9 +46,10 @@ public class SpringConf {
 
 	@Bean
 	public PlatformTransactionManager txManager(DataSource hikariDataSource) {
-		DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
-		dataSourceTransactionManager.setDataSource(hikariDataSource);
-		return dataSourceTransactionManager;
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+	     transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+	  
+	     return transactionManager;
 	}
 
 	@Bean

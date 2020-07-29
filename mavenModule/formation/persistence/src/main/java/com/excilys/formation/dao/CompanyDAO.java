@@ -110,9 +110,9 @@ public class CompanyDAO extends DAO<Company>{
 
 
 	@Override
-	public boolean create(Company obj) {
+	public Company create(Company obj) {
 		
-		return false;
+		return obj;
 	}
 
 

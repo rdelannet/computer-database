@@ -4,9 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
 
 import com.excilys.formation.dao.ComputerDAO;
 import com.excilys.formation.model.Computer;
@@ -39,7 +37,7 @@ public class ComputerServiceImp implements ComputerService {
 	}
 
 	@Override
-	public boolean createComputer(Computer computer) {
+	public Computer createComputer(Computer computer) {
 		
 		return computerDao.create(computer);
 	}
