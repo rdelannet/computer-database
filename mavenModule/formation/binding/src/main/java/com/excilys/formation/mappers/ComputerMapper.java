@@ -3,11 +3,16 @@ package com.excilys.formation.mappers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.excilys.formation.dto.ComputerDTO;
 import com.excilys.formation.model.Company;
 import com.excilys.formation.model.Computer;
 
 public class ComputerMapper {
 	
+	private static Logger logger = LoggerFactory.getLogger(ComputerMapper.class);
 	
 	public static Computer resultToObject(ResultSet result) throws SQLException {
 		Computer computer = null;
@@ -51,5 +56,28 @@ public class ComputerMapper {
 			
 		return computer;
 	}
+	public static ComputerDTO toComputerDTO(Computer computer) {
+        ComputerDTO dto = new ComputerDTO();
+        try {
+            dto.setId(String.valueOf(computer.getId()));
+            dto.setName(computer.getName());
+            if (computer.getDateInt() == null) {
+                dto.setIntroduced("");
+            } else {
+                dto.setIntroduced(computer.getDateInt().toString());
+            }
+            if (computer.getDateDisc() == null) {
+                dto.setDiscontinued("");
+            } else {
+                dto.setDiscontinued(computer.getDateDisc().toString());
+            }
+            if (computer.getCompany() != null) {
+                dto.setCompanyDTO(CompanyMapper.toCompanyDTO(computer.getCompany()));
+            }
+        } catch (RuntimeException e) {
+            logger.error("error when converting a computerDTO to a computer");
+        }
+        return dto;
+    }
 
 }

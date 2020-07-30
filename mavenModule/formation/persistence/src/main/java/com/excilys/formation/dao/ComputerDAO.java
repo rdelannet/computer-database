@@ -35,7 +35,7 @@ public class ComputerDAO extends DAO<Computer>{
 		
 		
 		try {
-			System.out.println("la"+computer);
+			
 			entityManager.persist(computer);
 			
 			return computer;

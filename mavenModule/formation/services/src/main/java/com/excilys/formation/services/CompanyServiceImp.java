@@ -20,14 +20,14 @@ public class CompanyServiceImp implements CompanyService {
 	}
 	
 	@Override
-	public boolean deleteCompany(Company company) {
+	public boolean deleteCompany(int id) {
 		
-		return companyDao.delete(company.getId());
+		return companyDao.delete(id);
 	}
 
 	@Override
 	public Company getCompany(int id) {
-		// TODO Auto-generated method stub
+		
 		return companyDao.find(id);
 	}
 
@@ -45,7 +45,7 @@ public class CompanyServiceImp implements CompanyService {
 
 	@Override
 	public List<Company> getCompanyPages(int offset, int nbPage) {
-		System.out.println(" je suis la ");
+		
 		return companyDao.findAllPages(offset, nbPage);
 	}
 

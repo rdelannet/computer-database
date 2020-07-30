@@ -7,7 +7,7 @@ import com.excilys.formation.model.Computer;
 
 public interface CompanyService {
 	
-	public boolean deleteCompany(Company company);
+	public boolean deleteCompany(int id);
 	public Company getCompany(int id);
 	public List<Company> getAllCompany();
 	public Long getNbCompany();

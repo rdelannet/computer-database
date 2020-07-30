@@ -15,7 +15,7 @@ public class Page {
 	private  int nbPages = 10;
 	private Long maxElem;
 	private int offset;
-	private Integer itemsBypage;
+	private Integer itemsBypage = 10;
 	private Integer currentPage;
 	
 	public Page() {

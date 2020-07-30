@@ -16,5 +16,12 @@ public class CompanyDTOMapper {
 		companyDto.setName(company.getName());
 		return companyDto;
 	}
+	
+	public static CompanyDTO toCompanyDto(Company company) {
+		CompanyDTO companyDto = new CompanyDTO();
+		companyDto.setId(company.getId());
+		companyDto.setName(company.getName());
+		return companyDto;
+	}
 
 }
