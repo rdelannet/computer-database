@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.excilys.formation.dto.CompanyDTO;
@@ -25,18 +26,18 @@ public class CompanyRESTController {
     @Autowired
     private CompanyService companyService;
 
-    @GetMapping(value = {"", "/"})
+    @RequestMapping( method = RequestMethod.GET)
     public List<CompanyDTO> getListCompanies() {
         List<Company> allCompanies = companyService.getAllCompany();
         return allCompanies.stream().map(c -> CompanyMapper.toCompanyDTO(c)).collect(Collectors.toList());
     }
     
-    @GetMapping(value = {"/{id}"})
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public CompanyDTO getCompany(@PathVariable int id) {
     	return CompanyMapper.toCompanyDTO(companyService.getCompany(id));
     }
     
-    @DeleteMapping(value = {"/{id}"})
+    @DeleteMapping(value = {"{id}"})
     public void delete(@PathVariable int id) {
     	companyService.deleteCompany(id);
     }

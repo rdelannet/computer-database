@@ -3,7 +3,10 @@ package com.excilys.formation.restController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,8 +50,9 @@ public class ComputerRESTController {
 		computerService.updateComputer(ComputerDTOMapper.dtoToComputer(computer));
 	}
 	@DeleteMapping("/{id}")
-	public void delete(ComputerDTO computer) {
+	public ResponseEntity<String> delete(ComputerDTO computer) {
 		computerService.deleteComputer(Integer.valueOf(computer.getId()));
+		return ResponseEntity.ok("Ok");
 	}
 	
 	@RequestMapping(value = "/search/{search}", method = RequestMethod.GET,consumes = "application/json")
